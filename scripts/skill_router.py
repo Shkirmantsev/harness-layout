@@ -64,6 +64,10 @@ PROFILES = load_profiles()
 # Rules are deliberately explicit. Weak/local models receive the same plan as
 # strong models, and adding a skill remains a reviewable config/code change.
 SIGNALS: tuple[tuple[str, tuple[str, ...], int, str], ...] = (
+    ("llm-wiki-maintenance", ("llm wiki", "project wiki", "knowledge base", "wiki index", "kb_search", "kb_get"), 96, "project knowledge maintenance requested"),
+    ("openspec-change", ("openspec", "spec driven", "spec-driven", "behavioral spec", "context-impact"), 97, "OpenSpec/spec-driven change requested"),
+    ("project-exploration", ("understand this project", "explore repository", "project orientation", "project map", "unfamiliar repository"), 91, "bounded project orientation requested"),
+    ("architecture-design", ("architecture design", "system architecture", "design architecture", "adr", "architecture review"), 90, "architecture work requested"),
     ("humanizer", ("humanize", "ai sounding", "sound natural", "natural prose"), 100, "prose rewrite requested"),
     ("grilling", ("grill me", "stress test this plan", "interrogate this plan", "challenge my plan"), 100, "requirements stress-test requested"),
     ("graphify", ("graphify", "knowledge graph", "dependency graph across"), 100, "knowledge-graph analysis requested"),

@@ -7,6 +7,8 @@ import unittest
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+import skill_router
 ROUTER = ROOT / "scripts" / "skill_router.py"
 SESSIONS = ROOT / "scripts" / "session_state.py"
 
@@ -29,10 +31,7 @@ def run_json(script: pathlib.Path, *args: str, check: bool = True):
 
 class SkillRouterTests(unittest.TestCase):
     def route(self, task: str, profile: str = "balanced"):
-        _, payload = run_json(
-            ROUTER, "--task", task, "--profile", profile, "--format", "json"
-        )
-        return payload
+        return skill_router.build_plan(task, profile)
 
     def test_explicit_optional_skill_name_wins_without_loading_unrelated_skills(self):
         plan = self.route("Use the humanizer skill on this product announcement")
