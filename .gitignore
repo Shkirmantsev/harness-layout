@@ -1,25 +1,38 @@
+# Secrets / generated client material
 .env
 .generated/
-.harness/inbox/
-.opencode/node_modules/
-__pycache__/
-*.pyc
-.idea/
-.vscode/
-.DS_Store
+.mcp.json
+opencode.json
+.codex/config.toml
 .claude/settings.local.json
 .claude/agents/generated-*.md
 .opencode/agents/generated-*.md
+.opencode/tools/generated-hermes.*
+.opencode/tools/hermes.js
+
+# Local harness runtime / generated context
+.harness/inbox/
+tmp/local/**
+!tmp/local/README.md
+
+# Dependency / build / runtime caches
+.opencode/node_modules/
+node_modules/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+target/
+build/
+dist/
+
+# IDE / OS local files
+.idea/
+.vscode/
+.DS_Store
 
 # Project-skill runtime artifacts
-tmp/local/
 graphify-out/
 .superpowers/sdd/
 .worktrees/
 worktrees/
-
-.mcp.json
-.opencode/tools/generated-hermes.*
-.opencode/tools/hermes.js
-opencode.json
-.codex/config.toml
