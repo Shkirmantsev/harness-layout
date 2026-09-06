@@ -40,6 +40,16 @@ def main() -> int:
             if configured(value) and not value.startswith("/"):
                 errors.append(f"{key} must be an absolute remote path")
 
+
+    generation = env.get("OPENCODE_CONFIG_GENERATION", "v1").strip().lower()
+    if generation not in {"v1", "v2"}:
+        errors.append("OPENCODE_CONFIG_GENERATION must be v1 (stable/default) or v2 (beta opt-in)")
+    if bool_env(env, "PROJECT_CONTEXT_MCP_ENABLED", True):
+        import os
+        exe = ROOT / ("tmp/local/project-context/venv/Scripts/project-context-mcp.exe" if os.name == "nt" else "tmp/local/project-context/venv/bin/project-context-mcp")
+        if not exe.exists():
+            warnings.append("project-context MCP is enabled but not installed; run `python harness.py mcp-install`, then regenerate client config")
+
     if bool_env(env, "MINIMAX_ENABLED"):
         key = env.get("MINIMAX_TOKEN_PLAN_KEY", "")
         if not key.startswith("sk-cp-"):

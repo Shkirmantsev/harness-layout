@@ -1,113 +1,122 @@
 SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := help
-STACK := python3 scripts/stack.py
+PYTHON ?= python3
+STACK := $(PYTHON) scripts/stack.py
 
-.PHONY: help init env-sync runtime check config plan pull build up start stop restart down status ps logs \
-        client-config skills-sync-local skills-sync-remote skills-check \
-        hermes-host-setup hermes-host-revoke hermes-sidecar-copy hermes-remote-instructions hermes-check hermes-import \
-        verify verify-models test clean
+.PHONY: help init init-mcp env-sync runtime check wiki-index wiki-validate openspec-check mcp-install \
+        config plan pull build up start stop restart down status ps logs client-config \
+        skills-sync-local skills-sync-remote skills-check hermes-host-setup hermes-host-revoke \
+        hermes-sidecar-copy hermes-remote-instructions hermes-check hermes-import verify verify-models test clean
 
 help: ## Show all harness commands.
-	@printf "\nHarness Layout — Makefile is the management API\n\n"
+	@printf "\nHarness Layout v4 — portable core + optional integrations\n\n"
 	@awk 'BEGIN {FS = ":.*## "}; /^[a-zA-Z0-9_.-]+:.*## / {printf "  \033[36m%-28s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-	@printf "\nTypical: make init -> edit .env -> make check -> make client-config -> make up -> make verify\n"
-	@printf "Hermes once: make hermes-host-setup ENABLE_TAILSCALE_SSH=1 -> make hermes-sidecar-copy -> make hermes-remote-instructions -> apply remote runbook -> make hermes-check\n\n"
+	@printf "\nPortable equivalent on any OS: python harness.py <command>\n"
+	@printf "Typical: make init -> edit .env if needed -> make mcp-install -> make client-config -> make check\n\n"
 
-init: ## Create/sync .env, generate local secrets, skills, and client configs.
-	@python3 scripts/bootstrap_env.py
-	@$(MAKE) --no-print-directory skills-sync-local
-	@$(MAKE) --no-print-directory client-config
+init: ## Portable core init: create .env, build Wiki index, generate client configs.
+	@$(PYTHON) harness.py init
+
+init-mcp: ## Init core and install the project-context MCP local virtual environment.
+	@$(PYTHON) harness.py init --install-mcp
 
 env-sync: ## Add new .env.example variables without overwriting existing values.
-	@python3 scripts/bootstrap_env.py
+	@$(PYTHON) scripts/bootstrap_env.py
 
-runtime: ## Refresh auto Tailscale identity and generated client files.
-	@python3 scripts/bootstrap_env.py
-	@$(MAKE) --no-print-directory client-config
+runtime: ## Refresh auto identities and generated client files.
+	@$(PYTHON) scripts/bootstrap_env.py
+	@$(PYTHON) harness.py client-config
 
-check: ## Fail fast on unsafe/incomplete configuration.
-	@python3 scripts/check_config.py
+check: ## Validate config, Wiki, OpenSpec structure, and run core tests.
+	@$(PYTHON) harness.py check
 
-config: ## Render Docker Compose configuration for enabled LOCAL features.
+wiki-index: ## Rebuild disposable SQLite FTS index from canonical Markdown Wiki.
+	@$(PYTHON) harness.py index
+
+wiki-validate: ## Validate Wiki stable IDs and links.
+	@$(PYTHON) harness.py wiki-validate
+
+openspec-check: ## Validate production-sdd structure; invoke OpenSpec CLI when installed.
+	@$(PYTHON) harness.py openspec-check
+
+mcp-install: ## Install project-context MCP into tmp/local/project-context/venv.
+	@$(PYTHON) harness.py mcp-install
+
+client-config: ## Generate Claude/OpenCode/Codex configs; OpenCode V1 stable is default, V2 beta is opt-in.
+	@$(PYTHON) harness.py client-config
+
+config: ## Render Docker Compose configuration for enabled optional LOCAL features.
 	@$(STACK) config
 
-plan: ## Show exactly which local services `make up` will run and remote Hermes status.
+plan: ## Show enabled optional local services and remote Hermes status.
 	@$(STACK) plan
 
-pull: ## Pull images for all currently enabled local features.
+pull: ## Pull images for enabled optional local features.
 	@$(STACK) pull
 
-build: ## Build local harness images for all enabled local features.
+build: ## Build local harness images for enabled optional local features.
 	@$(STACK) build
 
-up: check client-config ## Reconcile old containers and start exactly all enabled LOCAL features.
+up: check client-config ## Reconcile and start enabled optional LOCAL features.
 	@$(STACK) up
 
-start: ## Start already-created containers for enabled local features.
+start: ## Start already-created optional containers.
 	@$(STACK) start
 
-stop: ## Stop ALL harness containers, including previously-enabled profiles.
+stop: ## Stop ALL harness containers, including old profiles.
 	@$(STACK) stop
 
-restart: ## Fully reconcile and restart the enabled local harness stack.
+restart: ## Reconcile and restart enabled optional local stack.
 	@$(MAKE) --no-print-directory down
 	@$(MAKE) --no-print-directory up
 
-down: ## Stop/remove ALL harness containers/network regardless of current flags.
+down: ## Stop/remove ALL harness containers/network.
 	@$(STACK) down
 
-status: ## Show ALL harness containers, including stopped/old-profile containers.
+status: ## Show ALL harness containers.
 	@$(STACK) status
 
 ps: status ## Alias for status.
 
-logs: ## Show recent logs for ALL harness containers. Add ARGS='-f' to follow.
+logs: ## Show recent logs for ALL harness containers; ARGS='-f' follows.
 	@$(STACK) logs $(ARGS)
 
-client-config: ## Generate Claude/OpenCode/Codex configs: Claude->remote MCP, OpenCode->native Hermes Runs API tools.
-	@python3 scripts/configure_clients.py
+skills-sync-local: ## Sync directly discoverable routed core skills into .claude/skills.
+	@$(PYTHON) scripts/sync_skills.py local
 
-skills-sync-local: ## Sync four routed core skills into .claude/skills.
-	@python3 scripts/sync_skills.py local
+skills-sync-remote: ## Rsync routed core skills to optional remote Hermes profile.
+	@$(PYTHON) scripts/sync_skills.py remote
 
-skills-sync-remote: ## Rsync routed core skills to the remote Hermes profile over SSH/Tailscale.
-	@python3 scripts/sync_skills.py remote
+skills-check: ## Verify Claude skill exposure and catalog isolation.
+	@$(PYTHON) scripts/sync_skills.py check
 
-skills-check: ## Verify Claude exposes the canonical core and no catalog skills.
-	@python3 scripts/sync_skills.py check
+hermes-host-setup: ## Optional: configure unprivileged main-PC Hermes access.
+	@$(PYTHON) scripts/hermes_host_setup.py $(if $(filter 1 true yes,$(ENABLE_TAILSCALE_SSH)),--yes-enable-tailscale-ssh,)
 
-hermes-host-setup: ## Create/reuse unprivileged main-PC Hermes user + project ACL. Set ENABLE_TAILSCALE_SSH=1 to enable Tailscale SSH.
-	@python3 scripts/hermes_host_setup.py $(if $(filter 1 true yes,$(ENABLE_TAILSCALE_SSH)),--yes-enable-tailscale-ssh,)
+hermes-host-revoke: ## Optional: remove this project's ACL from dedicated Hermes user.
+	@$(PYTHON) scripts/hermes_host_setup.py --revoke
 
-hermes-host-revoke: ## Remove this project's ACL from the dedicated Hermes user (keeps account).
-	@python3 scripts/hermes_host_setup.py --revoke
+hermes-sidecar-copy: ## Optional: copy Claude-specific Hermes MCP sidecar source to remote host.
+	@$(PYTHON) scripts/copy_remote_sidecar.py
 
-hermes-sidecar-copy: ## Copy the Claude-specific MCP sidecar source to the remote Hermes host (no secrets).
-	@python3 scripts/copy_remote_sidecar.py
+hermes-remote-instructions: ## Optional: generate remote Hermes setup instructions.
+	@$(PYTHON) scripts/render_hermes_remote_setup.py
 
-hermes-remote-instructions: ## Generate concrete Markdown instructions for the existing remote Hermes profile + Claude MCP sidecar.
-	@python3 scripts/render_hermes_remote_setup.py
+hermes-check: ## Optional: verify remote Hermes control paths without paid inference.
+	@$(PYTHON) scripts/verify.py --only-hermes
 
-hermes-check: ## Verify native remote Hermes API and Claude-specific remote MCP sidecar without paid inference.
-	@python3 scripts/verify.py --only-hermes
-
-hermes-import: ## Copy an external file into PROJECT_ROOT/.harness/inbox. Usage: make hermes-import FILE=/path/file.pdf
+hermes-import: ## Optional: stage external file into PROJECT_ROOT/.harness/inbox. FILE=/path/file
 	@test -n "$(FILE)" || (echo "Usage: make hermes-import FILE=/path/to/file"; exit 2)
-	@python3 scripts/hermes_import.py "$(FILE)"
+	@$(PYTHON) scripts/hermes_import.py "$(FILE)"
 
-verify: ## Verify every enabled service; remote inference is NOT RUN by default.
-	@python3 scripts/verify.py
+verify: ## Verify enabled optional services; remote inference is NOT RUN by default.
+	@$(PYTHON) scripts/verify.py
 
-verify-models: ## Verify configured LM Studio/LiteLLM model aliases.
-	@python3 scripts/verify_models.py
+verify-models: ## Verify configured optional local/LiteLLM model aliases.
+	@$(PYTHON) scripts/verify_models.py
 
-test: ## Run local static/unit QA without requiring Docker/Tailscale.
-	@python3 -m unittest discover -s tests -p 'test_*.py' -v
+test: ## Run core tests without requiring Docker/Tailscale.
+	@$(PYTHON) harness.py test
 
-clean: ## Remove generated client secrets/config artifacts (keeps .env and Docker images).
-	@rm -rf .generated
-	@rm -f .mcp.json opencode.json .codex/config.toml
-	@rm -f .claude/agents/generated-*.md
-	@rm -f .opencode/agents/generated-*.md
-	@rm -f .opencode/tools/generated-hermes.* .opencode/tools/hermes.js
-	@echo "Generated files removed."
+clean: ## Remove generated clients/index/runtime state; preserve .env and source.
+	@$(PYTHON) harness.py clean
