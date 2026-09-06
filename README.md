@@ -1,179 +1,222 @@
-# Harness Layout Native v3.2.0
+# Harness Layout v4.0.0
 
-A reusable, low-overhead layout (framework revision `3.2.0`) for combining Claude Code, OpenCode, Codex, local LM Studio models, LiteLLM, and an optional **native remote Hermes Agent** on another PC/VPS.
+A reusable, vendor-neutral production development harness for new or existing software projects. The core works with ordinary Python and Git; Claude Code, Codex, OpenCode, OpenSpec, local models, LiteLLM, Hermes, web research and browser tooling are optional adapters/modules.
 
-LiteLLM runs directly from the **official upstream image** `ghcr.io/berriai/litellm:v${LITELLM_VERSION}`. Harness policy/config files are mounted read-only; the harness does not build a custom LiteLLM image.
+## Core design
 
-The design keeps the main workstation small. All user configuration is in root `.env`; all normal lifecycle/management commands are in the root `Makefile`.
+Start with the [documentation map](docs/README.md) for setup, operations, conventions,
+and historical references. The [project structure](docs/PROJECT_STRUCTURE.md) explains
+ownership and dependencies; the [Wiki index](.ai/wiki/INDEX.md) retrieves current
+project knowledge. Apply the [engineering conventions](docs/conventions/README.md)
+relevant to each task.
 
-## Important Hermes client split
-
-This version deliberately does **not** force every coding client through one Hermes transport:
-
-```mermaid
-flowchart LR
-  subgraph MAIN[Main PC / working repository]
-    REPO[PROJECT_ROOT]
-    CC[Claude Code]
-    OC[OpenCode]
-    CX[Codex]
-    LL[LiteLLM]
-    LM[LM Studio]
-    SX[SearXNG optional]
-    C4[Crawl4AI optional]
-    PW[Playwright MCP optional]
-  end
-
-  subgraph REMOTE[Remote PC / VPS]
-    HMCP[Claude-only Hermes MCP sidecar]
-    HAPI[Native Hermes Runs API]
-    H[Hermes Agent\nhermes-tailscale-worker]
-  end
-
-  CC -->|MCP over Tailscale| HMCP -->|/v1/runs localhost| HAPI --> H
-  OC -->|hermes_* custom tools /v1/runs over Tailscale| HAPI
-  H -->|native SSH backend| REPO
-  LL --> LM
-  CC -. optional local models .-> LL
-  OC -. optional local models .-> LL
-  CC -. optional .-> SX
-  CC -. optional .-> C4
-  CC -. optional .-> PW
-  CX -. optional web/UI MCPs only .-> C4
+```text
+small AGENTS.md
+      |
+      v
+Markdown LLM Wiki (.ai/wiki) -------- OpenSpec (behavior/change)
+      |                                      |
+      +------------ project context ---------+
+                       |
+              local SQLite FTS index
+              tmp/local/project-context
+                       |
+                 project-context MCP
+                       |
+          Claude / Codex / OpenCode / others
 ```
 
-- **Claude Code → Hermes:** a dedicated MCP sidecar on the remote Hermes host. It controls native Hermes runs only.
-- **OpenCode → Hermes:** project-local `hermes_*` custom tools call the native Hermes `/v1/runs` API directly. No MCP sidecar, no LiteLLM hop, and no model-backed Hermes subagent.
-- **Codex → Hermes:** intentionally not configured in this phase.
-- **Repository access:** Hermes itself uses its native SSH/file/vision stack through a dedicated main-PC account with project ACLs.
+Principles:
 
-There is no project-file proxy, project binding database, attachment relay, second Hermes runtime, `/workspace` symlink, or per-project SSH keypair in the final architecture.
+- **Persist broadly; inject narrowly.** Do not preload the repository/Wiki.
+- **Markdown is canonical knowledge.** SQLite/JSON indexes are generated/disposable navigation data.
+- **OpenSpec and Wiki have different jobs.** OpenSpec owns normative behavior/change; Wiki explains the current system.
+- **Search first, retrieve second.** `kb_search` returns compact cards; `kb_get` expands selected knowledge.
+- **Deterministic evidence beats LLM guessing.** Source/build/symbol/dependency tools stay first-class.
+- **Portable core, optional infrastructure.** The project is useful without Docker, Hermes, LiteLLM, local models or web services.
 
-## Minimal startup
+## Requirements
+
+Core:
+
+- Python 3.11+
+- Git (recommended)
+
+Optional:
+
+- OpenSpec CLI for full OpenSpec schema/workflow validation
+- Claude Code, Codex and/or OpenCode
+- Docker only if using LiteLLM/SearXNG/Crawl4AI/Playwright stack
+- Hermes/Tailscale only if enabling remote Hermes
+
+## Fastest start
+
+### Linux / macOS / WSL
 
 ```bash
-unzip harness-layout-native-final.zip
-cd harness-layout
+cp -R harness-layout my-project
+cd my-project
 make init
-nano .env
+make mcp-install       # install local project-context MCP
+make client-config
 make check
-make plan
-make up
-make verify
 ```
 
-Default local runtime is only LiteLLM. Optional services are disabled until enabled in `.env`.
+### Windows PowerShell
 
-## Enable native remote Hermes
+```powershell
+Copy-Item -Recurse harness-layout my-project
+Set-Location my-project
+python .\harness.py init
+python .\harness.py mcp-install
+python .\harness.py client-config
+python .\harness.py check
+```
 
-Set at least:
+`init` creates `.env`, builds the initial local Wiki index and generates client configuration. Edit `.env` only when you want optional integrations or different client behavior.
+
+## Existing project adoption
+
+Copy the harness files into the repository root, keeping your product code. Then:
+
+```bash
+python harness.py init
+python harness.py mcp-install
+python harness.py check
+```
+
+Start by editing only these knowledge files:
+
+- `.ai/wiki/architecture/system-overview.md`
+- `.ai/wiki/project/project-map.md`
+- `.ai/wiki/glossary/domain.md`
+
+Do **not** attempt to document an entire large brownfield codebase at once. Add Wiki/OpenSpec knowledge around real work and high-value architecture/domain areas.
+
+## Daily commands
+
+| Command | Purpose |
+|---|---|
+| `python harness.py init` | first-time/safe re-init |
+| `python harness.py mcp-install` | create local MCP venv under `tmp/local/` |
+| `python harness.py client-config` | regenerate Claude/OpenCode/Codex adapters from `.env` |
+| `python harness.py index` | rebuild local Markdown Wiki SQLite FTS index |
+| `python harness.py wiki-validate` | check Wiki IDs and links |
+| `python harness.py openspec-check` | validate OpenSpec project structure; uses CLI if installed |
+| `python harness.py test` | run core tests |
+| `python harness.py check` | config + Wiki + OpenSpec + tests |
+| `python harness.py clean` | remove generated client/index/runtime state, keep source and `.env` |
+
+Equivalent Make targets exist on systems with GNU Make.
+
+## OpenCode V1 and V2
+
+OpenCode 2 is currently beta. Therefore the harness defaults to the production/stable **V1-generation** configuration:
 
 ```dotenv
-HERMES_ENABLED=true
-PROJECT_ROOT=/absolute/path/to/your/repository
-HERMES_REMOTE_HOST=your-hermes-node.your-tailnet.ts.net
-HERMES_REMOTE_API_KEY=<existing native Hermes API key>
-HERMES_REMOTE_MODEL=hermes-tailscale-worker
-HERMES_SIDECAR_TOKEN=<token created on remote sidecar>
-MAIN_TAILSCALE_HOST=your-main-pc.your-tailnet.ts.net
+OPENCODE_CONFIG_GENERATION=v1
 ```
 
-Then on the main PC:
-
-```bash
-make hermes-host-setup ENABLE_TAILSCALE_SSH=1
-make hermes-sidecar-copy
-make hermes-remote-instructions
-```
-
-Give `.generated/HERMES_REMOTE_SETUP.md` to the remote Hermes/operator and apply it there. Finally:
-
-```bash
-make client-config
-make hermes-check
-```
-
-See [docs/HERMES_NATIVE_SETUP.md](docs/HERMES_NATIVE_SETUP.md) and [docs/HERMES_REMOTE_AGENT_INSTRUCTION.md](docs/HERMES_REMOTE_AGENT_INSTRUCTION.md).
-
-### OpenCode delegation example
-
-Start OpenCode normally with your preferred main model (for example MiniMax), then ask:
+This produces V1 fields such as:
 
 ```text
-Investigate this project. Delegate repository analysis to Hermes and use its result.
+provider
+permission
+mcp.<server>
 ```
 
-OpenCode should call `hermes_delegate`. Do **not** use `@generated-hermes`; revision 3.2 intentionally removed the model-backed Hermes subagent path.
+If you intentionally install/run the `opencode2` beta, opt in:
 
-For a complete operator/use guide, see [docs/USAGE_EN.md](docs/USAGE_EN.md).
-
-## Files, images and documents
-
-Hermes receives the absolute repository path as task context and accesses it with **its own native SSH backend**:
-
-```text
-Hermes terminal/read_file/patch/search/vision
-                 |
-                 v
-        SSH / Tailscale SSH
-                 |
-                 v
-      hermes-worker@MAIN-PC
-                 |
-                 v
-             PROJECT_ROOT
+```dotenv
+OPENCODE_CONFIG_GENERATION=v2
 ```
 
-- Source, Markdown, JSON, PDFs, archives, etc. are ordinary repository files.
-- Repository images are referenced by repository path; Hermes 0.20.5+ can resolve image bytes through a non-local SSH backend for native vision processing.
-- If the main Hermes model is text-only, configure a valid `auxiliary.vision` route on the remote profile.
-- External files can be staged safely into the repository:
+then regenerate:
 
 ```bash
-make hermes-import FILE=/path/to/specification.pdf
+python harness.py client-config
 ```
 
-## Web stack
+The same `opencode.json` path is regenerated using native V2 structures:
 
-Firecrawl and its Redis/RabbitMQ/PostgreSQL/browser ecosystem were removed.
+```text
+providers
+permissions[]
+mcp.servers.<server>
+```
 
-Optional components are now:
+Do not hand-merge V1 and V2 schema into one configuration. Switch the generation and regenerate instead.
 
-- **SearXNG** — URL discovery/search; optional and AGPL-3.0.
-- **Crawl4AI** — crawl/render/extract known public pages; default crawler choice.
-- **Playwright MCP** — UI/browser interaction/testing.
+## LLM Wiki workflow
 
-See [docs/WEB_STACK.md](docs/WEB_STACK.md) and [docs/THIRD_PARTY_LICENSES.md](docs/THIRD_PARTY_LICENSES.md).
+Canonical durable knowledge:
+
+```text
+.ai/wiki/**/*.md
+```
+
+Generated search state:
+
+```text
+tmp/local/project-context/knowledge.db
+tmp/local/project-context/state.json
+```
+
+Typical agent flow:
+
+```text
+AGENTS.md -> kb_search -> selected kb_get -> source/spec -> change -> tests -> Wiki/OpenSpec update -> check
+```
+
+## OpenSpec workflow
+
+For a non-trivial behavioral change:
+
+```text
+proposal -> specs -> design -> context-impact -> tasks -> implementation -> tests -> Wiki update -> verify/archive
+```
+
+Current agreed behavior belongs in `openspec/specs/`. Proposed future behavior stays in `openspec/changes/<id>/` until the workflow adopts/archives it.
 
 ## Skills
 
-Canonical shared project skills live in `.agents/skills/`. Only four small core
-skills are directly discoverable. Optional skills live under
-`.agents/skills/catalog/` and are selected on demand by the deterministic
-`skill-router`, so their metadata and full bodies are not loaded into every
-request.
+Shared canonical skills live under `.agents/skills/`. Only the compact router/safety/checkpoint/verification core should be directly discoverable; optional procedures are under `.agents/skills/catalog/` and loaded on demand.
 
-```bash
-printf '%s' 'Fix a flaky session restore bug' | \
-  python3 scripts/skill_router.py --profile balanced
+Important generic v4 skills include:
 
-python3 scripts/session_state.py start \
-  --goal 'Add resumable task state' \
-  --acceptance 'resume detects working-file drift'
-```
+- `llm-wiki-maintenance`
+- `openspec-change`
+- `project-exploration`
+- `architecture-design`
+- `systematic-debugging`
+- `test-driven-development`
+- `safe-refactor`
+- `code-reviewer`
+- `verification-before-completion`
+- `web-research-routing`
 
-Use `--profile local-small` for weaker/local models. The router returns exact
-skill paths and a bounded execution contract; read only the selected paths.
+## Optional runtime services
 
-```bash
-make skills-sync-local   # core -> Claude; optional catalog stays in repository
-make skills-sync-remote  # core -> Hermes; catalog remains available over native SSH
-make skills-check
-```
+All are disabled by default in v4. Enable only what a project needs in `.env`:
 
-See [docs/SKILLS.md](docs/SKILLS.md) and the
-[research recommendation trace](docs/REPORT_RECOMMENDATION_MATRIX.md).
+- LiteLLM/local model routes
+- remote Hermes Agent
+- SearXNG
+- Crawl4AI
+- Playwright MCP
 
-## Management
+Then use `make plan`, `make up`, `make status`, `make verify` where applicable.
 
-Run `make` for help. Docker lifecycle remains centralized: `make up`, `stop`, `down`, `status`, and `logs`. `stop/down/status/logs` always use all Compose profiles so previously enabled services remain under control.
+## Security and repository hygiene
+
+Never commit:
+
+- `.env`
+- `.generated/`
+- `tmp/local/**`
+- generated `opencode.json`, `.mcp.json`, `.codex/config.toml`
+- client local settings containing tokens
+- API keys, private SSH material, local auth stores
+- `.git/`, IDE caches, `node_modules/`, build outputs inside a distributed template artifact
+
+See `docs/SECURITY.md` and `docs/migration/UPGRADE_TO_V4.md`.
