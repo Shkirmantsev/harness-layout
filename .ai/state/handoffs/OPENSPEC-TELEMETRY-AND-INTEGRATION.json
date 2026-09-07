@@ -1,0 +1,80 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 8
+  },
+  "context": [
+    "main and dev had identical trees before work; main...dev commit counts were 9/11"
+  ],
+  "decisions": [
+    "Use three commits: multi-client integration, telemetry default, verified task state"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Reviewed and grouped all pending files into multi-client integration, telemetry initialization, and task-state commit blocks.",
+      "Archived the verified OpenSpec telemetry change into the current project-initialization specification."
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "Create scoped commits on dev, then merge dev into main with a two-parent merge commit.",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-07T21:30:29+00:00",
+    "id": "OPENSPEC-TELEMETRY-AND-INTEGRATION",
+    "project": "harness-layout",
+    "updated_at": "2026-09-07T21:43:42+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "python harness.py init invokes openspec config set telemetry.enabled false when OpenSpec is installed",
+      "core initialization remains usable when OpenSpec is absent",
+      "all existing uncommitted changes are reviewed and assigned to coherent commits on dev",
+      "focused and full verification pass before and after a non-fast-forward merge into main"
+    ],
+    "goal": "Disable OpenSpec telemetry during harness initialization, organize existing OpenSpec integration changes into coherent dev commits, and merge dev into main with history preserved",
+    "openspec_change": "",
+    "status": "reviewing"
+  },
+  "verification": {
+    "passed": [
+      "PASS: strict current and archived OpenSpec validation; python3 harness.py check; git diff --check; real openspec telemetry setting reads false."
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": "harness.py",
+      "sha256": "bbcb23b0ef3c5a5cc352b41524d489604fe49625d198ecfc797cb62faf80dfcc"
+    },
+    {
+      "path": "openspec/specs/project-initialization/spec.md",
+      "sha256": "68a26fad988f93ef93dc20d6123c44d189e6cf723781dd99c04fe3249baf8194"
+    },
+    {
+      "path": "openspec/specs/skill-integration/spec.md",
+      "sha256": "739d160ad6b2cd90db75a1c1770c80801dcd92615a97bc838774677d4813d03b"
+    },
+    {
+      "path": "scripts/sync_skills.py",
+      "sha256": "541e1b71be521edc5021c6acee5e4f6d0550626828edc5f345d4e84d084ab4d5"
+    },
+    {
+      "path": "tests/test_harness_init.py",
+      "sha256": "4961e1196d9883f21075bcd6ca68b2bdaf26ee74ae739bd3120bbaf17543d42a"
+    },
+    {
+      "path": "tests/test_skill_runtime.py",
+      "sha256": "7c0d49c9e6f6c1b49f3644173080a1b237f14e5471d1a13aa50f651e48858636"
+    }
+  ]
+}

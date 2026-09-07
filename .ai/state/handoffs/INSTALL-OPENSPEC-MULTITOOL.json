@@ -1,0 +1,122 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 18
+  },
+  "context": [
+    "OpenSpec archive warned that custom production-sdd proposal lacks stock What Changes heading"
+  ],
+  "decisions": [
+    "Do not change the custom proposal schema for a non-blocking stock-heading warning; report the mismatch separately"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Final diff review completed; generated files remain owned by OpenSpec and harness sync is bounded to four core skills"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-07T20:50:39+00:00",
+    "id": "INSTALL-OPENSPEC-MULTITOOL",
+    "project": "harness-layout",
+    "updated_at": "2026-09-07T21:18:06+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "openspec --version prints a version",
+      "repository openspec configuration is initialized or refreshed for opencode, claude, and codex",
+      "actual generated files and exact invocation spellings are verified and reported"
+    ],
+    "goal": "Install OpenSpec CLI globally and initialize this repository for OpenCode, Claude Code, and Codex",
+    "openspec_change": "",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "openspec 1.12.0 is on PATH",
+      "Each requested client has 6 OpenSpec skills; OpenCode and Claude each have 6 commands; Codex correctly uses skills only",
+      "openspec validate --specs --strict passed (1 spec)",
+      "openspec validate --archived --strict passed (2 archived changes)",
+      "python3 harness.py check passed after archive"
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": ".agents/skills/.openspec-target",
+      "sha256": "243b0dc9b847e66c440dca985e10fe0ce9e29c379b018ddd5747ba8948f84cc8"
+    },
+    {
+      "path": ".agents/skills/openspec-propose/SKILL.md",
+      "sha256": "5a1997695e482429e2f2a23301cd18cc028b9f5bdbab77d8ed262912316e3e81"
+    },
+    {
+      "path": ".ai/wiki/INDEX.md",
+      "sha256": "d37945deaa6c1cd86a3c3d7e826ab69fbdd8039490231d479ab31132792bfc99"
+    },
+    {
+      "path": ".ai/wiki/adr/0001-separate-core-and-integration-skill-ownership.md",
+      "sha256": "0d8e16b82bf0e9b408cc3749a87441204d3aaf09d97e5b7a36780e5a81df5a8f"
+    },
+    {
+      "path": ".ai/wiki/architecture/system-overview.md",
+      "sha256": "1a929ef1a5583f4a9182a2d705928f864b7db1e0c7cb5e08bf1a31e93ea25c77"
+    },
+    {
+      "path": ".claude/commands/opsx/propose.md",
+      "sha256": "db5b52f9a7638e3005247a92c9e999be58202233e4a0856ba415cd838e7c3919"
+    },
+    {
+      "path": ".claude/skills/openspec-propose/SKILL.md",
+      "sha256": "5a1997695e482429e2f2a23301cd18cc028b9f5bdbab77d8ed262912316e3e81"
+    },
+    {
+      "path": ".opencode/commands/opsx-propose.md",
+      "sha256": "a246b97cfbb5c9f33562903fe05450bf51073609245a0e8031e5f820ff2c8c06"
+    },
+    {
+      "path": ".opencode/skills/openspec-propose/SKILL.md",
+      "sha256": "4e295d326e9d5c7ed48bb272c7eecab968dab18e118ac89764a34e15c5efa5f4"
+    },
+    {
+      "path": "docs/REPORT_RECOMMENDATION_MATRIX.md",
+      "sha256": "1fea96e21e432ba5c7f4620cb793a00b1931da749f7ed7302d804245a832fd67"
+    },
+    {
+      "path": "docs/SKILLS.md",
+      "sha256": "66e141dfa1933ce9f3f0161bc17e83e5fa3351b947a245f8871efa682c0f5445"
+    },
+    {
+      "path": "docs/THIRD_PARTY_SKILLS.md",
+      "sha256": "dafc6beea9944ce4dc6ea75907e9b25b8ba8f3e45733ed17440921c8cc0df281"
+    },
+    {
+      "path": "openspec/changes/archive/2026-09-07-openspec-client-skill-coexistence/proposal.md",
+      "sha256": "9672f861f08fb7ef14dd6372a262814de8000c63e449e67e733c4fee7c233ebd"
+    },
+    {
+      "path": "openspec/specs/skill-integration/spec.md",
+      "sha256": "739d160ad6b2cd90db75a1c1770c80801dcd92615a97bc838774677d4813d03b"
+    },
+    {
+      "path": "scripts/sync_skills.py",
+      "sha256": "541e1b71be521edc5021c6acee5e4f6d0550626828edc5f345d4e84d084ab4d5"
+    },
+    {
+      "path": "tests/test_skill_runtime.py",
+      "sha256": "7c0d49c9e6f6c1b49f3644173080a1b237f14e5471d1a13aa50f651e48858636"
+    }
+  ]
+}
