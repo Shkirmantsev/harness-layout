@@ -19,6 +19,14 @@ Two navigation regressions cover reachability and entry-point link targets.
 Follow-up `python3 harness.py check`: PASS, all 58 tests including those navigation
 regressions and the live local MCP session. Wiki validation and skill sync also pass.
 
+Automatic handoff follow-up adds durable structured task checkpoints, a generated
+current-task view, ID-free resume, legacy checkpoint promotion, active-task
+replacement protection, completion invariants, and a consistency gate in the
+normal harness check. The adopted behavior is documented in OpenSpec and the Wiki.
+Final `python3 harness.py check`: PASS, all 63 tests including the installed MCP
+stdio integration. The first restricted-sandbox MCP attempt timed out; the required
+outside-sandbox rerun passed.
+
 Post-migration fixes pin client MCP launches to the configured repository, preserve
 the last index on rebuild failure, retain numeric section order, reject external
 Wiki/source symlinks, constrain OpenSpec change lookup, and escape quoted executable
