@@ -168,6 +168,34 @@ Typical agent flow:
 AGENTS.md -> kb_search -> selected kb_get -> source/spec -> change -> tests -> Wiki/OpenSpec update -> check
 ```
 
+## Resumable task workflow
+
+Every non-trivial task has durable structured state in
+`.ai/state/handoffs/<session-id>.json`. `scripts/session_state.py` regenerates
+`.ai/state/CURRENT.md` whenever a task starts, advances, or resumes.
+
+```bash
+# New task
+python3 scripts/session_state.py start \
+  --goal "Implement the feature" \
+  --acceptance "focused tests pass" \
+  --todo "inspect the affected module"
+
+# Material step / verification / handoff (current ID is discovered automatically)
+python3 scripts/session_state.py checkpoint \
+  --status executing \
+  --done "inspection complete" \
+  --todo "implement the change" \
+  --next-action "edit the responsible module"
+
+# Fresh empty-dialog session
+python3 scripts/session_state.py resume
+```
+
+Commit the handoff files with work-in-progress changes when another machine or
+clone must resume them. Do not store secrets, raw chats, or hidden reasoning in
+task state.
+
 ## OpenSpec workflow
 
 For a non-trivial behavioral change:

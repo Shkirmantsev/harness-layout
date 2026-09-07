@@ -36,17 +36,22 @@ through its configured SSH backend; they are not made globally discoverable.
 
 ## Resumable state
 
-Use `session-checkpoint` for long work, handoffs, phase changes, context
-compaction, or an explicit resume request. The standard-library helper stores
-compact JSON under ignored `tmp/local/sessions/`, writes it atomically, and
-validates project file hashes on resume:
+Use `session-checkpoint` for every non-trivial task and update it after material
+steps, decisions, failures, and verification. The standard-library helper stores
+compact canonical JSON under `.ai/state/handoffs/`, atomically regenerates
+`.ai/state/CURRENT.md`, and validates project file hashes on resume:
 
 ```bash
-python3 scripts/session_state.py resume --id SESSION-ID
+python3 scripts/session_state.py resume
 ```
 
 Exit code `3` reports drift and requires re-inspection. Checkpoints contain no
 raw chain-of-thought, full transcript, credential, or repository snapshot.
+Compatible old checkpoints under `tmp/local/sessions/` are promoted on resume
+or update. The current session ID is discovered from generated Markdown, so an
+empty-dialog session does not need the prior chat or an ID copied by hand.
+`python3 scripts/session_state.py verify` detects a stale/manual current view and
+is included in `python3 harness.py check`.
 
 Third-party and adapted skills, their pinned audit revisions, licensing, selection decisions, and conflict-resolution notes are documented in [THIRD_PARTY_SKILLS.md](THIRD_PARTY_SKILLS.md).
 

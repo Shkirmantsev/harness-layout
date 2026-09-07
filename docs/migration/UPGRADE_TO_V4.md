@@ -69,11 +69,16 @@ harness.py
 .ai/wiki/adr/
 .ai/wiki/glossary/
 .ai/state/CURRENT.md
+.ai/state/handoffs/
 openspec/schemas/production-sdd/
 tools/mcp/project-context-mcp/
 docs/QUICKSTART.md
 docs/OPENCODE_COMPATIBILITY.md
 ```
+
+`CURRENT.md` is generated from canonical JSON in `handoffs/`; do not maintain it
+by hand. Existing ignored `tmp/local/sessions/` checkpoints remain readable and
+are promoted when first resumed or updated with `scripts/session_state.py`.
 
 ## After copying
 
