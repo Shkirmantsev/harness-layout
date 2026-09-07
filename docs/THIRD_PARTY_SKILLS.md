@@ -1,8 +1,10 @@
 # Third-party project skills
 
-Canonical installed copies live in `.agents/skills/`. OpenCode and Codex
-discover only the four immediate core skills; `make skills-sync-local` copies
-that same core to `.claude/skills` for Claude Code. Optional third-party skills
+Canonical harness copies live in `.agents/skills/`. The four named harness core
+skills remain the only skills owned by `scripts/sync_skills.py`; Codex may also
+discover integration-owned OpenSpec workflows at the same level.
+`make skills-sync-local` copies the harness core to `.claude/skills` while
+preserving those integration-owned files. Optional routed third-party skills
 live under `.agents/skills/catalog/` and are read by exact path only after the
 core router selects them.
 
@@ -10,6 +12,7 @@ The source revisions below were audited on 2026-09-04. Installed copies may cont
 
 | Source | Audited revision | Installed project skills | License / treatment |
 |---|---|---|---|
+| [Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec) | CLI `1.12.0` | `openspec-apply-change`, `openspec-archive-change`, `openspec-explore`, `openspec-propose`, `openspec-sync-specs`, `openspec-update-change` | MIT metadata in generated skills. OpenSpec owns and refreshes its Codex, Claude Code, and OpenCode outputs; the harness preserves rather than vendors or rewrites them. |
 | [obra/superpowers](https://github.com/obra/superpowers) | `b36e0829c6d0140e93cfef2ca599b1b07d4a7797` | `brainstorming`, `dispatching-parallel-agents`, `executing-plans`, `finishing-a-development-branch`, `receiving-code-review`, `requesting-code-review`, `subagent-driven-development`, `systematic-debugging`, `test-driven-development`, `using-git-worktrees`, `using-superpowers`, `verification-before-completion`, `writing-plans`, `writing-skills` | MIT. The always-on router, redundant approval gates, TDD scope, and delegation assumptions were narrowed for this harness. |
 | [mattpocock/skills](https://github.com/mattpocock/skills) | `3cca18b368ae95cdbdebbff572ccafa662551015` | `grill-me`, `grilling` | MIT. Upstream source material is retained, but routing canonicalizes both names to the combined `grilling` workflow so they cannot conflict or double-load. Questions are prioritized by consequence and repository facts are inspected rather than asked of the user. |
 | [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | `2c606141936f1eeef17fa3043a72095b4765b9c2` | `karpathy-guidelines` | The skill frontmatter says MIT, but no root license file was present in the audited revision. The project copy only adjusts when clarification is necessary. |
