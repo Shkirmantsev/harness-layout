@@ -14,10 +14,10 @@ help: ## Show all harness commands.
 	@printf "\nPortable equivalent on any OS: python harness.py <command>\n"
 	@printf "Typical: make init -> edit .env if needed -> make mcp-install -> make client-config -> make check\n\n"
 
-init: ## Portable core init: create .env, build Wiki index, generate client configs.
+init: ## Portable core init; also disables telemetry when OpenSpec is installed.
 	@$(PYTHON) harness.py init
 
-init-mcp: ## Init core and install the project-context MCP local virtual environment.
+init-mcp: ## Init core (including OpenSpec opt-out) and install project-context MCP.
 	@$(PYTHON) harness.py init --install-mcp
 
 env-sync: ## Add new .env.example variables without overwriting existing values.

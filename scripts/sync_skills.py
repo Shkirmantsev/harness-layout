@@ -14,15 +14,21 @@ from common import ROOT, parse_env
 SOURCE = ROOT / ".agents" / "skills"
 CATALOG = SOURCE / "catalog"
 CLAUDE = ROOT / ".claude" / "skills"
+CORE_SKILL_NAMES = (
+    "project-safety",
+    "session-checkpoint",
+    "skill-router",
+    "verification",
+)
 
 
 def exposed_skills() -> list[Path]:
-    """Return only immediate directories with a SKILL.md contract."""
-    return sorted(
-        path
-        for path in SOURCE.iterdir()
-        if path.is_dir() and (path / "SKILL.md").is_file()
-    )
+    """Return the fixed harness-owned core, excluding tool-owned skills."""
+    exposed = [SOURCE / name for name in CORE_SKILL_NAMES]
+    missing = [path.name for path in exposed if not (path / "SKILL.md").is_file()]
+    if missing:
+        raise SystemExit("Missing harness core skills: " + ", ".join(missing))
+    return exposed
 
 
 def catalog_names() -> set[str]:

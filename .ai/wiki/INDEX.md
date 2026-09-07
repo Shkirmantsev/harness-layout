@@ -17,6 +17,7 @@ Do not bulk-read this Wiki. Search first and retrieve only relevant documents/se
 - [Engineering conventions](../../docs/conventions/README.md)
 
 - [System overview](architecture/system-overview.md)
+- [ADR: Separate harness core and integration skill ownership](adr/0001-separate-core-and-integration-skill-ownership.md)
 - [Project map](project/project-map.md)
 - [AI task handoff lifecycle](project/task-handoff.md)
 - [Domain glossary](glossary/domain.md)

@@ -1,0 +1,54 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 9
+  },
+  "context": [
+    "main and dev had identical trees before work; main...dev commit counts were 9/11"
+  ],
+  "decisions": [
+    "Use three commits: multi-client integration, telemetry default, verified task state"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Prepared the non-fast-forward dev-to-main merge, resolved history-only conflicts to the exact reviewed dev tree, and passed the full post-merge harness check."
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-07T21:30:29+00:00",
+    "id": "OPENSPEC-TELEMETRY-AND-INTEGRATION",
+    "project": "harness-layout",
+    "updated_at": "2026-09-07T21:48:21+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "python harness.py init invokes openspec config set telemetry.enabled false when OpenSpec is installed",
+      "core initialization remains usable when OpenSpec is absent",
+      "all existing uncommitted changes are reviewed and assigned to coherent commits on dev",
+      "focused and full verification pass before and after a non-fast-forward merge into main"
+    ],
+    "goal": "Disable OpenSpec telemetry during harness initialization, organize existing OpenSpec integration changes into coherent dev commits, and merge dev into main with history preserved",
+    "openspec_change": "",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "PASS: merge index matches dev exactly; no unresolved conflicts; post-merge python3 harness.py check passed."
+    ],
+    "pending": []
+  },
+  "working_set": []
+}

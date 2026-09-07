@@ -8,6 +8,7 @@ Canonical source: `.agents/skills/`.
    |-- project-safety/        directly discoverable core
    |-- session-checkpoint/    directly discoverable core
    |-- verification/          directly discoverable core
+   |-- openspec-*/            OpenSpec-owned Codex workflows
    `-- catalog/               optional skills read only after routing
 ```
 
@@ -24,10 +25,12 @@ canonical `grilling` workflow. The router applies deterministic rules before
 metadata scoring, bounds the selection to 3–7 skills, and uses a four-skill,
 eight-step contract for `local-small` models.
 
-`make skills-sync-local` copies only the four core skills to `.claude/skills`
-and removes stale project-managed catalog copies. It does not remove unrelated
-personal Claude skills. OpenCode and Codex discover the core directly from
-`.agents/skills`.
+`make skills-sync-local` copies only the four named harness core skills to
+`.claude/skills` and removes stale project-managed catalog copies. It preserves
+unrelated personal skills and integration-owned skills. Codex discovers the
+core and OpenSpec workflows directly from `.agents/skills`; OpenSpec owns its
+client-specific copies and commands under `.agents/`, `.claude/`, and
+`.opencode/`, refreshed with `openspec init`.
 
 The remote sync uses ordinary `rsync` over SSH/Tailscale and deletes only stale
 content inside Hermes' dedicated `harness-layout` skill subdirectory. Optional

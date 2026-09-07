@@ -27,7 +27,12 @@ OpenSpec owns agreed and proposed behavior; the Wiki explains the implementation
 - `project_context_mcp/core.py`: Markdown parsing, SQLite FTS indexing, retrieval, and validation.
 - `project_context_mcp/server.py`: bounded MCP tools over stdio.
 - `scripts/configure_clients.py`: Claude, OpenCode, and Codex configuration generation.
-- `.agents/skills/`: shared procedures selected through the skill router.
+- `.agents/skills/`: four harness-owned core procedures, an on-demand catalog,
+  and explicitly installed tool-owned workflows such as OpenSpec's Codex skills.
+
+Skill ownership follows the generator boundary: the harness sync owns only its
+named core, while integration CLIs own and refresh their generated workflows.
+See [ADR: Separate harness core and integration skill ownership](../adr/0001-separate-core-and-integration-skill-ownership.md).
 
 ## Runtime flows
 

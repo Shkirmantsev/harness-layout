@@ -4,6 +4,7 @@ import pathlib
 import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 from unittest import mock
 
@@ -11,8 +12,24 @@ from unittest import mock
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import skill_router
+import sync_skills
 ROUTER = ROOT / "scripts" / "skill_router.py"
 SESSIONS = ROOT / "scripts" / "session_state.py"
+
+CORE_SKILL_NAMES = [
+    "project-safety",
+    "session-checkpoint",
+    "skill-router",
+    "verification",
+]
+OPENSPEC_SKILL_NAMES = [
+    "openspec-apply-change",
+    "openspec-archive-change",
+    "openspec-explore",
+    "openspec-propose",
+    "openspec-sync-specs",
+    "openspec-update-change",
+]
 
 
 def run_json(script: pathlib.Path, *args: str, check: bool = True):
@@ -88,35 +105,60 @@ class SkillRouterTests(unittest.TestCase):
         )
         self.assertLessEqual(len(names), 4)
 
-    def test_only_small_core_is_directly_discoverable(self):
+    def test_small_core_and_openspec_integration_are_directly_discoverable(self):
         exposed = sorted(
             p.parent.name
             for p in (ROOT / ".agents" / "skills").glob("*/SKILL.md")
         )
+        self.assertTrue(
+            set(CORE_SKILL_NAMES + OPENSPEC_SKILL_NAMES).issubset(exposed)
+        )
         self.assertEqual(
-            exposed,
-            ["project-safety", "session-checkpoint", "skill-router", "verification"],
+            [path.name for path in sync_skills.exposed_skills()], CORE_SKILL_NAMES
         )
         library = ROOT / ".agents" / "skills" / "catalog"
         self.assertGreaterEqual(len(list(library.glob("*/SKILL.md"))), 39)
 
-    def test_local_sync_exposes_only_core_and_removes_stale_catalog_skills(self):
-        result = subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "sync_skills.py"), "local"],
-            cwd=ROOT,
-            text=True,
-            capture_output=True,
-            check=False,
-        )
-        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
-        exposed = sorted(
-            p.parent.name for p in (ROOT / ".claude" / "skills").glob("*/SKILL.md")
-        )
-        self.assertEqual(
-            exposed,
-            ["project-safety", "session-checkpoint", "skill-router", "verification"],
-        )
-        self.assertFalse((ROOT / ".claude" / "skills" / "catalog").exists())
+    def test_local_sync_copies_core_and_preserves_openspec_owned_skills(self):
+        with tempfile.TemporaryDirectory() as raw:
+            fixture = pathlib.Path(raw)
+            source = fixture / ".agents" / "skills"
+            catalog = source / "catalog"
+            claude = fixture / ".claude" / "skills"
+            for name in CORE_SKILL_NAMES:
+                skill = source / name
+                skill.mkdir(parents=True)
+                (skill / "SKILL.md").write_text(f"source {name}\n")
+            optional = catalog / "optional"
+            optional.mkdir(parents=True)
+            (optional / "SKILL.md").write_text("optional\n")
+            source_openspec = source / "openspec-propose"
+            source_openspec.mkdir()
+            (source_openspec / "SKILL.md").write_text("codex generated\n")
+            claude_openspec = claude / "openspec-propose"
+            claude_openspec.mkdir(parents=True)
+            (claude_openspec / "SKILL.md").write_text("claude generated\n")
+            (claude_openspec / "owner-marker").write_text("openspec\n")
+            stale_catalog = claude / "optional"
+            stale_catalog.mkdir()
+            (stale_catalog / "SKILL.md").write_text("stale\n")
+
+            with (
+                mock.patch.object(sync_skills, "SOURCE", source),
+                mock.patch.object(sync_skills, "CATALOG", catalog),
+                mock.patch.object(sync_skills, "CLAUDE", claude),
+            ):
+                sync_skills.local()
+
+            self.assertEqual(
+                sorted(path.parent.name for path in claude.glob("*/SKILL.md")),
+                sorted(CORE_SKILL_NAMES + ["openspec-propose"]),
+            )
+            self.assertEqual(
+                (claude_openspec / "SKILL.md").read_text(), "claude generated\n"
+            )
+            self.assertTrue((claude_openspec / "owner-marker").is_file())
+            self.assertFalse(stale_catalog.exists())
 
 
 class SessionStateTests(unittest.TestCase):

@@ -18,7 +18,10 @@ With Make:
 make init
 ```
 
-This creates `.env`, builds a disposable local Wiki index and generates client configuration.
+This creates `.env`, builds a disposable local Wiki index and generates client
+configuration. If the optional OpenSpec CLI is available, initialization also
+runs `openspec config set telemetry.enabled false`. The OpenSpec setting is
+user-global; when the CLI is absent, core initialization continues normally.
 
 ## 3. Install project-context MCP
 
