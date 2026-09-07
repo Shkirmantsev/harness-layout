@@ -50,6 +50,33 @@ understand goal
 
 Do not recursively load `.ai/wiki/` or all source/dependency trees into model context.
 
+## Continue work in a new AI session
+
+Agents read `.ai/state/CURRENT.md` at intake. If it describes a non-complete
+task, restore its structured checkpoint and validate the recorded working files:
+
+```bash
+python3 scripts/session_state.py resume
+```
+
+No session ID is needed. Exit code `3` means the working files changed since the
+last checkpoint and must be inspected before continuing.
+
+For a new non-trivial task, start state with its outcome and initial steps:
+
+```bash
+python3 scripts/session_state.py start \
+  --goal "<outcome>" \
+  --acceptance "<observable result>" \
+  --todo "<next implementation step>" \
+  --context "<relevant path>"
+```
+
+Use `checkpoint` after every material step and before a final response or
+handoff. It atomically updates `.ai/state/handoffs/<id>.json` and regenerates
+`.ai/state/CURRENT.md`. The files are visible to Git; commit them with WIP work
+when another machine or clone must continue the task.
+
 ## OpenCode
 
 The default is production/stable V1 generation:

@@ -21,5 +21,13 @@ See the [OpenSpec skill](../.agents/skills/catalog/openspec-change/SKILL.md).
 Empty directories indicate no requirements or active changes have been authored.
 The Wiki explains current implementation without promoting proposals into facts.
 
+## Current capabilities
+
+- [Session handoff](specs/session-handoff.md): durable active-task state and
+  empty-dialog resume behavior.
+
+Completed change evidence is retained under `changes/archive/`; for example,
+[automatic session handoff](changes/archive/2026-09-07-automatic-session-handoff/proposal.md).
+
 Run `python harness.py openspec-check`. Its built-in structural check is limited;
 full schema validation runs only when the OpenSpec CLI is installed.
