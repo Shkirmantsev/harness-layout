@@ -88,6 +88,7 @@ def cmd_test() -> None:
 
 def cmd_check() -> None:
     run([sys.executable, "scripts/check_config.py"])
+    run([sys.executable, "scripts/session_state.py", "verify"])
     cmd_wiki_validate()
     cmd_openspec_check()
     cmd_test()

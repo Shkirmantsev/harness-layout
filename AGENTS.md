@@ -13,6 +13,22 @@ This repository is a reusable, vendor-neutral development harness. Keep this fil
 
 When these disagree, report the mismatch explicitly. Never silently rewrite one source to hide disagreement.
 
+## Task continuity
+
+- At session intake, read `.ai/state/CURRENT.md`. If it names a non-complete task,
+  run `python3 scripts/session_state.py resume` and inspect any working-set drift
+  before continuing. Continue that task unless the user clearly replaces it.
+- Start every non-trivial task with `session_state.py start`, including initial
+  acceptance criteria, todo steps, relevant context, and OpenSpec change ID when
+  applicable. An unfinished current task may be replaced only explicitly.
+- Run `session_state.py checkpoint` after each material implementation step,
+  decision, blocker/failure, and verification result, and before compaction,
+  handoff, or the final response. The command updates canonical JSON under
+  `.ai/state/handoffs/` and regenerates `.ai/state/CURRENT.md`; never edit either
+  file manually.
+- Store concise operational facts only. Never put raw reasoning, chats, secrets,
+  command dumps, or copied source into handoff state.
+
 ## Context retrieval
 
 - Persist broadly, inject narrowly. Do not bulk-read `.ai/wiki/`, dependency trees, build outputs, archives, or generated indexes.
@@ -35,7 +51,8 @@ For non-trivial behavioral or architectural changes:
 4. make the smallest coherent change;
 5. run focused tests/checks;
 6. update affected Wiki/ADR/OpenSpec artifacts;
-7. run `python harness.py check` before completion.
+7. run `python harness.py check` before completion;
+8. record final verification and task status in the current checkpoint.
 
 ## Skills
 

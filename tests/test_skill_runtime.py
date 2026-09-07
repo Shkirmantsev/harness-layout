@@ -1,9 +1,11 @@
 import json
+import os
 import pathlib
 import shutil
 import subprocess
 import sys
 import unittest
+from unittest import mock
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -121,15 +123,139 @@ class SessionStateTests(unittest.TestCase):
     session_id = "TEST-SKILL-RUNTIME"
 
     def setUp(self):
-        self.session_dir = ROOT / "tmp" / "local" / "sessions" / self.session_id
+        self.state_home = ROOT / "tmp" / "local" / "test-session-state"
+        self.legacy_root = ROOT / "tmp" / "local" / "test-legacy-sessions"
+        self.session_file = self.state_home / "handoffs" / f"{self.session_id}.json"
+        self.current_file = self.state_home / "CURRENT.md"
         self.fixture = ROOT / "tmp" / "local" / "session-state-fixture.txt"
         self.fixture.parent.mkdir(parents=True, exist_ok=True)
         self.fixture.write_text("v1\n", encoding="utf-8")
-        shutil.rmtree(self.session_dir, ignore_errors=True)
+        shutil.rmtree(self.state_home, ignore_errors=True)
+        shutil.rmtree(self.legacy_root, ignore_errors=True)
+        self.environment = mock.patch.dict(
+            os.environ,
+            {
+                "HARNESS_SESSION_STATE_HOME": str(self.state_home.relative_to(ROOT)),
+                "HARNESS_SESSION_LEGACY_ROOT": str(self.legacy_root.relative_to(ROOT)),
+            },
+        )
+        self.environment.start()
 
     def tearDown(self):
-        shutil.rmtree(self.session_dir, ignore_errors=True)
+        self.environment.stop()
+        shutil.rmtree(self.state_home, ignore_errors=True)
+        shutil.rmtree(self.legacy_root, ignore_errors=True)
         self.fixture.unlink(missing_ok=True)
+
+    def test_lifecycle_updates_generated_current_handoff_and_resumes_without_id(self):
+        run_json(
+            SESSIONS,
+            "start",
+            "--id",
+            self.session_id,
+            "--goal",
+            "Keep handoff state current",
+            "--acceptance",
+            "fresh sessions recover the task",
+            "--todo",
+            "implement persistence",
+            "--context",
+            "openspec/changes/automatic-session-handoff",
+            "--openspec-change",
+            "automatic-session-handoff",
+        )
+        current = self.current_file.read_text(encoding="utf-8")
+        self.assertIn(f"harness-session-id: {self.session_id}", current)
+        self.assertIn("Keep handoff state current", current)
+        self.assertIn("implement persistence", current)
+
+        run_json(
+            SESSIONS,
+            "checkpoint",
+            "--status",
+            "executing",
+            "--done",
+            "implement persistence",
+            "--todo",
+            "run verification",
+            "--file",
+            str(self.fixture.relative_to(ROOT)),
+            "--next-action",
+            "Run focused tests",
+        )
+        current = self.current_file.read_text(encoding="utf-8")
+        self.assertIn("- implement persistence", current)
+        self.assertIn("- run verification", current)
+        self.assertIn("Run focused tests", current)
+        self.assertTrue(self.session_file.is_file())
+
+        result, resumed = run_json(SESSIONS, "resume")
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(resumed["session"]["id"], self.session_id)
+        self.assertEqual(resumed["integrity"]["status"], "clean")
+
+    def test_start_protects_an_incomplete_current_task(self):
+        run_json(
+            SESSIONS,
+            "start",
+            "--id",
+            self.session_id,
+            "--goal",
+            "First unfinished task",
+        )
+        result, payload = run_json(
+            SESSIONS,
+            "start",
+            "--id",
+            "SECOND-TEST-SESSION",
+            "--goal",
+            "Second task",
+            check=False,
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(payload["error"], "active_session_exists")
+
+    def test_verify_rejects_a_stale_or_manually_edited_current_view(self):
+        run_json(
+            SESSIONS,
+            "start",
+            "--id",
+            self.session_id,
+            "--goal",
+            "Detect split handoff state",
+        )
+        self.current_file.write_text(
+            self.current_file.read_text(encoding="utf-8") + "manual edit\n",
+            encoding="utf-8",
+        )
+        result, payload = run_json(SESSIONS, "verify", check=False)
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(payload["error"], "current_state_out_of_sync")
+
+    def test_legacy_checkpoint_is_promoted_on_update(self):
+        _, started = run_json(
+            SESSIONS,
+            "start",
+            "--id",
+            self.session_id,
+            "--goal",
+            "Migrate old checkpoint",
+        )
+        shutil.rmtree(self.state_home)
+        legacy_file = self.legacy_root / self.session_id / "state.json"
+        legacy_file.parent.mkdir(parents=True)
+        legacy_file.write_text(json.dumps(started), encoding="utf-8")
+
+        run_json(SESSIONS, "resume", "--id", self.session_id)
+        run_json(
+            SESSIONS,
+            "checkpoint",
+            "--done",
+            "legacy checkpoint promoted",
+        )
+        self.assertTrue(self.session_file.is_file())
+        promoted = json.loads(self.session_file.read_text(encoding="utf-8"))
+        self.assertEqual(promoted["progress"]["done"], ["legacy checkpoint promoted"])
 
     def test_checkpoint_round_trip_and_resume_hash_validation(self):
         _, started = run_json(
@@ -299,6 +425,68 @@ class SessionStateTests(unittest.TestCase):
             "focused tests passed",
         )
         self.assertEqual(completed["task"]["status"], "complete")
+        self.assertEqual(completed["runtime"]["next_decision"], "stop")
+
+    def test_completion_rejects_remaining_work_and_clear_removes_resolved_state(self):
+        run_json(
+            SESSIONS,
+            "start",
+            "--id",
+            self.session_id,
+            "--goal",
+            "Complete only finished work",
+            "--todo",
+            "run final check",
+        )
+        run_json(
+            SESSIONS,
+            "checkpoint",
+            "--status",
+            "reviewing",
+            "--verified",
+            "focused tests passed",
+            "--pending-verification",
+            "full check",
+        )
+        result, payload = run_json(
+            SESSIONS,
+            "checkpoint",
+            "--status",
+            "complete",
+            check=False,
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(payload["error"], "verification_required")
+
+        result, payload = run_json(
+            SESSIONS,
+            "checkpoint",
+            "--status",
+            "complete",
+            "--clear",
+            "pending-verification",
+            check=False,
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(payload["error"], "unfinished_work")
+
+        _, completed = run_json(
+            SESSIONS,
+            "checkpoint",
+            "--status",
+            "complete",
+            "--clear",
+            "todo",
+            "--clear",
+            "pending-verification",
+            "--clear",
+            "next-action",
+        )
+        self.assertEqual(completed["task"]["status"], "complete")
+        self.assertEqual(completed["progress"]["todo"], [])
+        self.assertEqual(completed["verification"]["pending"], [])
+        self.assertEqual(completed["runtime"]["no_progress_windows"], 0)
+        self.assertEqual(completed["runtime"]["next_decision"], "stop")
 
 
 if __name__ == "__main__":
