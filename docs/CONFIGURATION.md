@@ -22,6 +22,23 @@ Root `.env` is the normal local configuration file. It is created from `.env.exa
 
 The default v4 core therefore works without Docker, LiteLLM, Hermes, local models or web services.
 
+## OpenSpec telemetry
+
+`python harness.py init`, `make init`, and `make init-mcp` disable anonymous
+OpenSpec telemetry when the optional CLI is installed:
+
+```bash
+openspec config set telemetry.enabled false
+```
+
+This is an idempotent user-global setting, not a repository setting. If
+`openspec` is absent, initialization reports `NOT RUN` and continues. To opt
+back in explicitly after initialization:
+
+```bash
+openspec config set telemetry.enabled true
+```
+
 ## OpenCode generation
 
 Keep:

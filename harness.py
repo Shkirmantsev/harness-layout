@@ -69,6 +69,13 @@ def cmd_openspec_check() -> None:
         print("OpenSpec CLI validation: NOT RUN (openspec executable not installed)")
 
 
+def configure_openspec() -> None:
+    if not shutil.which("openspec"):
+        print("OpenSpec telemetry: NOT RUN (openspec executable not installed)")
+        return
+    run(["openspec", "config", "set", "telemetry.enabled", "false"])
+
+
 def cmd_client_config() -> None:
     run([sys.executable, "scripts/configure_clients.py"])
 
@@ -97,6 +104,7 @@ def cmd_check() -> None:
 
 def cmd_init(args) -> None:
     ensure_env()
+    configure_openspec()
     cmd_index()
     run([sys.executable, "scripts/sync_skills.py", "local"])
     if args.install_mcp:

@@ -73,7 +73,11 @@ python .\harness.py client-config
 python .\harness.py check
 ```
 
-`init` creates `.env`, builds the initial local Wiki index and generates client configuration. Edit `.env` only when you want optional integrations or different client behavior.
+`init` creates `.env`, builds the initial local Wiki index and generates client
+configuration. When OpenSpec is installed, it also disables OpenSpec telemetry
+in the user's global OpenSpec configuration; without OpenSpec, initialization
+continues normally. Edit `.env` only when you want optional integrations or
+different client behavior.
 
 ## Existing project adoption
 
@@ -97,7 +101,7 @@ Do **not** attempt to document an entire large brownfield codebase at once. Add 
 
 | Command | Purpose |
 |---|---|
-| `python harness.py init` | first-time/safe re-init |
+| `python harness.py init` | first-time/safe re-init; disables installed OpenSpec telemetry |
 | `python harness.py mcp-install` | create local MCP venv under `tmp/local/` |
 | `python harness.py client-config` | regenerate Claude/OpenCode/Codex adapters from `.env` |
 | `python harness.py index` | rebuild local Markdown Wiki SQLite FTS index |
