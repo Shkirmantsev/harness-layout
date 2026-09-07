@@ -28,6 +28,7 @@
       "properties": {
         "goal": {"type": "string", "minLength": 1},
         "acceptance": {"type": "array", "items": {"type": "string"}},
+        "openspec_change": {"type": "string"},
         "status": {
           "enum": ["planning", "executing", "verifying", "reviewing", "blocked", "complete"]
         }
@@ -37,6 +38,7 @@
       "type": "object",
       "required": ["done", "todo", "blocked"]
     },
+    "context": {"type": "array", "items": {"type": "string"}},
     "decisions": {"type": "array", "items": {"type": "string"}},
     "verification": {
       "type": "object",
@@ -74,7 +76,7 @@
         "no_progress_windows": {"type": "integer", "minimum": 0},
         "last_failure_fingerprint": {"type": "string"},
         "repeated_failure_count": {"type": "integer", "minimum": 0},
-        "next_decision": {"enum": ["continue", "reflect", "escalate"]}
+        "next_decision": {"enum": ["continue", "reflect", "escalate", "stop"]}
       }
     }
   }

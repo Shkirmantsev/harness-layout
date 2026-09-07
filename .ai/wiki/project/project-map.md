@@ -18,6 +18,7 @@ maintenance:
 - [infra](../../../infra/): optional local Compose services.
 - [remote sidecar](../../../remote/hermes-worker-mcp/): Claude's remote Hermes control adapter.
 - [OpenSpec](../../../openspec/): current specifications, proposed changes, and production-SDD templates.
+- [AI task handoffs](task-handoff.md): durable active-task context and empty-dialog resume lifecycle.
 
 ## Build and test entry points
 
@@ -26,6 +27,7 @@ maintenance:
 - `python3 harness.py client-config`: regenerate client adapters after configuration changes.
 - `python3 harness.py index`: rebuild the Wiki index after Markdown changes.
 - `python3 harness.py check`: configuration, Wiki, OpenSpec structure, and regression tests; includes stdio MCP tests when installed.
+- `python3 scripts/session_state.py resume`: discover the current task and validate its working-set hashes.
 - `make verify`: health checks for enabled optional services; remote inference is opt-in.
 
 ## Important configuration
@@ -34,4 +36,6 @@ maintenance:
 
 ## Generated/runtime directories
 
-Generated local context/index data belongs under `tmp/local/` and must not become canonical knowledge.
+Generated local context/index data and session locks belong under `tmp/local/`
+and must not become canonical knowledge. Durable operational task state belongs
+under `.ai/state/`; it is separate from the project Wiki and OpenSpec.

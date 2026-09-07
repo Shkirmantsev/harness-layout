@@ -18,6 +18,7 @@ Do not bulk-read this Wiki. Search first and retrieve only relevant documents/se
 
 - [System overview](architecture/system-overview.md)
 - [Project map](project/project-map.md)
+- [AI task handoff lifecycle](project/task-handoff.md)
 - [Domain glossary](glossary/domain.md)
 - [OpenSpec workflow](../../openspec/README.md) — current behavior and proposed changes.
 

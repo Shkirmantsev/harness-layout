@@ -1,0 +1,100 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 16
+  },
+  "context": [
+    "openspec/specs/session-handoff.md",
+    ".ai/wiki/project/task-handoff.md"
+  ],
+  "decisions": [
+    "Canonical task state lives in .ai/state/handoffs; CURRENT.md is a generated concise view",
+    "Automation is lifecycle-command driven and enforced by AGENTS.md plus the harness consistency gate"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Implemented durable structured handoffs and generated CURRENT.md synchronization",
+      "Added ID-free resume, legacy promotion, active-task protection, and completion invariants",
+      "Added the current-state consistency gate to the normal harness check",
+      "Integrated lifecycle requirements into AGENTS.md and the session-checkpoint skill",
+      "Documented and indexed handoff ownership, lifecycle, and persistence boundaries",
+      "Adopted openspec/specs/session-handoff.md and archived the completed change"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-06T22:49:20+00:00",
+    "id": "AUTO-HANDOFF-STATE",
+    "project": "harness-layout",
+    "updated_at": "2026-09-06T23:04:06+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "A new session can discover and resume the active task without knowing an ID",
+      "Completed, remaining, blocked, decision, file, and verification state are persisted durably",
+      "Lifecycle updates regenerate the human-readable current handoff"
+    ],
+    "goal": "Keep AI task handoff state automatically current and resumable from an empty dialog",
+    "openspec_change": "",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "SessionStateTests: 10 tests passed",
+      "python3 harness.py check: PASS (63 tests including MCP stdio integration)",
+      "Wiki index: 5 documents, 18 chunks; Wiki validation: PASS",
+      "OpenSpec structural validation: PASS; OpenSpec CLI: NOT RUN (not installed)"
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": ".agents/skills/session-checkpoint/SKILL.md",
+      "sha256": "adc49fe9b1dcf46dc1f73b793ff82d8b82e9c7254d747c237b859d134458dba9"
+    },
+    {
+      "path": ".ai/wiki/project/task-handoff.md",
+      "sha256": "4b5481064c3e3ab93895e0bd9e8a2c5cff42745ddda5eb77b90671f3822970cc"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "e62335a824f6620bf0c63a6ffaa6e76f2c2b585f9bb049c17793ce6c03970e99"
+    },
+    {
+      "path": "QA_REPORT.md",
+      "sha256": "284f874259a301b6b7218923dc5486d54e651f0a9b70e2093d2eb4337b703857"
+    },
+    {
+      "path": "harness.py",
+      "sha256": "f9c505a5ee90e59f5af1c38fd657376e0c82f300d305a52f481c9c5dac686cd5"
+    },
+    {
+      "path": "openspec/specs/session-handoff.md",
+      "sha256": "b5d0a7e866e888f7e89c883f597a1036f1534e2802f876348690451b5dad5000"
+    },
+    {
+      "path": "schemas/session-state.schema.json",
+      "sha256": "43c1853b894d77a4a4de259a11e0d1dc8178c74b350da04acc0a9ae911bfa131"
+    },
+    {
+      "path": "scripts/session_state.py",
+      "sha256": "cffb61bee713140700bff42c790383b1c7fed12c56fb9a16f508e8ebad236c36"
+    },
+    {
+      "path": "tests/test_skill_runtime.py",
+      "sha256": "f990085151b4aed25c8179c7f47e909653c394597e46f47558acb5f8a61d747a"
+    }
+  ]
+}
