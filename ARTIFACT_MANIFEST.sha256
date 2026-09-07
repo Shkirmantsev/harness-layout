@@ -149,8 +149,9 @@ adc49fe9b1dcf46dc1f73b793ff82d8b82e9c7254d747c237b859d134458dba9  ./.agents/skil
 d30ee7f1561f4749fcb20f01c9798696fd94d4877a150f4346853424873f5829  ./.agents/skills/skill-router/SKILL.md
 c300165055b21547fbed81cf36a3c90dcebd5cd7bf414c294fd398253f00f5ad  ./.agents/skills/verification/SKILL.md
 1cb3dbc9073877d81670583f73c504ba766a72c54029142f5176d9f2d499bb82  ./.ai/AGENTS.md
-9c1d6a28bb19142cdfa35cfa087cd75f284fa2454ff9d7e4756aa0231aa15916  ./.ai/state/CURRENT.md
+9ca57f4a05b0716e0c2841db143e7e032885f9cebf60535b9abc0af291484063  ./.ai/state/CURRENT.md
 08d55ea863b1c22176d030df2373a997861592d0934c715c4daf4265e647f138  ./.ai/state/handoffs/AUTO-HANDOFF-STATE.json
+239814be6f5dc14f4fc6bebb25971eb1848b334b14f6487b208677b8fc30b873  ./.ai/state/handoffs/REPAIR-ORIGIN-REFS.json
 00d262e2d837ffe200cd48045c3e855d83778f96eb0395b90ddf17a66492b199  ./.ai/wiki/INDEX.md
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/adr/.gitkeep
 a06af4b0f5a051862ba5a46699b1224646fbb80bf16ae0567d15ca7400fb601b  ./.ai/wiki/architecture/system-overview.md
