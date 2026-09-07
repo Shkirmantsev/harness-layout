@@ -1,0 +1,61 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 9
+  },
+  "context": [
+    ".git/refs/remotes/origin"
+  ],
+  "decisions": [
+    "Removed only the confirmed zero-byte loose tracking ref; no local branches or objects were changed",
+    "Kept origin configured for SSH; used one-off HTTPS only because the agent cannot handle a private key passphrase"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Confirmed local main e36acd4 and dev d183c6e were preserved",
+      "Moved the zero-byte corrupt origin/main loose ref to /tmp/harness-layout-origin-main.empty-ref.20260907T203544Z",
+      "Fetched authoritative main and dev refs from the same public GitHub repository over HTTPS",
+      "Verified origin/main 01884d4, origin/dev 4c9dc83, and origin/HEAD -> origin/main",
+      "Verified git fsck reports no invalid, missing, or broken refs"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-07T20:34:55+00:00",
+    "id": "REPAIR-ORIGIN-REFS",
+    "project": "harness-layout",
+    "updated_at": "2026-09-07T20:39:04+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "git fetch completes successfully",
+      "origin/main and origin/HEAD resolve to valid remote objects",
+      "local main and dev commits remain unchanged"
+    ],
+    "goal": "Repair corrupt origin remote-tracking refs without losing local commits",
+    "openspec_change": "",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "HTTPS git fetch completed successfully",
+      "origin/main and origin/HEAD resolve to 01884d4",
+      "Local main remained e36acd4 and local dev remained d183c6e",
+      "git fsck: no invalid, missing, or broken refs"
+    ],
+    "pending": []
+  },
+  "working_set": []
+}
