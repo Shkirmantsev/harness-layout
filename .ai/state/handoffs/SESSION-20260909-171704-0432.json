@@ -1,0 +1,107 @@
+{
+  "budgets": {
+    "steps_max": 12,
+    "steps_used": 10
+  },
+  "context": [
+    "User asked to review another agent work, including uncommitted files, fix as needed, group necessary files into commit blocks, commit on dev, then merge to main preserving original commits"
+  ],
+  "decisions": [
+    "Keep both completed delegated-task handoff and current review handoff in the state commit for traceable provenance"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Created reviewed dev commits 2134f4d (skill/routing/tests), 3534d01 (Wiki/matrix), c1fac65 (OpenSpec), and a87fe59 (artifact manifest)",
+      "All feature, documentation, specification, and release files are committed; only generated state remains for the fifth dev commit"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "Commit generated state, then merge dev into main",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-09T17:17:04+00:00",
+    "id": "SESSION-20260909-171704-0432",
+    "project": "harness-layout",
+    "updated_at": "2026-09-09T17:44:02+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "All modified and untracked files are classified; extension artifacts are correct and internally consistent; focused and repository gates pass; necessary changes are grouped into concise commits on dev; dev is merged into main with a merge commit preserving history"
+    ],
+    "goal": "Audit, correct, commit, and integrate the extension-framework and additional-skills work",
+    "openspec_change": "java-maven-jar-skill-adoption",
+    "status": "reviewing"
+  },
+  "verification": {
+    "passed": [
+      "PASS: pre-commit full harness gate, strict OpenSpec 4/4, all tests, Wiki 8 documents, manifest 339 files"
+    ],
+    "pending": [
+      "Commit generated session state on dev; merge dev into main with --no-ff; rerun full harness gate; record final state"
+    ]
+  },
+  "working_set": [
+    {
+      "path": ".agents/skills/catalog/java-maven-jar-analysis/SKILL.md",
+      "sha256": "9c1851d99539ec74cff054c2cace37d120748da0a51cfb81ba07a96ae51e0dce"
+    },
+    {
+      "path": ".ai/wiki/interfaces/java-jar-analyzer.md",
+      "sha256": "919cdb003f198b4fe61daad09c6b18ec40d3d92e4521ebabdef749ec28f475a1"
+    },
+    {
+      "path": ".ai/wiki/modules/java-maven-jar-analysis.md",
+      "sha256": "87b04301241bfd99f56fb8909f0b801d35ebb622753aa5001e0217f80b9248a6"
+    },
+    {
+      "path": "ARTIFACT_MANIFEST.sha256",
+      "sha256": "7f3e4f43734f8ceba145ed0daf1ffacd0abd518128472d75ff58711bf95d1d0f"
+    },
+    {
+      "path": "docs/REPORT_RECOMMENDATION_MATRIX.md",
+      "sha256": "3f456c0a8215e1598e4becbd1dd88ff20ed7badbf512a07e5f31da9671d6c361"
+    },
+    {
+      "path": "evals/routing/cases.json",
+      "sha256": "cdea6ffc577b634cdec48d8f5e5c4021548542765aafee9d3bc711e2019a4fe1"
+    },
+    {
+      "path": "openspec/changes/java-maven-jar-skill-adoption/context-impact.md",
+      "sha256": "be51b4ec9ed6f6f8eeca41bd3b908c449e5d68e26c3690e51fe13d326ed3a82b"
+    },
+    {
+      "path": "openspec/changes/java-maven-jar-skill-adoption/design.md",
+      "sha256": "bc293df271d254ecc6287da8c9006dc381b20d15f39cd477a7bf5c20c1c3537f"
+    },
+    {
+      "path": "openspec/changes/java-maven-jar-skill-adoption/proposal.md",
+      "sha256": "030bade97e3482e7798244a6814bea062956437636fe146d4ecbd4073bbb9c15"
+    },
+    {
+      "path": "openspec/changes/java-maven-jar-skill-adoption/specs/java-maven-jar-analyzer/spec.md",
+      "sha256": "f150e96566c9a1e2dddb6667ff587f0c6a051d85b383653f2e843e25eb3d416a"
+    },
+    {
+      "path": "openspec/changes/java-maven-jar-skill-adoption/tasks.md",
+      "sha256": "fce1c3b998d181fcca46ba09a5ca09556ad3d595b69383d5507bc54907e57ddf"
+    },
+    {
+      "path": "scripts/skill_router.py",
+      "sha256": "5310b7e2ada926cc067127a86a7920b3c4b2e7baef5ca3c06cd5f586e60cf488"
+    },
+    {
+      "path": "tests/test_skill_runtime.py",
+      "sha256": "8c4b7a467d8849036556c022f3414598b8e515ce2136a57d185f6f1f72da96cd"
+    }
+  ]
+}
