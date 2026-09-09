@@ -5,8 +5,8 @@
 Structured source: [handoffs/REMEDIATION-COMMIT-AND-MERGE.json](handoffs/REMEDIATION-COMMIT-AND-MERGE.json)
 
 Task: `REMEDIATION-COMMIT-AND-MERGE`
-Status: `verifying`
-Updated: `2026-09-09T08:31:32+00:00`
+Status: `complete`
+Updated: `2026-09-09T08:33:30+00:00`
 Active OpenSpec change: none
 
 ## Objective
@@ -22,12 +22,12 @@ Partition the completed remediation into coherent commits on dev and merge dev i
 
 ## Completed
 
-- Full canonical harness check passed on dev after all remediation commits.
+- Merged dev into main with explicit non-fast-forward merge commit 9e24ef0 and preserved the full dev commit history.
+- Full canonical harness check passed on merged main.
 
 ## Remaining
 
-- Merge dev into main with an explicit merge commit.
-- Run full harness verification on merged main.
+- none
 
 ## Blocked
 
@@ -48,7 +48,8 @@ Partition the completed remediation into coherent commits on dev and merge dev i
 
 ## Verification passed
 
-- python3 harness.py check: PASS on dev outside sandbox; 69 root tests, 5 project-context tests, strict OpenSpec validation, and 331-file manifest verification passed.
+- Merge commit 9e24ef0 has parents 95c1c72 and 4979241.
+- python3 harness.py check: PASS on merged main; 69 root tests, 5 project-context tests, strict OpenSpec validation, and 331-file manifest verification passed.
 
 ## Verification pending
 
@@ -56,7 +57,7 @@ Partition the completed remediation into coherent commits on dev and merge dev i
 
 ## Next action
 
-Commit the dev verification checkpoint, switch to main, and merge dev with --no-ff.
+none
 
 ## Prerequisites
 
