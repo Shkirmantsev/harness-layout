@@ -20,6 +20,7 @@ class Settings:
     port: int
     token: str
     log_level: str
+    allowed_project_roots: tuple[str, ...]
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -32,6 +33,13 @@ class Settings:
         port = int(os.getenv("SIDECAR_PORT", "8775"))
         if not 1 <= port <= 65535:
             raise RuntimeError("SIDECAR_PORT must be in 1..65535")
+        allowed_roots = tuple(
+            item.strip()
+            for item in required("HERMES_ALLOWED_PROJECT_ROOTS").split(os.pathsep)
+            if item.strip()
+        )
+        if not allowed_roots:
+            raise RuntimeError("HERMES_ALLOWED_PROJECT_ROOTS must contain at least one root")
         return cls(
             api_base=base,
             api_key=required("HERMES_API_KEY"),
@@ -40,4 +48,5 @@ class Settings:
             port=port,
             token=token,
             log_level=os.getenv("LOG_LEVEL", "INFO"),
+            allowed_project_roots=allowed_roots,
         )

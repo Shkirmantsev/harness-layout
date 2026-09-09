@@ -40,7 +40,7 @@ function safeErrorBody(body) {
   return typeof msg === "string" ? msg.slice(0, 500) : ""
 }
 
-async function request(context, method, suffix, payload) {
+async function request(context, method, suffix, payload, deadlineMs) {
   const runtime = await loadRuntime(context)
   const init = {
     method,
@@ -53,9 +53,26 @@ async function request(context, method, suffix, payload) {
     init.headers["Content-Type"] = "application/json"
     init.body = JSON.stringify(payload)
   }
-
-  const response = await fetch(`${runtime.apiBase}${suffix}`, init)
-  const text = await response.text()
+  const requestDeadline = Math.min(
+    deadlineMs ?? Number.POSITIVE_INFINITY,
+    Date.now() + 30_000,
+  )
+  const remaining = requestDeadline - Date.now()
+  if (remaining <= 0) throw new Error("Hermes API request deadline exceeded")
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), remaining)
+  init.signal = controller.signal
+  let response
+  let text
+  try {
+    response = await fetch(`${runtime.apiBase}${suffix}`, init)
+    text = await response.text()
+  } catch (error) {
+    if (controller.signal.aborted) throw new Error("Hermes API request deadline exceeded")
+    throw error
+  } finally {
+    clearTimeout(timer)
+  }
   let body = {}
   if (text) {
     try { body = JSON.parse(text) } catch { body = { raw: text.slice(0, 2000) } }
@@ -86,6 +103,22 @@ function compactRun(run) {
     output: run.output,
     error: run.error,
     usage: run.usage,
+    last_event: run.last_event,
+    approval_events: run.approval_events,
+    pending_approvals: run.pending_approvals,
+  }
+}
+
+async function requireApprovalResolver(context) {
+  const { body } = await request(context, "GET", "/v1/capabilities")
+  const capabilities = body.features || body.capabilities || body
+  if (
+    capabilities.run_approval_response !== true ||
+    capabilities.resolver_scoped_run_approvals !== true
+  ) {
+    throw new Error(
+      "Hermes worker lacks resolver-backed /v1/runs approvals. Upgrade/apply the harness compatibility patch; unattended auto-approval is not permitted.",
+    )
   }
 }
 
@@ -100,11 +133,18 @@ async function poll(context, runId, timeoutSeconds = 120, pollSeconds = 2) {
   let last = { run_id: runId, status: "unknown" }
 
   while (Date.now() < deadline) {
-    const { body } = await request(context, "GET", `/v1/runs/${encodeURIComponent(runId)}`)
+    const { body } = await request(
+      context,
+      "GET",
+      `/v1/runs/${encodeURIComponent(runId)}`,
+      undefined,
+      deadline,
+    )
     last = body
     const status = String(body.status || "").toLowerCase()
     if (TERMINAL_STATES.has(status)) return { ...compactRun(body), wait_timeout: false }
-    await new Promise((resolve) => setTimeout(resolve, interval * 1000))
+    const sleepMs = Math.min(interval * 1000, Math.max(0, deadline - Date.now()))
+    if (sleepMs > 0) await new Promise((resolve) => setTimeout(resolve, sleepMs))
   }
   return { ...compactRun(last), wait_timeout: true }
 }
@@ -119,6 +159,7 @@ export const delegate = tool({
   async execute(args, context) {
     const task = String(args.task || "").trim()
     if (!task) throw new Error("task is required")
+    await requireApprovalResolver(context)
     const runtime = await loadRuntime(context)
     const payload = {
       input: task,
@@ -133,7 +174,7 @@ export const delegate = tool({
 
     const final = await poll(context, started.run_id, args.wait_seconds ?? 120, 2)
     if (final.status === "waiting_for_approval") {
-      final.notice = "Hermes is waiting for approval. Ask the user/parent for authorization before calling hermes_approve."
+      final.notice = "Hermes emitted an approval pause. Show approval details to the user/parent, then resolve this exact run with hermes_approve."
     } else if (final.wait_timeout) {
       final.notice = "Hermes is still running. Use hermes_wait or hermes_status with this run_id instead of starting a duplicate run."
     }
@@ -160,7 +201,7 @@ export const wait = tool({
   async execute(args, context) {
     const result = await poll(context, args.run_id, args.timeout_seconds ?? 120, args.poll_seconds ?? 2)
     if (result.status === "waiting_for_approval") {
-      result.notice = "Hermes is waiting for approval. Ask the user/parent before calling hermes_approve."
+      result.notice = "Hermes emitted an approval pause. Show approval details to the user/parent, then resolve this exact run with hermes_approve."
     }
     return asText(result)
   },

@@ -5,7 +5,7 @@ import json
 import os
 from pathlib import Path
 
-from common import ROOT, bool_env, parse_env, slug
+from common import ROOT, atomic_write_text, bool_env, parse_env, slug
 
 GEN = ROOT / ".generated"
 
@@ -18,9 +18,8 @@ LOCAL_WORKER_INSTRUCTIONS = (
 )
 
 
-def write_json(path: Path, obj: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2) + "\n", encoding="utf-8")
+def write_json(path: Path, obj: dict, *, mode: int | None = None) -> None:
+    atomic_write_text(path, json.dumps(obj, indent=2) + "\n", mode=mode)
 
 
 def model_catalog(env: dict[str, str], v2: bool = False) -> dict:
@@ -125,8 +124,7 @@ tools:
 You are a dispatcher. The working repository is `{project_root}`. Call `hermes_run` once with a complete bounded task and preserve returned run/session IDs. Hermes accesses repository files with its own configured backend; do not proxy project files through MCP. Never launch Claude Code, OpenCode, or Codex recursively.
 '''
         path = agents / "generated-hermes-worker.md"
-        path.write_text(text, encoding="utf-8")
-        path.chmod(0o600)
+        atomic_write_text(path, text, mode=0o600)
 
 
 def configure_claude_gateway(env: dict[str, str]) -> None:
@@ -142,8 +140,7 @@ def configure_claude_gateway(env: dict[str, str]) -> None:
         },
         "model": env.get("CLAUDE_DEFAULT_MODEL", "opus"),
         "effortLevel": env.get("CLAUDE_DEFAULT_EFFORT", "medium"),
-    })
-    path.chmod(0o600)
+    }, mode=0o600)
 
 
 def render_opencode_v1(env: dict[str, str], mcp: dict[str, dict]) -> dict:
@@ -218,8 +215,11 @@ def configure_opencode(env: dict[str, str], mcp: dict[str, dict]) -> str:
     runtime_path = GEN / "opencode-hermes-runtime.json"
     if bool_env(env, "HERMES_ENABLED"):
         project_root = str(Path(env["PROJECT_ROOT"]).expanduser().resolve())
-        write_json(runtime_path, {"apiBase": hermes_base(env), "projectRoot": project_root})
-        runtime_path.chmod(0o600)
+        write_json(
+            runtime_path,
+            {"apiBase": hermes_base(env), "projectRoot": project_root},
+            mode=0o600,
+        )
         template = ROOT / "templates/opencode/hermes.js"
         target = tool_dir / "hermes.js"
         target.write_text(template.read_text(encoding="utf-8"), encoding="utf-8")
@@ -236,6 +236,13 @@ def configure_opencode(env: dict[str, str], mcp: dict[str, dict]) -> str:
         runtime_path.unlink()
 
     write_json(ROOT / "opencode.json", config)
+    write_json(
+        ROOT / ".opencode/package.json",
+        {
+            "type": "module",
+            "dependencies": {"@opencode-ai/plugin": "1.18.28"},
+        },
+    )
     return generation
 
 
@@ -261,8 +268,7 @@ def write_secrets(env: dict[str, str]) -> None:
     GEN.mkdir(exist_ok=True)
     for name, value in (("litellm-master-key", env.get("LITELLM_MASTER_KEY", "")), ("hermes-api-key", env.get("HERMES_REMOTE_API_KEY", ""))):
         p = GEN / name
-        p.write_text(value + "\n", encoding="utf-8")
-        p.chmod(0o600)
+        atomic_write_text(p, value + "\n", mode=0o600)
 
 
 def main() -> None:
