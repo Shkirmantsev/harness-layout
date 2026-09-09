@@ -1,0 +1,47 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [],
+  "decisions": [],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "docs commit reviewed on dev"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-09T16:30:42+00:00",
+    "id": "SESSION-20260909-163042-6797",
+    "project": "harness-layout",
+    "updated_at": "2026-09-09T16:32:26+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "README.md rewritten in English, concise and well-organized, incorporating user-guide content; USER_GUIDE.uk.md removed; commits on dev; merge commit on main preserves history; harness check passes."
+    ],
+    "goal": "Merge USER_GUIDE.uk.md content into README.md (English); delete USER_GUIDE.uk.md without committing it; commit on dev, then merge dev to main with --no-ff.",
+    "openspec_change": "",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "wiki-validate 6/6; test_documentation_navigation, test_clients_and_skills, test_harness_init green"
+    ],
+    "pending": []
+  },
+  "working_set": []
+}
