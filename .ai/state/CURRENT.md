@@ -6,7 +6,7 @@ Structured source: [handoffs/REMEDIATION-COMMIT-AND-MERGE.json](handoffs/REMEDIA
 
 Task: `REMEDIATION-COMMIT-AND-MERGE`
 Status: `verifying`
-Updated: `2026-09-09T08:30:02+00:00`
+Updated: `2026-09-09T08:31:32+00:00`
 Active OpenSpec change: none
 
 ## Objective
@@ -22,11 +22,10 @@ Partition the completed remediation into coherent commits on dev and merge dev i
 
 ## Completed
 
-- Created seven coherent dev commits for runtime, MCP, Hermes, verification, OpenSpec, documentation, and manifest changes.
+- Full canonical harness check passed on dev after all remediation commits.
 
 ## Remaining
 
-- Run full harness verification on dev.
 - Merge dev into main with an explicit merge commit.
 - Run full harness verification on merged main.
 
@@ -49,8 +48,7 @@ Partition the completed remediation into coherent commits on dev and merge dev i
 
 ## Verification passed
 
-- Each staged block passed diff checks; stored Hermes patch context whitespace was preserved intentionally.
-- Artifact manifest verifies 331 files and excludes unrelated USER_GUIDE.uk.md.
+- python3 harness.py check: PASS on dev outside sandbox; 69 root tests, 5 project-context tests, strict OpenSpec validation, and 331-file manifest verification passed.
 
 ## Verification pending
 
@@ -58,7 +56,7 @@ Partition the completed remediation into coherent commits on dev and merge dev i
 
 ## Next action
 
-Commit the audit and integration handoff state, then run the full dev check.
+Commit the dev verification checkpoint, switch to main, and merge dev with --no-ff.
 
 ## Prerequisites
 
