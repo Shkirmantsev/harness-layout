@@ -3,12 +3,14 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import shutil
 import subprocess
 import tempfile
 from pathlib import Path
 
 from common import ROOT, parse_env
+from file_lock import file_lock
 
 
 SOURCE = ROOT / ".agents" / "skills"
@@ -53,14 +55,39 @@ def local() -> None:
     CLAUDE.mkdir(parents=True, exist_ok=True)
     exposed = exposed_skills()
     managed_names = {path.name for path in exposed} | catalog_names() | {"catalog"}
+    with tempfile.TemporaryDirectory(prefix=".harness-skill-stage-", dir=CLAUDE) as raw:
+        staging = Path(raw)
+        for source in exposed:
+            shutil.copytree(source, staging / source.name)
 
-    # Remove only names owned by this project. Personal/unrelated Claude skills
-    # are intentionally left untouched.
-    for target in CLAUDE.iterdir():
-        if target.is_dir() and target.name in managed_names:
-            shutil.rmtree(target)
-    for source in exposed:
-        shutil.copytree(source, CLAUDE / source.name)
+        with file_lock(CLAUDE / ".harness-sync.lock"):
+            # Publish complete staged trees while serializing writers. Preserve
+            # client-owned skills (including OpenSpec-generated skills).
+            for source in exposed:
+                target = CLAUDE / source.name
+                incoming = staging / source.name
+                backup = CLAUDE / f".{source.name}.harness-backup-{os.getpid()}"
+                if backup.exists():
+                    shutil.rmtree(backup)
+                if target.exists():
+                    os.replace(target, backup)
+                try:
+                    os.replace(incoming, target)
+                except Exception:
+                    if backup.exists() and not target.exists():
+                        os.replace(backup, target)
+                    raise
+                shutil.rmtree(backup, ignore_errors=True)
+
+            # Remove only stale names owned by this project. Personal/unrelated
+            # Claude skills are intentionally left untouched.
+            for target in CLAUDE.iterdir():
+                if (
+                    target.is_dir()
+                    and target.name in managed_names
+                    and target.name not in CORE_SKILL_NAMES
+                ):
+                    shutil.rmtree(target)
     print(
         f"Synced {len(exposed)} core skills to Claude; "
         "optional catalog stays on demand."

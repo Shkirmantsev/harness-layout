@@ -1,5 +1,5 @@
 from __future__ import annotations
-import json, os, re, secrets, subprocess
+import json, os, re, secrets, subprocess, tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,7 +20,41 @@ def update_env(updates: dict[str, str], path: Path = ENV) -> None:
         pat = re.compile(rf"(?m)^{re.escape(key)}=.*$")
         repl = f"{key}={value}"
         text = pat.sub(repl, text) if pat.search(text) else text.rstrip() + f"\n{repl}\n"
-    path.write_text(text)
+    atomic_write_text(path, text, mode=0o600)
+
+
+def atomic_write_text(
+    path: Path,
+    text: str,
+    *,
+    mode: int | None = None,
+    encoding: str = "utf-8",
+) -> None:
+    """Publish complete text atomically; apply private mode before content."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, raw = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    temporary = Path(raw)
+    try:
+        if mode is not None and hasattr(os, "fchmod"):
+            os.fchmod(descriptor, mode)
+        with os.fdopen(descriptor, "w", encoding=encoding) as stream:
+            descriptor = -1
+            stream.write(text)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+        if mode is not None:
+            os.chmod(path, mode)
+        if os.name != "nt":
+            parent_fd = os.open(path.parent, os.O_RDONLY)
+            try:
+                os.fsync(parent_fd)
+            finally:
+                os.close(parent_fd)
+    finally:
+        if descriptor >= 0:
+            os.close(descriptor)
+        temporary.unlink(missing_ok=True)
 
 def random_token(prefix: str = "") -> str:
     return prefix + secrets.token_hex(32)
