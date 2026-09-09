@@ -1,6 +1,33 @@
 # Harness Layout v4.0.0 — Release QA Report
 
-## Post-migration verification — 2026-09-07
+## Current verification — 2026-09-09
+
+This section is the current reproducible evidence. Older migration snapshots are
+retained below as history and are not current release claims.
+
+| Check | Current result |
+|---|---|
+| `python3 harness.py check` | **PASS** — configuration, state, Wiki, strict OpenSpec, 69 isolated root tests, 5 project-context tests including stdio, and 331-file manifest |
+| `python3 -m unittest discover -s tests -v` | **PASS** — 69 tests |
+| Project-context stdio integration | **PASS** — MCP 1.30.0 + AnyIO 4.10.0 using Trio server backend |
+| `openspec validate --all --strict` | **PASS** — 3 items |
+| Hermes sidecar unit tests | **PASS** — 5 tests |
+| Hermes compatibility patch check | **PASS** — exact-revision patches validate for upstream `4f2254350` and legacy worker `981101239`; modified sources compile |
+| Live Hermes health/model/sidecar | **PASS** — API, model advertisement, hardened sidecar, and exact-root policy active |
+| Live resolver-scoped approval capability | **PASS** — worker advertises `resolver_scoped_run_approvals`; generated OpenCode module surfaced the redacted guarded command and resumed the exact run for `deny`; `once` was also proven before the metadata-only extension |
+
+The stdio integration uses a Trio backend because the SDK's asyncio stdio
+memory-stream path reproduced a deterministic initialize deadlock in this
+environment. The sandbox blocks Trio's internal wakeup socketpair, so the final
+local integration/full-gate evidence was collected outside that sandbox; CI and
+normal hosts do not have that restriction.
+
+OpenCode→Hermes delegation is enabled with explicit resolver-scoped approvals.
+`approvals.unattended_mode: approve` remains prohibited as a workaround.
+
+## Historical migration evidence — 2026-09-07
+
+### Post-migration verification
 
 The following results supersede the original build-environment limitations below:
 
