@@ -5,7 +5,7 @@ STACK := $(PYTHON) scripts/stack.py
 
 .PHONY: help init init-mcp env-sync runtime check wiki-index wiki-validate openspec-check mcp-install \
         config plan pull build up start stop restart down status ps logs client-config \
-        skills-sync-local skills-sync-remote skills-check hermes-host-setup hermes-host-revoke \
+        skills-sync-local skills-sync-remote skills-check manifest-generate manifest-check hermes-host-setup hermes-host-revoke \
         hermes-sidecar-copy hermes-remote-instructions hermes-check hermes-import verify verify-models test clean
 
 help: ## Show all harness commands.
@@ -38,6 +38,12 @@ wiki-validate: ## Validate Wiki stable IDs and links.
 
 openspec-check: ## Validate production-sdd structure; invoke OpenSpec CLI when installed.
 	@$(PYTHON) harness.py openspec-check
+
+manifest-generate: ## Regenerate the deterministic source artifact manifest.
+	@$(PYTHON) harness.py manifest-generate
+
+manifest-check: ## Verify the deterministic source artifact manifest.
+	@$(PYTHON) harness.py manifest-check
 
 mcp-install: ## Install project-context MCP into tmp/local/project-context/venv.
 	@$(PYTHON) harness.py mcp-install

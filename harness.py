@@ -65,8 +65,11 @@ def cmd_openspec_check() -> None:
     print("OpenSpec project schema structure: PASS")
     if shutil.which("openspec"):
         run(["openspec", "schema", "validate", "production-sdd"])
+        run(["openspec", "validate", "--all", "--strict"])
     else:
-        print("OpenSpec CLI validation: NOT RUN (openspec executable not installed)")
+        raise SystemExit(
+            "OpenSpec CLI validation: FAIL (install OpenSpec 1.12.0 or newer)"
+        )
 
 
 def configure_openspec() -> None:
@@ -93,12 +96,16 @@ def cmd_test() -> None:
     subprocess.run([python, "-m", "unittest", "discover", "-s", str(MCP_ROOT / "tests"), "-p", "test_*.py", "-v"], cwd=ROOT, check=True, env=env)
 
 
-def cmd_check() -> None:
-    run([sys.executable, "scripts/check_config.py"])
+def cmd_check(*, delegated: bool = False) -> None:
+    if not delegated:
+        run([sys.executable, "scripts/check_config.py"])
+    else:
+        print("Config/secret validation: SKIPPED (delegated secret-free profile)")
     run([sys.executable, "scripts/session_state.py", "verify"])
     cmd_wiki_validate()
     cmd_openspec_check()
     cmd_test()
+    run([sys.executable, "scripts/artifact_manifest.py", "verify"])
     print("Harness core checks: PASS")
 
 
@@ -134,12 +141,15 @@ def parser() -> argparse.ArgumentParser:
     init=sub.add_parser("init", help="create .env, build Wiki index and generate client configs")
     init.add_argument("--install-mcp", action="store_true", help="also create local venv and install project-context MCP dependencies")
     sub.add_parser("check", help="validate config, Wiki, OpenSpec structure and run tests")
+    sub.add_parser("check-delegated", help="secret-free repository gate for CI and restricted workers")
     sub.add_parser("test", help="run unit/static tests")
     sub.add_parser("index", help="rebuild local Markdown Wiki SQLite FTS index")
     sub.add_parser("wiki-validate", help="validate Wiki IDs and links")
     sub.add_parser("openspec-check", help="validate local OpenSpec schema and use CLI if installed")
     sub.add_parser("mcp-install", help="install project-context MCP into tmp/local virtualenv")
     sub.add_parser("client-config", help="generate Claude/OpenCode/Codex client configs from .env")
+    sub.add_parser("manifest-generate", help="regenerate ARTIFACT_MANIFEST.sha256")
+    sub.add_parser("manifest-check", help="verify ARTIFACT_MANIFEST.sha256")
     sub.add_parser("clean", help="remove generated local state without deleting .env")
     return p
 
@@ -148,8 +158,11 @@ def main() -> None:
     p=parser(); args=p.parse_args()
     {
       "init": lambda: cmd_init(args), "check": cmd_check, "test": cmd_test, "index": cmd_index,
+      "check-delegated": lambda: cmd_check(delegated=True),
       "wiki-validate": cmd_wiki_validate, "openspec-check": cmd_openspec_check,
       "mcp-install": cmd_mcp_install, "client-config": cmd_client_config, "clean": cmd_clean,
+      "manifest-generate": lambda: run([sys.executable, "scripts/artifact_manifest.py", "generate"]),
+      "manifest-check": lambda: run([sys.executable, "scripts/artifact_manifest.py", "verify"]),
     }[args.command]()
 
 if __name__ == "__main__": main()

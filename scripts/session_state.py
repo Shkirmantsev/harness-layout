@@ -4,9 +4,7 @@
 from __future__ import annotations
 
 import argparse
-import contextlib
 import datetime as dt
-import fcntl
 import hashlib
 import json
 import os
@@ -16,6 +14,7 @@ import sys
 from pathlib import Path
 
 from common import ROOT
+from file_lock import file_lock
 
 
 SCHEMA_VERSION = "1.0"
@@ -122,16 +121,8 @@ def legacy_state_path(identifier: str) -> Path:
     return LEGACY_STATE_ROOT / session_id(identifier) / "state.json"
 
 
-@contextlib.contextmanager
 def locked():
-    LOCK_ROOT.mkdir(parents=True, exist_ok=True)
-    lock_path = LOCK_ROOT / "state.lock"
-    with lock_path.open("a", encoding="utf-8") as lock_file:
-        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
-        try:
-            yield
-        finally:
-            fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+    return file_lock(LOCK_ROOT / "state.lock")
 
 
 def read(identifier: str) -> dict:

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 from mcp.server import MCPServer
@@ -15,7 +16,7 @@ from .native_context import instructions, native_session_id, validate_project_ro
 from .security import BearerAuthMiddleware
 
 settings = Settings.from_env()
-http = httpx.AsyncClient(timeout=httpx.Timeout(3600, connect=10))
+http = httpx.AsyncClient()
 mcp = MCPServer(
     "Hermes Native Worker Control",
     instructions=(
@@ -25,10 +26,21 @@ mcp = MCPServer(
 )
 
 
-async def api(method: str, path: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+async def api(
+    method: str,
+    path: str,
+    payload: dict[str, Any] | None = None,
+    *,
+    timeout_seconds: float = 30.0,
+) -> dict[str, Any]:
     kwargs: dict[str, Any] = {"headers": {"Authorization": f"Bearer {settings.api_key}"}}
     if payload is not None:
         kwargs["json"] = payload
+    timeout_seconds = max(0.1, min(float(timeout_seconds), 30.0))
+    kwargs["timeout"] = httpx.Timeout(
+        timeout_seconds,
+        connect=min(10.0, timeout_seconds),
+    )
     response = await http.request(method, settings.api_base + path, **kwargs)
     response.raise_for_status()
     return response.json() if response.content else {}
@@ -38,7 +50,7 @@ async def api(method: str, path: str, payload: dict[str, Any] | None = None) -> 
 async def hermes_run(project_root: str, task: str, session_id: str = "") -> dict:
     """Start a fresh native Hermes run, or explicitly continue a supplied Hermes session id."""
     try:
-        root = validate_project_root(project_root)
+        root = validate_project_root(project_root, settings.allowed_project_roots)
         sid = native_session_id(root, session_id)
     except ValueError as exc:
         raise ToolError(str(exc)) from exc
@@ -60,7 +72,14 @@ async def hermes_run(project_root: str, task: str, session_id: str = "") -> dict
 @mcp.tool()
 async def hermes_status(run_id: str) -> dict:
     """Return current Hermes run state, including approval-paused state when present."""
-    return await api("GET", f"/v1/runs/{run_id}")
+    return await api("GET", _run_path(run_id))
+
+
+def _run_path(run_id: str, suffix: str = "") -> str:
+    value = (run_id or "").strip()
+    if not value or len(value) > 200 or any(c in value for c in "\r\n\x00"):
+        raise ToolError("run_id is missing or invalid")
+    return f"/v1/runs/{quote(value, safe='')}{suffix}"
 
 
 @mcp.tool()
@@ -72,17 +91,29 @@ async def hermes_wait(run_id: str, timeout_seconds: float = 120, poll_seconds: f
     last: dict[str, Any] = {}
     return_states = {"completed", "failed", "cancelled", "waiting_for_approval"}
     while asyncio.get_running_loop().time() < deadline:
-        last = await api("GET", f"/v1/runs/{run_id}")
+        remaining = deadline - asyncio.get_running_loop().time()
+        if remaining <= 0:
+            break
+        try:
+            last = await api(
+                "GET",
+                _run_path(run_id),
+                timeout_seconds=remaining,
+            )
+        except httpx.TimeoutException:
+            break
         if str(last.get("status", "")).lower() in return_states:
             return last
-        await asyncio.sleep(poll_seconds)
+        remaining = deadline - asyncio.get_running_loop().time()
+        if remaining > 0:
+            await asyncio.sleep(min(poll_seconds, remaining))
     return {**last, "wait_timeout": True}
 
 
 @mcp.tool()
 async def hermes_result(run_id: str) -> dict:
     """Return Hermes run status and final output when available."""
-    return await api("GET", f"/v1/runs/{run_id}")
+    return await api("GET", _run_path(run_id))
 
 
 @mcp.tool()
@@ -91,7 +122,7 @@ async def hermes_steer(run_id: str, text: str) -> dict:
     guidance = (text or "").strip()
     if not guidance:
         raise ToolError("text is required")
-    return await api("POST", f"/v1/runs/{run_id}/steer", {"input": guidance})
+    return await api("POST", _run_path(run_id, "/steer"), {"input": guidance})
 
 
 @mcp.tool()
@@ -102,7 +133,7 @@ async def hermes_approve(run_id: str, choice: str = "once", resolve_all: bool = 
         raise ToolError("choice must be one of: once, session, always, deny")
     return await api(
         "POST",
-        f"/v1/runs/{run_id}/approval",
+        _run_path(run_id, "/approval"),
         {"choice": normalized, "resolve_all": bool(resolve_all)},
     )
 
@@ -110,7 +141,7 @@ async def hermes_approve(run_id: str, choice: str = "once", resolve_all: bool = 
 @mcp.tool()
 async def hermes_cancel(run_id: str) -> dict:
     """Request cooperative cancellation of a running Hermes run."""
-    return await api("POST", f"/v1/runs/{run_id}/stop", {})
+    return await api("POST", _run_path(run_id, "/stop"), {})
 
 
 @mcp.custom_route("/healthz", methods=["GET"])

@@ -6,7 +6,11 @@ mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
 
 class SidecarContractTests(unittest.TestCase):
     def test_root_validation(self):
-        self.assertEqual(mod.validate_project_root('/home/u/repo'), '/home/u/repo')
+        root = '/main/projects/repo'
+        self.assertEqual(mod.validate_project_root(root), root)
+        self.assertEqual(mod.validate_project_root(root, (root,)), root)
+        with self.assertRaises(ValueError):
+            mod.validate_project_root('/main/projects/outside', (root,))
         for bad in ('repo','/','/a\nb'):
             with self.assertRaises(ValueError):
                 mod.validate_project_root(bad)
@@ -30,9 +34,12 @@ class SidecarContractTests(unittest.TestCase):
         self.assertIn('"/v1/runs"', text)
         self.assertIn('{"input": guidance}', text)
         self.assertIn('waiting_for_approval', text)
+        self.assertIn('timeout_seconds=remaining', text)
+        self.assertIn("quote(value, safe='')", text)
         self.assertNotIn('"model": settings.model', text)
         env = (ROOT / 'remote/hermes-worker-mcp/.env.example').read_text()
         self.assertIn('HERMES_API_BASE_URL=http://127.0.0.1:8642\n', env)
+        self.assertIn('HERMES_ALLOWED_PROJECT_ROOTS=', env)
         self.assertNotIn('8642/v1', env)
     def test_systemd_install_uses_real_linux_home_not_HOME_env(self):
         text = (ROOT / 'remote/hermes-worker-mcp/scripts/install_service.py').read_text()

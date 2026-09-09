@@ -1,5 +1,6 @@
 """Exercise the installed MCP over stdio, including an unrelated launch directory."""
 import importlib.util
+import datetime as dt
 from pathlib import Path
 import sys
 import tempfile
@@ -28,12 +29,16 @@ class ServerTest(unittest.IsolatedAsyncioTestCase):
                 cwd=d,
             )
             async with stdio_client(server) as (read, write):
-                async with ClientSession(read, write, read_timeout_seconds=10) as client:
+                async with ClientSession(
+                    read,
+                    write,
+                    read_timeout_seconds=dt.timedelta(seconds=10),
+                ) as client:
                     await client.initialize()
                     tools = await client.list_tools()
                     self.assertIn('kb_search', [t.name for t in tools.tools])
                     result = await client.call_tool('kb_search', {'query': 'reservation'})
-                    self.assertFalse(result.is_error)
+                    self.assertFalse(result.isError)
                     self.assertIn('wiki.index', str(result))
                     result = await client.call_tool('kb_get', {'id': 'wiki.index'})
                     self.assertIn('reservation-canary', str(result))

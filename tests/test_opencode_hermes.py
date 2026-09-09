@@ -24,6 +24,19 @@ class OpenCodeHermesTests(unittest.TestCase):
         self.assertIn('hermes-api-key', self.tool)
         self.assertIn('projectRoot', self.tool)
 
+    def test_approval_transport_is_capability_gated_and_metadata_survives(self):
+        self.assertIn('"GET", "/v1/capabilities"', self.tool)
+        self.assertIn('run_approval_response', self.tool)
+        self.assertIn('resolver_scoped_run_approvals', self.tool)
+        self.assertIn('unattended auto-approval is not permitted', self.tool)
+        self.assertIn('approval_events: run.approval_events', self.tool)
+        self.assertIn('pending_approvals: run.pending_approvals', self.tool)
+
+    def test_requests_are_hard_deadline_bounded(self):
+        self.assertIn('new AbortController()', self.tool)
+        self.assertIn('deadlineMs', self.tool)
+        self.assertIn('clearTimeout(timer)', self.tool)
+
     def test_generator_removes_old_model_subagent(self):
         self.assertIn('generated-hermes*.md', self.gen)
         self.assertIn('tool_dir / "hermes.js"', self.gen)

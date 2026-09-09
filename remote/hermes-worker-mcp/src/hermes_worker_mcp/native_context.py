@@ -1,13 +1,17 @@
 from __future__ import annotations
 
 import hashlib
+import posixpath
 import re
 import uuid
 
 _SESSION_RE = re.compile(r"[A-Za-z0-9_.:-]{1,160}")
 
 
-def validate_project_root(project_root: str) -> str:
+def validate_project_root(
+    project_root: str,
+    allowed_roots: tuple[str, ...] | None = None,
+) -> str:
     root = (project_root or "").strip()
     if not root.startswith("/"):
         raise ValueError("project_root must be an absolute POSIX path on the main machine")
@@ -15,7 +19,17 @@ def validate_project_root(project_root: str) -> str:
         raise ValueError("project_root contains forbidden control characters")
     if root == "/":
         raise ValueError("project_root=/ is forbidden")
-    return root.rstrip("/") or "/"
+    normalized = posixpath.normpath(root)
+    if allowed_roots is not None:
+        allowed = {posixpath.normpath(item) for item in allowed_roots if item}
+        if not allowed:
+            raise ValueError("no allowed project roots are configured")
+        # These paths live on the main machine behind Hermes' SSH backend, not
+        # on this sidecar host. Enforce exact operator-configured roots rather
+        # than pretending local resolve()/stat() can authorize remote files.
+        if normalized not in allowed:
+            raise ValueError("project_root is outside HERMES_ALLOWED_PROJECT_ROOTS")
+    return normalized
 
 
 def native_session_id(project_root: str, requested: str = "") -> str:

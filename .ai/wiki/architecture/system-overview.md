@@ -38,7 +38,11 @@ See [ADR: Separate harness core and integration skill ownership](../adr/0001-sep
 
 Client configuration passes the selected project root explicitly to the MCP server. Agents search for knowledge IDs and retrieve selected sections. Index refresh builds a replacement database before publishing it, preserving the old index when a rebuild fails.
 
-Claude delegates to the remote Hermes MCP sidecar; OpenCode uses native Hermes Runs API tools. Codex has no Hermes transport. The sidecar carries run control, with repository access owned by native Hermes.
+Claude delegates to the remote Hermes MCP sidecar; OpenCode uses native Hermes
+Runs API tools. Codex has no Hermes transport. The sidecar carries run control,
+enforces exact configured project roots, and leaves repository access owned
+by native Hermes. OpenCode requires a resolver-backed `/v1/runs` capability and
+never substitutes unattended auto-approval.
 
 ## Evidence
 

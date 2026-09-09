@@ -47,6 +47,17 @@ def main():
             print("Hermes models:", sorted(x for x in ids if x))
             if env.get("HERMES_REMOTE_MODEL") not in ids:
                 failures.append("Configured HERMES_REMOTE_MODEL is not advertised")
+            st, capabilities = get(
+                base + "/v1/capabilities", env["HERMES_REMOTE_API_KEY"]
+            )
+            features = capabilities.get("features", {})
+            resolver = features.get("resolver_scoped_run_approvals") is True
+            print("Hermes resolver-scoped run approvals:", "PASS" if resolver else "MISSING")
+            if not resolver:
+                failures.append(
+                    "Hermes lacks resolver_scoped_run_approvals; apply the "
+                    "harness compatibility patch before OpenCode delegation"
+                )
         except Exception as exc:
             failures.append(f"Hermes native API: {exc}")
 

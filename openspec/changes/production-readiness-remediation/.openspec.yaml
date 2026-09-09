@@ -1,0 +1,4 @@
+schema: production-sdd
+created: 2026-09-08
+goal: Make the full supported harness workflow reproducible, secure,
+  cross-platform, and continuously verified.

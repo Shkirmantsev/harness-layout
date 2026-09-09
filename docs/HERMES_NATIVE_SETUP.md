@@ -12,6 +12,10 @@ Hermes      -> native SSH backend -> dedicated main-PC user -> PROJECT_ROOT
 
 The MCP sidecar is **not** a filesystem bridge. It accepts a `project_root` plus a task and controls Hermes run lifecycle. Hermes itself reads, edits, searches, tests, and analyzes repository media.
 
+The sidecar normalizes `project_root` and requires it to equal one of the exact
+`HERMES_ALLOWED_PROJECT_ROOTS`. Caller instructions provide task context;
+they do not grant filesystem authority.
+
 Codex has no Hermes transport in this phase.
 
 ## Main-PC project boundary
@@ -61,6 +65,32 @@ make hermes-remote-instructions
 7. verify native file and vision behavior;
 8. remove obsolete project/session/attachment bridges only after native access passes.
 
+### Required approval compatibility patch
+
+Hermes Agent `4f22543509d1b91dc45bcb369447126c5eb14fb7` has an upstream
+regression in which all `api_server` sessions are classified as unattended,
+including resolver-backed `/v1/runs`. The older supported worker revision
+`981101239a064c020a9d18fc3b1060ae306934ed` already has a working per-run
+resolver but does not advertise that capability. Do not work around either
+case with `unattended_mode: approve`.
+
+Until an upstream release carries the equivalent fix, use the patch helper. It
+selects the appropriate compatibility patch only for a known exact revision:
+
+```bash
+python scripts/apply_hermes_approval_patch.py --source /path/to/hermes-agent --check
+python scripts/apply_hermes_approval_patch.py --source /path/to/hermes-agent
+```
+
+The patch binds an explicit resolver-capable context only around `/v1/runs`.
+Webhook, MS Graph webhook, chat-completions, and responses routes remain
+unattended and fail closed. Re-evaluate and remove the compatibility patch when
+upstream ships a resolver-scoped fix. See the
+[upstream defect](https://github.com/NousResearch/hermes-agent/issues/98728).
+For the supported legacy worker, the patch also retains only already-redacted
+approval events in pollable run state, bounds their history to 20 entries, and
+clears `pending_approvals` after a decision.
+
 ## Claude Code
 
 `make client-config` generates `.claude/agents/generated-hermes-worker.md` (gitignored, mode 0600). It contains an inline MCP connection to:
@@ -84,6 +114,16 @@ hermes_steer/approve/cancel -> native run-control endpoints
 ```
 
 The tool injects the absolute authorized project root into Hermes run instructions. Hermes then reads/edits/tests through its own SSH-backed tools. No Hermes MCP is added to OpenCode.
+
+Before creating a run, the tool requires Hermes to advertise both
+`run_approval_response` and `resolver_scoped_run_approvals`. Every HTTP call is
+abortable, and polling preserves approval-event metadata so OpenCode can show
+the request before calling `hermes_approve` for that exact run.
+
+For restricted read-only verification, delegate `python harness.py
+check-delegated`. It deliberately skips live `.env` validation while retaining
+Wiki, strict OpenSpec, unit/MCP, and manifest checks. The owner/operator still
+runs `python harness.py check` to validate live configuration.
 
 ## Images and other files
 

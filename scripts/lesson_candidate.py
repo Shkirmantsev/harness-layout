@@ -4,9 +4,7 @@
 from __future__ import annotations
 
 import argparse
-import contextlib
 import datetime as dt
-import fcntl
 import hashlib
 import json
 import os
@@ -14,6 +12,7 @@ import re
 from pathlib import Path
 
 from common import ROOT
+from file_lock import file_lock
 
 
 STORE = ROOT / "tmp" / "local" / "lesson-candidates"
@@ -53,15 +52,8 @@ def atomic_write(path: Path, payload: dict) -> None:
         temporary.unlink(missing_ok=True)
 
 
-@contextlib.contextmanager
 def store_lock():
-    STORE.mkdir(parents=True, exist_ok=True)
-    with (STORE / ".lock").open("a", encoding="utf-8") as stream:
-        fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
-        try:
-            yield
-        finally:
-            fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
+    return file_lock(STORE / ".lock")
 
 
 def candidate_path(identifier: str) -> Path:

@@ -106,9 +106,11 @@ Do **not** attempt to document an entire large brownfield codebase at once. Add 
 | `python harness.py client-config` | regenerate Claude/OpenCode/Codex adapters from `.env` |
 | `python harness.py index` | rebuild local Markdown Wiki SQLite FTS index |
 | `python harness.py wiki-validate` | check Wiki IDs and links |
-| `python harness.py openspec-check` | validate OpenSpec project structure; uses CLI if installed |
+| `python harness.py openspec-check` | validate schema and all specs/changes strictly |
 | `python harness.py test` | run core tests |
-| `python harness.py check` | config + Wiki + OpenSpec + tests |
+| `python harness.py check` | operator gate: config + Wiki + strict OpenSpec + tests + manifest |
+| `python harness.py check-delegated` | secret-free CI/restricted-worker gate |
+| `python harness.py manifest-check` | verify the deterministic source manifest |
 | `python harness.py clean` | remove generated client/index/runtime state, keep source and `.env` |
 
 Equivalent Make targets exist on systems with GNU Make.

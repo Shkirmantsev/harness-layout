@@ -16,8 +16,12 @@ Important behavior:
 
 - `HERMES_API_BASE_URL` is the **server root**, normally `http://127.0.0.1:8642`, not `/v1`.
 - `hermes_run` deliberately omits a `model` field. Hermes `/v1/runs` treats `model` as a true per-request model override; the sidecar must preserve the configured worker-profile model/provider.
+- `hermes_run` accepts only exact normalized paths named by
+  `HERMES_ALLOWED_PROJECT_ROOTS`; the allowlist is mandatory server policy.
 - New delegations get fresh Hermes session IDs. Pass a previous `session_id` only when you intentionally want continuity.
 - `hermes_wait` returns immediately for `waiting_for_approval`; it does not hang until timeout.
+- Each upstream request is capped at 30 seconds and a wait request caps it
+  further by the remaining caller deadline.
 - `hermes_approve` exists for explicit approval resolution and is never invoked automatically.
 
 ## Install

@@ -1,0 +1,58 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 15
+  },
+  "context": [
+    "User requested hermes-tailscale-worker default MoA, but Codex has no supported Hermes transport and no Hermes tools are registered; local audit is the mandated fallback"
+  ],
+  "decisions": [
+    "Final score 5/10 with DON'T SHIP verdict until blocker/high findings close"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Delivered verified production-readiness report at HERMES_REVIEW.md"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-08T18:19:26+00:00",
+    "id": "PRODUCTION-READINESS-AUDIT",
+    "project": "harness-layout",
+    "updated_at": "2026-09-08T18:40:54+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "HERMES_REVIEW.md contains a 0-10 score, weighted subscores, verdict, evidenced bugs and improvements, and verification results",
+      "Audit covers documentation, architecture, safety, OpenSpec, Wiki/state, skills, tests, CI, infrastructure, and cross-source consistency",
+      "No secrets are exposed and no unrelated files are modified"
+    ],
+    "goal": "Audit the repository for production readiness and produce one evidence-backed root-level Markdown report",
+    "openspec_change": "",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "PASS: report acceptance criteria, structure, finding counts, secret scan, and task-state integrity"
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": "HERMES_REVIEW.md",
+      "sha256": "6d885e40c0d4257ff1b094f4d25cad71d53d22193c151e710478a8c56b4aafd1"
+    }
+  ]
+}

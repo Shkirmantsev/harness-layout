@@ -1,0 +1,53 @@
+{
+  "budgets": {
+    "steps_max": 8,
+    "steps_used": 8
+  },
+  "context": [
+    "A redundant post-metadata approve-once probe was safety-rejected because chmod 777 is materially risky; the once resolver path had already passed before the metadata-only extension"
+  ],
+  "decisions": [],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Completed approval metadata follow-up with live deployment and evidence"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-09T08:09:36+00:00",
+    "id": "APPROVAL-METADATA-FOLLOWUP",
+    "project": "harness-layout",
+    "updated_at": "2026-09-09T08:16:27+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Generated OpenCode delegation returns waiting_for_approval with a redacted command-bearing approval event",
+      "Deny still resumes only the exact run and prevents command execution",
+      "Exact-revision patch, focused tests, manifest, and full harness check pass"
+    ],
+    "goal": "Ensure the legacy live Hermes worker exposes redacted approval details through pollable run state before OpenCode asks the user to decide",
+    "openspec_change": "production-readiness-remediation",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "python3 harness.py check: PASS (69 root tests, 5 project-context tests, strict OpenSpec, 331-file manifest)",
+      "live metadata-aware OpenCode deny: one redacted command-bearing event, exact approval accepted, execution blocked",
+      "live worker patch reverse-check and both systemd services: PASS/active"
+    ],
+    "pending": []
+  },
+  "working_set": []
+}

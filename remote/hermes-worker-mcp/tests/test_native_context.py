@@ -11,6 +11,14 @@ class NativeContextTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_project_root("/")
 
+    def test_allowed_roots_are_canonical_and_server_enforced(self):
+        allowed = "/main/projects/repo"
+        self.assertEqual(validate_project_root(allowed, (allowed,)), allowed)
+        with self.assertRaisesRegex(ValueError, "outside"):
+            validate_project_root("/main/projects/other", (allowed,))
+        with self.assertRaisesRegex(ValueError, "outside"):
+            validate_project_root(allowed + "/child", (allowed,))
+
     def test_context_is_native_not_bridge(self):
         text = instructions("/home/user/repo")
         self.assertIn("native remote Hermes Agent", text)
