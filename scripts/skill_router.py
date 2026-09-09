@@ -68,6 +68,7 @@ SIGNALS: tuple[tuple[str, tuple[str, ...], int, str], ...] = (
     ("openspec-change", ("openspec", "spec driven", "spec-driven", "behavioral spec", "context-impact"), 97, "OpenSpec/spec-driven change requested"),
     ("project-exploration", ("understand this project", "explore repository", "project orientation", "project map", "unfamiliar repository"), 91, "bounded project orientation requested"),
     ("architecture-design", ("architecture design", "system architecture", "design architecture", "adr", "architecture review"), 90, "architecture work requested"),
+    ("java-maven-jar-analysis", ("maven dependency", "maven dependencies", "maven project", "maven coordinate", "jar contents", "jar api", "javap", "jdeps", "mvn dependency:tree", "pom.xml"), 94, "Java/Maven/JAR inspection requested"),
     ("humanizer", ("humanize", "ai sounding", "sound natural", "natural prose"), 100, "prose rewrite requested"),
     ("grilling", ("grill me", "stress test this plan", "interrogate this plan", "challenge my plan"), 100, "requirements stress-test requested"),
     ("graphify", ("graphify", "knowledge graph", "dependency graph across"), 100, "knowledge-graph analysis requested"),

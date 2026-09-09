@@ -54,6 +54,7 @@ bb933c28380517de26a7cfe50b917b15b890dc222ef92fdb1d12b7e015e28c07  ./.agents/skil
 9d87ff83149a04f86a372948b8ee35fa249de20923867bbc2a49304290aad736  ./.agents/skills/catalog/humanizer/agents/openai.yaml
 7cc19dd2fc457eb20d65c44dee4d1b72dcdfcd1617182f5bff666700f2a055d8  ./.agents/skills/catalog/investigate-first/SKILL.md
 9836c3e7e71564810abb1eeb66341e8ef180c457d4e121fe772cbf53e41a9268  ./.agents/skills/catalog/investigate-first/agents/openai.yaml
+9c1851d99539ec74cff054c2cace37d120748da0a51cfb81ba07a96ae51e0dce  ./.agents/skills/catalog/java-maven-jar-analysis/SKILL.md
 97d1ae0728955c4203922753d5656890e5e4dd371b8306ea11884f9b510f1b85  ./.agents/skills/catalog/json-canvas/SKILL.md
 f5ce15a4b74643122396265e8c37c828874a4005794de2aee7030662968768eb  ./.agents/skills/catalog/json-canvas/references/EXAMPLES.md
 b1ac359b5aeca8ebd53ab50a84c964442641d53221d983c6ab796fbcddff1ef0  ./.agents/skills/catalog/karpathy-guidelines/SKILL.md
@@ -156,7 +157,9 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/adr
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/domain/.gitkeep
 9452e24638a8104294494bbbf924b73f120421fb5e8625e2829f8694fff7d89a  ./.ai/wiki/glossary/domain.md
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/interfaces/.gitkeep
+919cdb003f198b4fe61daad09c6b18ec40d3d92e4521ebabdef749ec28f475a1  ./.ai/wiki/interfaces/java-jar-analyzer.md
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/modules/.gitkeep
+87b04301241bfd99f56fb8909f0b801d35ebb622753aa5001e0217f80b9248a6  ./.ai/wiki/modules/java-maven-jar-analysis.md
 2f9d2a38c1f3109c6479273408d25d2d6df3c09c0aa2f2b153d80d7b4a0ac304  ./.ai/wiki/project/project-map.md
 4b5481064c3e3ab93895e0bd9e8a2c5cff42745ddda5eb77b90671f3822970cc  ./.ai/wiki/project/task-handoff.md
 f554c079bae43486eda9a0cdaeef7e6c93887f7fb821968b8ae45930294a5819  ./.env.example
@@ -174,7 +177,7 @@ e62335a824f6620bf0c63a6ffaa6e76f2c2b585f9bb049c17793ce6c03970e99  ./AGENTS.md
 e40793beed54200fc787a7967acac0ce990c148f2da47e0386a6d14b52025c8e  ./Makefile
 04cb5b15c9b21bb57f37838bbc01ccce6e639f056e5b922912de95fb0b2adfc0  ./NOTICE
 eadeee82d8c8395abe9a151d23788ba901977abf426713b1748fb8a108fb0bb2  ./QA_REPORT.md
-ed07f4a43e5b93903198b957aa9653d5f8eca48b1e5040af0f2a1a49091aad17  ./README.md
+c958d5433b5c6a31b143c2254d1cca7f95f7cc9a2898f5031aba356155aa2bf2  ./README.md
 e1d49c569ae09b2ede16e2d83820a3809b35eb6c44c13ba9b5330598d6b8f43c  ./VERSION
 630a7a446ef9e634f6e60df876cf81327f7311de3972e30e1fe62afee5b87684  ./docs/CONFIGURATION.md
 b3d845c0978db7bdecd71f13c359d6d58c48c3faf05359c044afeb3f9270a7be  ./docs/HERMES_NATIVE_SETUP.md
@@ -184,7 +187,7 @@ e1ed0e8a22d26ecd35458aa3094117bb290d1706d99dddc08ec559db2eb495e8  ./docs/HERMES_
 e5d3b84145be7110d7e5106b16b18ac7cda33f6fd788706cf9ad431c52e8737d  ./docs/PROJECT_STRUCTURE.md
 9a4d0944a0c035432b3cf4bdcd858f3dfb91a6df37de26bb291f3326d7e4a765  ./docs/QUICKSTART.md
 bf7b5f6bf8e40a9031fcbf299e88e55fbc9db4431a4148909898648fab72fc1f  ./docs/README.md
-1fea96e21e432ba5c7f4620cb793a00b1931da749f7ed7302d804245a832fd67  ./docs/REPORT_RECOMMENDATION_MATRIX.md
+3f456c0a8215e1598e4becbd1dd88ff20ed7badbf512a07e5f31da9671d6c361  ./docs/REPORT_RECOMMENDATION_MATRIX.md
 705ba2c3c671626eeda6ad4d3cb672668efb3bf63543fba4a1a5060b7fb7f0a6  ./docs/SECURITY.md
 66e141dfa1933ce9f3f0161bc17e83e5fa3351b947a245f8871efa682c0f5445  ./docs/SKILLS.md
 918d6b9f61c6f8eecaeab2085cd9a67d89df3de96fbb914b869009606ab460d4  ./docs/THIRD_PARTY_LICENSES.md
@@ -202,7 +205,7 @@ a20036df587775fd02ecf49be662fde5662931875b7b648816ec0625130ee20a  ./docs/convent
 1a1195b6a773501f29a4f8b7f41d52c9d45daf775c222eb0f381787158295716  ./docs/conventions/verification-and-quality-gates.md
 eea0a1baefae02997559058d7b1d5cc8acd9e90f7ad3ad37060d839ca75280f1  ./docs/migration/UPGRADE_TO_V4.md
 97a3986a56cb77f1a96329ba23c1ad80570c79c3486a095bd3c2ee01b826fbee  ./docs/superpowers/plans/2026-09-05-adaptive-skill-runtime.md
-546b8ba260796d3efa6f414c3dd361988e6f812c4d8b0426d2523cb670b6bc4c  ./evals/routing/cases.json
+cdea6ffc577b634cdec48d8f5e5c4021548542765aafee9d3bc711e2019a4fe1  ./evals/routing/cases.json
 0e8006ed7c5cd273643f9b826eae3677e077a5957d8b47cadfb46b958fb66bda  ./harness.py
 03b55cad481b40c6f5bc4fdbf0c5b0306a66882b1cd145242a16f7d615f2719e  ./infra/compose.yaml
 4f63ef246ed1f9c809fe484de35b1e6dce936e423ca253c722709cb2cc84fd10  ./infra/crawl4ai-http-bridge/Dockerfile
@@ -235,6 +238,11 @@ c92ae6e79c3ec3af8ab8c0ba3313c4e7d4f687fe3ce3e3adbfaa258f60dce384  ./openspec/cha
 9672f861f08fb7ef14dd6372a262814de8000c63e449e67e733c4fee7c233ebd  ./openspec/changes/archive/2026-09-07-openspec-client-skill-coexistence/proposal.md
 0f0905f5093ca625c4e5443e9b9e69ab023a0685bce0d575ff4af18c788a67df  ./openspec/changes/archive/2026-09-07-openspec-client-skill-coexistence/specs/skill-integration/spec.md
 305baec21b0c97d0f76a87a96e4788800acc615a4da7035574dd32f9fb333345  ./openspec/changes/archive/2026-09-07-openspec-client-skill-coexistence/tasks.md
+be51b4ec9ed6f6f8eeca41bd3b908c449e5d68e26c3690e51fe13d326ed3a82b  ./openspec/changes/java-maven-jar-skill-adoption/context-impact.md
+bc293df271d254ecc6287da8c9006dc381b20d15f39cd477a7bf5c20c1c3537f  ./openspec/changes/java-maven-jar-skill-adoption/design.md
+030bade97e3482e7798244a6814bea062956437636fe146d4ecbd4073bbb9c15  ./openspec/changes/java-maven-jar-skill-adoption/proposal.md
+f150e96566c9a1e2dddb6667ff587f0c6a051d85b383653f2e843e25eb3d416a  ./openspec/changes/java-maven-jar-skill-adoption/specs/java-maven-jar-analyzer/spec.md
+fce1c3b998d181fcca46ba09a5ca09556ad3d595b69383d5507bc54907e57ddf  ./openspec/changes/java-maven-jar-skill-adoption/tasks.md
 2e15a88f5b5d61d4d4994da96a82de7e536f524566e0ac20deaf2110a1c7a6ce  ./openspec/changes/production-readiness-remediation/.openspec.yaml
 0b3bea9f17df2788750f07d5307c0870be7cf0bb65339bbcea8d84adbf0c9be2  ./openspec/changes/production-readiness-remediation/README.md
 7c59c57ec166ccc2930d35e156f0b8267d0b2530d4d61d29e5d5eda746dd7b0e  ./openspec/changes/production-readiness-remediation/context-impact.md
@@ -293,7 +301,7 @@ e5ba9a524e71d4bcffccf7760390052e8d6d65bc8d589eb81be3d6be4d16d7a5  ./scripts/herm
 399e2abc28d1d89dc37502c9f46bb9c76902e37e30bf0e52bc008ba85188a1b6  ./scripts/render_hermes_remote_setup.py
 521ccafea594f6b0694a135cf2262bd1872756c0741d4e167563342f9c382c1a  ./scripts/repo_recon.py
 33fd4782e5235080fdba7a690343bb70cedd405eaebf5f7137150a89bbdc6aef  ./scripts/session_state.py
-7b82316739e703f5e0ae9b379f310bba9703b1b2a8aa0d42858deb6d7e1e68b3  ./scripts/skill_router.py
+5310b7e2ada926cc067127a86a7920b3c4b2e7baef5ca3c06cd5f586e60cf488  ./scripts/skill_router.py
 df292f50759e3e8c75b024aa21abc96bc3cf034115f07669149a8d75b4586156  ./scripts/stack.py
 da388f3da37fd99cc8420a7a9d2aaf971d252c2cd229647ae9537fee5d75c83a  ./scripts/sync_skills.py
 49bd4147f59065a46a514db2f49c470930e473b9a3b019357d108353b825aaff  ./scripts/verify.py
@@ -311,7 +319,7 @@ e4f59b387df5a5fa7fd1982792e303d5f4409e7bb3a205f3bdccf08c806ef7c1  ./templates/op
 571e8626bde41029b73f043c556c8786612cc4da86de4cf4f3aaf09988f35015  ./tests/test_production_reliability.py
 1ea96b8d331c530eb03aa9634b6b1b92b70a5d00332cd32705163d0ace5d8a7d  ./tests/test_remote_sidecar.py
 5bac8518ab4bfb2b803537496c24f60534ff66290377e145932cbd6fdfed6d15  ./tests/test_skill_router_eval.py
-7c0d49c9e6f6c1b49f3644173080a1b237f14e5471d1a13aa50f651e48858636  ./tests/test_skill_runtime.py
+8c4b7a467d8849036556c022f3414598b8e515ce2136a57d185f6f1f72da96cd  ./tests/test_skill_runtime.py
 027a332a6f9fee51db93e4bdf8587ce04d30e776e5e015e3da5c404d11ec6f5c  ./third_party/licenses/skills/agentic-native-platform/LICENSE
 94fe75d355887f84ee7eefca68e06d8d082a23dad47a8e1f58a94d98900edf5b  ./third_party/licenses/skills/caveman/LICENSE
 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  ./third_party/licenses/skills/graphify/LICENSE

@@ -239,6 +239,21 @@
       "require": [
         "architecture-design"
       ]
+    },
+    {
+      "id": "java-maven-jar-analysis",
+      "prompt": "Which transitive dependencies does com.example.Widget pull from org.example:widget-core:2.1 in this Maven project?",
+      "require": [
+        "java-maven-jar-analysis"
+      ]
+    },
+    {
+      "id": "java-gradle-near-miss",
+      "prompt": "Resolve the Gradle dependency graph for this Java service",
+      "require": [],
+      "exclude": [
+        "java-maven-jar-analysis"
+      ]
     }
   ]
 }
