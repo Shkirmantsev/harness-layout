@@ -1,0 +1,59 @@
+{
+  "budgets": {
+    "steps_max": 24,
+    "steps_used": 24
+  },
+  "context": [
+    "Upstream Hermes issue 98728 documents api_server being classified unattended even for resolver-backed /v1/runs; PR 98735 requires an explicit resolver capability to avoid making generic webhooks unsafe"
+  ],
+  "decisions": [
+    "Treat the OpenCode approval failure as an upstream Hermes resolver-capability defect; never weaken safety with unattended auto-approval"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Deployed the revision-scoped Hermes capability patch and hardened MCP sidecar to the live worker with rollback backups",
+      "Proved generated OpenCode delegation pauses and resumes the exact run for explicit deny and once decisions",
+      "Proved live sidecar rejects an unauthorized project root before run submission"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-09-08T18:43:50+00:00",
+    "id": "PRODUCTION-READINESS-REMEDIATION",
+    "project": "harness-layout",
+    "updated_at": "2026-09-09T08:06:43+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "OpenCode Hermes runs surface approval pauses and explicit approval or denial resumes the correct run without weakening default safety",
+      "Full harness check, strict OpenSpec validation, manifest verification, Linux tests, and cross-platform static/regression tests pass",
+      "Hermes project roots are server-enforced, secret writes are atomic/private, wait deadlines are bounded, and skill sync is race-safe",
+      "CI, dependency ownership, documentation links, QA evidence, and review report are updated consistently"
+    ],
+    "goal": "Fix the OpenCode-to-Hermes delegation approval lifecycle and every actionable finding in HERMES_REVIEW.md",
+    "openspec_change": "production-readiness-remediation",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "python3 harness.py check: PASS (69 root tests, 5 project-context tests, strict OpenSpec, 331-file manifest)",
+      "live Hermes health, model, resolver_scoped_run_approvals, and sidecar health: PASS",
+      "generated OpenCode adapter live deny and once approval cycles: PASS",
+      "live MCP sidecar unauthorized-root rejection: PASS"
+    ],
+    "pending": []
+  },
+  "working_set": []
+}
