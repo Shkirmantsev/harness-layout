@@ -1,15 +1,13 @@
-from __future__ import annotations
-
 import json
 import os
 from pathlib import Path
 
-from mcp.server import MCPServer
+from mcp.server.fastmcp import FastMCP
 
 from .core import build_index, code_symbol as find_symbol, get_document, search, validate
 
 ROOT = Path(os.environ.get("PROJECT_ROOT", ".")).expanduser().resolve()
-mcp = MCPServer(
+mcp = FastMCP(
     "project-context",
     instructions="Search first; retrieve selected Markdown only. OpenSpec proposed changes are not current behavior until adopted.",
 )
@@ -89,13 +87,17 @@ def kb_refresh() -> dict:
 
 def main() -> None:
     import argparse
+    import anyio
     global ROOT
     parser = argparse.ArgumentParser(description="Project knowledge MCP server")
     parser.add_argument("--root", default=str(ROOT), help="Absolute project repository path")
     ROOT = Path(parser.parse_args().root).expanduser().resolve()
     if not ROOT.is_dir():
         parser.error("project root must be an existing directory")
-    mcp.run()
+    # The asyncio backend can deadlock the SDK's zero-buffer stdio memory
+    # streams in some supported environments. Trio uses the same MCP protocol
+    # implementation without that cross-task-group scheduler failure.
+    anyio.run(mcp.run_stdio_async, backend="trio")
 
 if __name__ == "__main__":
     main()
