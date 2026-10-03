@@ -1,0 +1,66 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [],
+  "decisions": [
+    "User owns development-to-main PR creation and merge; source donor remains read-only and no business logic was imported"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Implemented all 20 donor harness commands plus Wiki init and foreground MCP through portable Make/Python; corrected connectable HTTP transport and Windows process ownership; feature merged locally and published into dev; dated current spec adopted and change archived"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T21:45:38+00:00",
+    "id": "SESSION-20261003-214538-B265",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T22:07:05+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "All donor harness Make aliases plus run/stop/status/logs/clean MCP and Wiki init are available through portable Python CLI; background MCP accepts real clients; existing stdio works; Linux/Windows focused and full checks pass; feature integrated into dev only"
+    ],
+    "goal": "Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands",
+    "openspec_change": "add-portable-harness-commands",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "PASS: 100-test local full gate and all seven native CI jobs on feature 37307fa; real Windows 3.11/3.13 HTTP/stdio and Make under cmd.exe; final strict OpenSpec 8 items, Wiki 10 docs and 375-file manifest"
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": "Makefile",
+      "sha256": "3f0980c1a1812db49246712920136141ffa1d6b9048726d9f4311afe9341e8d6"
+    },
+    {
+      "path": "harness.py",
+      "sha256": "f4b24e797e57b8499a4f320507aa9dcd3cb099bcbd2fee12c92e874ce5ceaa66"
+    },
+    {
+      "path": "openspec/specs/2026-10-04-harness-command-lifecycle/spec.md",
+      "sha256": "6789d0a542345c8ce2e009881a7b3bfa7dccd681d5b5d4d61a9adcc3850e2962"
+    },
+    {
+      "path": "scripts/project_mcp.py",
+      "sha256": "1de618719e55e28fed4817a25ec1bde1402853b9076504fdf577427c0e996dda"
+    }
+  ]
+}

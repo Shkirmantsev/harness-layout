@@ -63,4 +63,13 @@ jobs:
       - run: python harness.py mcp-install
       - run: Copy-Item .env.example .env
       - run: python scripts/bootstrap_env.py
+      - name: Ensure GNU Make for native Windows command verification
+        shell: pwsh
+        run: |
+          if (-not (Get-Command make -ErrorAction SilentlyContinue)) {
+            choco install make --no-progress -y
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+      - run: make help PYTHON=python SHELL=cmd.exe
+      - run: make wiki-init PYTHON=python SHELL=cmd.exe
       - run: python harness.py check-delegated

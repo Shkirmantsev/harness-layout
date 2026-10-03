@@ -5,6 +5,7 @@
 ## Setup and daily work
 
 - [Quick start](QUICKSTART.md): initialize, install MCP, and validate.
+- [Harness commands and MCP lifecycle](HARNESS_COMMANDS.md): setup, Wiki init and manual MCP start/stop.
 - [Usage](USAGE_EN.md): daily commands and workflows.
 - [Configuration](CONFIGURATION.md): supported settings and client generation.
 - [OpenCode compatibility](OPENCODE_COMPATIBILITY.md): selecting a configuration generation.

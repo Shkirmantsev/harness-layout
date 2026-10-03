@@ -1,6 +1,9 @@
-SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := help
+ifeq ($(OS),Windows_NT)
+PYTHON ?= python
+else
 PYTHON ?= python3
+endif
 STACK := $(PYTHON) scripts/stack.py
 
 .PHONY: help init init-mcp env-sync runtime check wiki-index wiki-validate openspec-check mcp-install \
@@ -8,11 +11,8 @@ STACK := $(PYTHON) scripts/stack.py
         skills-sync-local skills-sync-remote skills-check manifest-generate manifest-check hermes-host-setup hermes-host-revoke \
         hermes-sidecar-copy hermes-remote-instructions hermes-check hermes-import verify verify-models test clean
 
-help: ## Show all harness commands.
-	@printf "\nHarness Layout v4 — portable core + optional integrations\n\n"
-	@awk 'BEGIN {FS = ":.*## "}; /^[a-zA-Z0-9_.-]+:.*## / {printf "  \033[36m%-28s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-	@printf "\nPortable equivalent on any OS: python harness.py <command>\n"
-	@printf "Typical: make init -> edit .env if needed -> make mcp-install -> make client-config -> make check\n\n"
+help: ## Show all harness commands without a POSIX shell dependency.
+	@$(PYTHON) harness.py help
 
 init: ## Portable core init; also disables telemetry when OpenSpec is installed.
 	@$(PYTHON) harness.py init
@@ -112,8 +112,7 @@ hermes-check: ## Optional: verify remote Hermes control paths without paid infer
 	@$(PYTHON) scripts/verify.py --only-hermes
 
 hermes-import: ## Optional: stage external file into PROJECT_ROOT/.harness/inbox. FILE=/path/file
-	@test -n "$(FILE)" || (echo "Usage: make hermes-import FILE=/path/to/file"; exit 2)
-	@$(PYTHON) scripts/hermes_import.py "$(FILE)"
+	@$(PYTHON) scripts/hermes_import.py $(if $(FILE),"$(FILE)",)
 
 verify: ## Verify enabled optional services; remote inference is NOT RUN by default.
 	@$(PYTHON) scripts/verify.py
@@ -126,3 +125,65 @@ test: ## Run core tests without requiring Docker/Tailscale.
 
 clean: ## Remove generated clients/index/runtime state; preserve .env and source.
 	@$(PYTHON) harness.py clean
+
+
+# Portable manual MCP lifecycle; configured stdio clients still own their processes.
+run-mcp: ## Start connectable background MCP on Windows, Linux or macOS.
+	@$(PYTHON) harness.py run-mcp
+
+mcp-run: run-mcp ## Alias of run-mcp.
+
+stop-mcp: ## Stop the background MCP started by run-mcp.
+	@$(PYTHON) harness.py stop-mcp
+
+mcp-stop: stop-mcp ## Alias of stop-mcp.
+
+mcp-status: ## Show whether background project-context MCP is ready.
+	@$(PYTHON) harness.py mcp-status
+
+mcp-logs: ## Show the recent project-context MCP log.
+	@$(PYTHON) harness.py mcp-logs
+
+mcp-clean: ## Remove stopped background MCP state and log files.
+	@$(PYTHON) harness.py mcp-clean
+
+mcp-stdio: ## Run foreground MCP stdio for a client.
+	@$(PYTHON) harness.py mcp-stdio
+
+wiki-init: ## Validate existing Wiki and initialize its local index.
+	@$(PYTHON) harness.py wiki-init
+
+init-wiki: wiki-init ## Alias of wiki-init.
+
+check-delegated: ## Run secret-free CI verification.
+	@$(PYTHON) harness.py check-delegated
+
+# Donor-compatible harness names for embedding beside product Make targets.
+
+harness-init: init ## Alias of init.
+
+harness-init-mcp: init-mcp ## Alias of init-mcp.
+
+harness-mcp-install: mcp-install ## Alias of mcp-install.
+
+harness-client-config: client-config ## Alias of client-config.
+
+harness-check: check ## Alias of check.
+
+harness-check-delegated: check-delegated ## Alias of check-delegated.
+
+harness-test: test ## Alias of test.
+
+harness-wiki-index: wiki-index ## Alias of wiki-index.
+
+harness-wiki-validate: wiki-validate ## Alias of wiki-validate.
+
+harness-openspec-check: openspec-check ## Alias of openspec-check.
+
+harness-manifest-generate: manifest-generate ## Alias of manifest-generate.
+
+harness-manifest-check: manifest-check ## Alias of manifest-check.
+
+harness-clean: clean ## Alias of clean.
+
+.PHONY: run-mcp mcp-run stop-mcp mcp-stop mcp-status mcp-logs mcp-clean mcp-stdio wiki-init init-wiki check-delegated harness-init harness-init-mcp harness-mcp-install harness-client-config harness-check harness-check-delegated harness-test harness-wiki-index harness-wiki-validate harness-openspec-check harness-manifest-generate harness-manifest-check harness-clean
