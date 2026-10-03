@@ -37,7 +37,14 @@ pull requests with merge commits through GitHub.
 
 
 - [x] Add full Windows CI on Python 3.11/3.13 including installed MCP and strict OpenSpec.
-- [ ] Verify every Linux/Windows full gate and integrate the feature locally into dev.
-- [ ] Publish dev and leave dev-to-main PR #2 for the user to merge on GitHub.
+- [x] Verify every Linux/Windows full gate and integrate the feature locally into dev.
+- [x] Publish dev and leave dev-to-main PR #2 for the user to merge on GitHub.
 
 - [x] Preserve cross-platform manifest bytes with the generic LF text checkout policy.
+
+
+Full platform evidence: feature commit `d83244b` passed all seven CI jobs,
+including full Windows gates on Python 3.11 and 3.13. Both Windows logs show
+the real stdio MCP exchange, 84 tests without skips and a passing 352-file
+manifest. The feature was merged locally into dev as commit `88358ee` and
+published; the user owns the final main merge through GitHub PR #2.

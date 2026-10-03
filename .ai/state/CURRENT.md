@@ -5,8 +5,8 @@
 Structured source: [handoffs/SESSION-20261003-110544-59B1.json](handoffs/SESSION-20261003-110544-59B1.json)
 
 Task: `SESSION-20261003-110544-59B1`
-Status: `verifying`
-Updated: `2026-10-03T11:06:35+00:00`
+Status: `complete`
+Updated: `2026-10-03T11:13:47+00:00`
 Active OpenSpec change: `adopt-downstream-harness-improvements`
 
 ## Objective
@@ -19,13 +19,13 @@ Verify full Linux and Windows harness support and integrate into dev; user owns 
 
 ## Completed
 
-- Added full Windows CI gates on Python 3.11/3.13 including real MCP handshake, strict OpenSpec and manifest checks
+- Required Linux/Windows support captured in current requirements and full Windows CI gates with pinned test/MCP tooling and LF checkout policy
+- All seven feature CI jobs passed; real MCP handshake and 84-test full gates passed on Windows Python 3.11 and 3.13 without skips
+- Merged the feature locally into dev as 88358ee and published dev; main remains for user-managed GitHub PR 2
 
 ## Remaining
 
-- Add full Windows CI and requirements
-- Verify feature PR checks on both operating systems
-- Merge locally into dev, publish dev and finalize handoff
+- none
 
 ## Blocked
 
@@ -33,7 +33,7 @@ Verify full Linux and Windows harness support and integrate into dev; user owns 
 
 ## Decisions
 
-- Linux and Windows are required core platforms; user owns main merge; local feature-to-dev merge allowed today
+- User explicitly owns dev-to-main through GitHub; this agent task is complete at development integration and review handoff
 
 ## Relevant context
 
@@ -41,11 +41,13 @@ Verify full Linux and Windows harness support and integrate into dev; user owns 
 
 ## Working set
 
-- none
+- `.gitattributes`
+- `.github/workflows/verify.yml`
+- `openspec/specs/portable-harness-tooling/spec.md`
 
 ## Verification passed
 
-- none
+- PASS: native full Windows 3.11/3.13 and Linux gates, strict OpenSpec 7 items, Wiki 9 documents, 352-file manifest and both skill mirrors
 
 ## Verification pending
 
@@ -53,7 +55,7 @@ Verify full Linux and Windows harness support and integrate into dev; user owns 
 
 ## Next action
 
-Verify feature locally and through remote full Windows CI
+none
 
 ## Prerequisites
 

@@ -103,3 +103,10 @@ The generic donor line-ending policy is adopted in `.gitattributes`: text
 checkouts use LF on both systems, while Git detects binary files automatically.
 This preserves artifact-manifest byte hashes on Windows without importing
 business-specific file rules.
+
+
+Full Linux/Windows verification passed on feature commit `d83244b`: all seven CI
+jobs passed, including actual Windows MCP exchanges on Python 3.11 and 3.13,
+84 tests without skips and the 352-file manifest. Local dev integration preserved
+history with merge commit `88358ee` and was published. The agent leaves main to
+the user through GitHub PR #2; main was not changed by this integration step.
