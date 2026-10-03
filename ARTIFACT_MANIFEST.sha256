@@ -162,7 +162,7 @@ ba651415acbf993e00e173e3eb99cb6d74e4463d426db37579fc21d0dcb56c0d  ./.ai/wiki/int
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/modules/.gitkeep
 21fc91ebc9ef3eba94ee53458e41c8af7d8b008dcdba33db7a57911a85275cc9  ./.ai/wiki/modules/java-maven-jar-analysis.md
 4115d73e1a5a41c669ab6a7214562ff6f6de82769143c585d501cb23f38bd2f7  ./.ai/wiki/project/downstream-harness-adoption.md
-e76a082a920c32a5dfde39b0ed045130234dd16163af786bf4dfc1ba48f51233  ./.ai/wiki/project/harness-command-lifecycle.md
+d97582b0086f3720527e9cd07ff419d6387b9e0ff596c5783f385c364348319b  ./.ai/wiki/project/harness-command-lifecycle.md
 2f9d2a38c1f3109c6479273408d25d2d6df3c09c0aa2f2b153d80d7b4a0ac304  ./.ai/wiki/project/project-map.md
 421ee84d31860c88ff79b9c9e91c4135d31712f203c92332a5c9270f9345a3f3  ./.ai/wiki/project/task-handoff.md
 80e8a91e904a6a05fb88154916ce072dc69c34569f20bd4a080a518f61409aa3  ./.env.example
@@ -225,14 +225,8 @@ d8ab9aa0be1fe2824cdf4694f0a918b7ec23af9a490634cbda15ac060e8d0120  ./infra/litell
 d995eafe4d90252de4ad561e76de5b87590fb586d2db2b284320693b6770f4b6  ./infra/searxng-mcp/requirements.txt
 051282d6cfdbc19e463a699c2ee0155788014ab875387161002d2c0162f61599  ./infra/searxng-mcp/server.py
 eeccab0de13fdda203c936da0d7a3718b78086bd4f09c563cfa9cb112372ec87  ./infra/searxng/settings.yml
-3ab294152bc6821721e1a4a1e2c80f5da4bfa17cecd6be1b12b24dc014cf68cd  ./openspec/CURRENT.md
+9a8bb60aaf5976e7fe01b4e8ffb6778d6182f215e6bda5955b994c24532dd487  ./openspec/CURRENT.md
 e4d71c463c8e89e58f62392aae588686514c24c58068adbc91ec28112afb8dd2  ./openspec/README.md
-e3c5508a98252df94a7e2de96de9e5a5df2f3bbd5fecdabd43e21efc90face6b  ./openspec/changes/add-portable-harness-commands/.openspec.yaml
-7265d9dbc3fa62284a2a127b7b6aeb15aa1aef1010814087f90974f133bf76ff  ./openspec/changes/add-portable-harness-commands/context-impact.md
-952bba591cd6e4bdb854a5de311fea24f6911f51dee080314fe055dfc9692e78  ./openspec/changes/add-portable-harness-commands/design.md
-2929e2a1c31b790d942e78e2e3a576aaac672751cac91e913fe324cf5e6d9457  ./openspec/changes/add-portable-harness-commands/proposal.md
-9dbb2035aebc845e1cdd3c5dc33d4cfa3e45da7464533bc3b97c6dbe22985209  ./openspec/changes/add-portable-harness-commands/specs/2026-10-04-harness-command-lifecycle/spec.md
-2676edb82804c69aa3294391af5d83295152f3546e5c009b64796ae0583b64b4  ./openspec/changes/add-portable-harness-commands/tasks.md
 480344c74d43a947b755b5c9cae3ba0a302e517f2a36f038156673e21457be44  ./openspec/changes/archive/2026-09-07-automatic-session-handoff/context-impact.md
 75cb41051dffef2cb273fa4f91a66e2a1ea001f920b1c9c3671b0490cca98b1f  ./openspec/changes/archive/2026-09-07-automatic-session-handoff/design.md
 621780768f29a9f1d839a21b13a3da410b1b3a2cc397e8e2713dc574653872fa  ./openspec/changes/archive/2026-09-07-automatic-session-handoff/proposal.md
@@ -264,6 +258,12 @@ f4c58f047aaa210514d4612fb6ce24c082a0b215547689f81447316204d090c5  ./openspec/cha
 733b9494d1b8e58c265f4d315448646f9853a04ea6764bfb73b0b3d26c552810  ./openspec/changes/archive/2026-10-03-adopt-downstream-harness-improvements/specs/2026-09-07-skill-integration/spec.md
 b4d518f923c46f3da8fab1ae217b3d51292ad4f06f83c181eb00d444ba59b728  ./openspec/changes/archive/2026-10-03-adopt-downstream-harness-improvements/specs/2026-10-03-portable-harness-tooling/spec.md
 529369945db088eb246d11e4126b19066e9cc231007e890504b8bf473c85b78f  ./openspec/changes/archive/2026-10-03-adopt-downstream-harness-improvements/tasks.md
+e3c5508a98252df94a7e2de96de9e5a5df2f3bbd5fecdabd43e21efc90face6b  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/.openspec.yaml
+7265d9dbc3fa62284a2a127b7b6aeb15aa1aef1010814087f90974f133bf76ff  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/context-impact.md
+952bba591cd6e4bdb854a5de311fea24f6911f51dee080314fe055dfc9692e78  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/design.md
+2929e2a1c31b790d942e78e2e3a576aaac672751cac91e913fe324cf5e6d9457  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/proposal.md
+9dbb2035aebc845e1cdd3c5dc33d4cfa3e45da7464533bc3b97c6dbe22985209  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/specs/2026-10-04-harness-command-lifecycle/spec.md
+d9f53803a9504432ea1e78f0f5a77b151f8eb7e0f3fb62706142cb2366b01726  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/tasks.md
 bb6d9cd701d028c866ea6619d11cdf83b8fded439f57c86c97603721c95cc513  ./openspec/changes/java-maven-jar-skill-adoption/context-impact.md
 bc293df271d254ecc6287da8c9006dc381b20d15f39cd477a7bf5c20c1c3537f  ./openspec/changes/java-maven-jar-skill-adoption/design.md
 030bade97e3482e7798244a6814bea062956437636fe146d4ecbd4073bbb9c15  ./openspec/changes/java-maven-jar-skill-adoption/proposal.md
@@ -290,6 +290,7 @@ acad86b92b4224de406f73747628960e74cf4c52a420acf4a9dd3ce61d765a0c  ./openspec/cha
 c03bb5b7e15350dd16c76beba0069029d7f90daf206e4dbc57c82e4078e3e764  ./openspec/specs/2026-09-07-skill-integration/spec.md
 e65e29f3a358e4a04711f66e1e93266bf81009354b5948b99b439cf2722dd7af  ./openspec/specs/2026-10-03-openspec-governance/spec.md
 724eccd9c91a6e4161cc8225686b555428daec502ddd2d19ad979264872fe141  ./openspec/specs/2026-10-03-portable-harness-tooling/spec.md
+6789d0a542345c8ce2e009881a7b3bfa7dccd681d5b5d4d61a9adcc3850e2962  ./openspec/specs/2026-10-04-harness-command-lifecycle/spec.md
 b1a24fe09a4c240c66200421e505d8642b19109e61b32e19c24b236f4001f4ba  ./patches/hermes-agent/0001-resolver-backed-api-run-approvals.patch
 b4ba6bcefcb29973b5aacb063061e3de72171e77c5814a21f44d211e0e768c35  ./patches/hermes-agent/0002-legacy-981101-advertise-run-approval-resolver.patch
 b73cdab11c7f8ccda5b16925ae18fba893fbf5af01a23fbf89e94c96b3781763  ./remote/hermes-worker-mcp/.env.example

@@ -5,8 +5,8 @@
 Structured source: [handoffs/SESSION-20261003-214538-B265.json](handoffs/SESSION-20261003-214538-B265.json)
 
 Task: `SESSION-20261003-214538-B265`
-Status: `verifying`
-Updated: `2026-10-03T22:02:51+00:00`
+Status: `complete`
+Updated: `2026-10-03T22:07:05+00:00`
 Active OpenSpec change: `add-portable-harness-commands`
 
 ## Objective
@@ -19,7 +19,7 @@ Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands
 
 ## Completed
 
-- Fixed cleanup/start lock scope and Windows venv redirector ownership; final local full gate passes 100 tests
+- Implemented all 20 donor harness commands plus Wiki init and foreground MCP through portable Make/Python; corrected connectable HTTP transport and Windows process ownership; feature merged locally and published into dev; dated current spec adopted and change archived
 
 ## Remaining
 
@@ -31,7 +31,7 @@ Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands
 
 ## Decisions
 
-- New capability acceptance prefix uses 2026-10-04 after client date rollover; proposal creation date remains 2026-10-03
+- User owns development-to-main PR creation and merge; source donor remains read-only and no business logic was imported
 
 ## Relevant context
 
@@ -41,19 +41,20 @@ Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands
 
 - `Makefile`
 - `harness.py`
+- `openspec/specs/2026-10-04-harness-command-lifecycle/spec.md`
 - `scripts/project_mcp.py`
 
 ## Verification passed
 
-- PASS: full local harness check, 100 tests, real HTTP lifecycle and public stdio launcher; strict OpenSpec and Wiki
+- PASS: 100-test local full gate and all seven native CI jobs on feature 37307fa; real Windows 3.11/3.13 HTTP/stdio and Make under cmd.exe; final strict OpenSpec 8 items, Wiki 10 docs and 375-file manifest
 
 ## Verification pending
 
-- Native CI on corrected feature head
+- none
 
 ## Next action
 
-Publish feature-to-dev PR for native CI
+none
 
 ## Prerequisites
 

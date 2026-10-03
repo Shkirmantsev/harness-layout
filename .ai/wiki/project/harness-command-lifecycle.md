@@ -34,3 +34,10 @@ process ownership. The prior detached stdio implementation was not connectable.
 See tests/test_harness_commands.py and the MCP package's tests/test_lifecycle.py
 for alias/configuration, real protocol exchanges, duplicates, port conflicts and
 stop/cleanup preservation checks. Existing stdio handshake coverage is retained.
+
+Accepted requirements: [command lifecycle](../../../openspec/specs/2026-10-04-harness-command-lifecycle/spec.md).
+Verified feature `37307fa`: 100 local full-gate tests and all seven native CI jobs
+passed, including full Windows 3.11/3.13 HTTP/stdio and native Make checks.
+Windows venv redirectors are bypassed for the supervisor/server so process
+handles own the actual Python processes while loading the pinned venv packages.
+Development integration uses a local merge and remote push; main remains user-owned.

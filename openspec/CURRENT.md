@@ -11,6 +11,7 @@ and implementation explicitly. Proposed changes are excluded from this view.
 | Session handoff | [Spec](specs/2026-09-07-session-handoff/spec.md) |
 | Skill integration | [Spec](specs/2026-09-07-skill-integration/spec.md) |
 | Portable harness tooling | [Spec](specs/2026-10-03-portable-harness-tooling/spec.md) |
+| Harness command lifecycle | [Spec](specs/2026-10-04-harness-command-lifecycle/spec.md) |
 | OpenSpec governance | [Spec](specs/2026-10-03-openspec-governance/spec.md) |
 
 Maintain this inventory with every accepted addition, retirement or identity

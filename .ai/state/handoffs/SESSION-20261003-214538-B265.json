@@ -5,31 +5,31 @@
   },
   "context": [],
   "decisions": [
-    "New capability acceptance prefix uses 2026-10-04 after client date rollover; proposal creation date remains 2026-10-03"
+    "User owns development-to-main PR creation and merge; source donor remains read-only and no business logic was imported"
   ],
   "progress": {
     "blocked": [],
     "done": [
-      "Fixed cleanup/start lock scope and Windows venv redirector ownership; final local full gate passes 100 tests"
+      "Implemented all 20 donor harness commands plus Wiki init and foreground MCP through portable Make/Python; corrected connectable HTTP transport and Windows process ownership; feature merged locally and published into dev; dated current spec adopted and change archived"
     ],
     "todo": []
   },
   "resume": {
-    "next_action": "Publish feature-to-dev PR for native CI",
+    "next_action": "",
     "prerequisites": []
   },
   "runtime": {
-    "last_failure_fingerprint": "windows-venv-redirector-pid",
-    "next_decision": "continue",
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
     "no_progress_windows": 0,
-    "repeated_failure_count": 1
+    "repeated_failure_count": 0
   },
   "schema_version": "1.0",
   "session": {
     "created_at": "2026-10-03T21:45:38+00:00",
     "id": "SESSION-20261003-214538-B265",
     "project": "harness-layout",
-    "updated_at": "2026-10-03T22:02:51+00:00"
+    "updated_at": "2026-10-03T22:07:05+00:00"
   },
   "task": {
     "acceptance": [
@@ -37,15 +37,13 @@
     ],
     "goal": "Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands",
     "openspec_change": "add-portable-harness-commands",
-    "status": "verifying"
+    "status": "complete"
   },
   "verification": {
     "passed": [
-      "PASS: full local harness check, 100 tests, real HTTP lifecycle and public stdio launcher; strict OpenSpec and Wiki"
+      "PASS: 100-test local full gate and all seven native CI jobs on feature 37307fa; real Windows 3.11/3.13 HTTP/stdio and Make under cmd.exe; final strict OpenSpec 8 items, Wiki 10 docs and 375-file manifest"
     ],
-    "pending": [
-      "Native CI on corrected feature head"
-    ]
+    "pending": []
   },
   "working_set": [
     {
@@ -55,6 +53,10 @@
     {
       "path": "harness.py",
       "sha256": "f4b24e797e57b8499a4f320507aa9dcd3cb099bcbd2fee12c92e874ce5ceaa66"
+    },
+    {
+      "path": "openspec/specs/2026-10-04-harness-command-lifecycle/spec.md",
+      "sha256": "6789d0a542345c8ce2e009881a7b3bfa7dccd681d5b5d4d61a9adcc3850e2962"
     },
     {
       "path": "scripts/project_mcp.py",
