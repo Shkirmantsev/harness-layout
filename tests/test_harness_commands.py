@@ -4,6 +4,8 @@ import subprocess
 import sys
 import tempfile
 import json
+import io
+import os
 import tomllib
 import unittest
 from unittest import mock
@@ -91,6 +93,42 @@ class HarnessCommandsTests(unittest.TestCase):
             with mock.patch.object(project_mcp, 'process_alive', return_value=False), mock.patch.object(project_mcp.os, 'kill') as kill:
                 self.assertEqual(lifecycle.stop(), 0)
                 kill.assert_not_called()
+
+    def test_supervisor_errors_log_traceback_and_record_failure(self):
+        for error in (KeyError('home'), FileNotFoundError('missing interpreter 工具')):
+            with self.subTest(error=type(error).__name__), tempfile.TemporaryDirectory() as raw:
+                lifecycle = project_mcp.Lifecycle(Path(raw))
+                lifecycle.write({'phase': 'starting', 'workerPid': os.getpid(),
+                                 'instance': 'fixture', 'python': 'missing-python',
+                                 'root': str(ROOT), 'port': 18883})
+                with mock.patch.object(project_mcp.signal, 'signal'), mock.patch.object(project_mcp, 'server_command', side_effect=error if isinstance(error, KeyError) else None, return_value=['fixture']), mock.patch.object(project_mcp.subprocess, 'Popen', side_effect=error):
+                    self.assertEqual(lifecycle.worker(), 1)
+                self.assertEqual(lifecycle.read()['phase'], 'failed')
+                diagnostic = lifecycle.log_file.read_text(encoding='utf-8')
+                self.assertIn('Traceback (most recent call last)', diagnostic)
+                self.assertIn(type(error).__name__, diagnostic)
+                self.assertIn(str(error), diagnostic)
+                with mock.patch('sys.stdout', new_callable=io.StringIO) as output:
+                    lifecycle.logs()
+                    self.assertIn(str(error), output.getvalue())
+
+    def test_supervisor_logs_before_cleaning_up_owned_child(self):
+        with tempfile.TemporaryDirectory() as raw:
+            lifecycle = project_mcp.Lifecycle(Path(raw))
+            lifecycle.write({'phase': 'starting', 'workerPid': os.getpid(),
+                             'instance': 'fixture', 'python': 'python',
+                             'root': str(ROOT), 'port': 18883})
+            child = mock.Mock(pid=123)
+            child.poll.side_effect = [RuntimeError('supervisor loop failure'), None]
+            def assert_diagnostic_saved():
+                self.assertIn('RuntimeError: supervisor loop failure',
+                              lifecycle.log_file.read_text(encoding='utf-8'))
+            child.kill.side_effect = assert_diagnostic_saved
+            with mock.patch.object(project_mcp.signal, 'signal'), mock.patch.object(project_mcp, 'server_command', return_value=['fixture']), mock.patch.object(project_mcp.subprocess, 'Popen', return_value=child):
+                self.assertEqual(lifecycle.worker(), 1)
+            child.kill.assert_called_once()
+            child.wait.assert_called_once_with(timeout=5)
+            self.assertEqual(lifecycle.read()['phase'], 'failed')
 
     def test_clean_runtime_refuses_background_mcp_before_removing_files(self):
         with mock.patch.object(project_mcp.Lifecycle, 'active', return_value=True), mock.patch.object(harness.shutil, 'rmtree') as remove:

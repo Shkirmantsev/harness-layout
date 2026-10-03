@@ -41,3 +41,9 @@ passed, including full Windows 3.11/3.13 HTTP/stdio and native Make checks.
 Windows venv redirectors are bypassed for the supervisor/server so process
 handles own the actual Python processes while loading the pinned venv packages.
 Development integration uses a local merge and remote push; main remains user-owned.
+
+Supervisor-side failures (including malformed venv configuration and interpreter
+launch errors) append the exception and traceback to the lifecycle log before
+recording failure. Owned-child cleanup remains in the failure path, including
+when diagnostic logging itself fails. `mcp-logs` exposes these diagnostics.
+Regression coverage lives in tests/test_harness_commands.py.
