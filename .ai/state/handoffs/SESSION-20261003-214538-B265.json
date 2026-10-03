@@ -5,12 +5,12 @@
   },
   "context": [],
   "decisions": [
-    "Adapt donor detached stdio supervisor into localhost HTTP with readiness checks; no os.kill(pid,0) on Windows; Make core recipes no longer require Bash/awk"
+    "New capability acceptance prefix uses 2026-10-04 after client date rollover; proposal creation date remains 2026-10-03"
   ],
   "progress": {
     "blocked": [],
     "done": [
-      "Complete donor harness command surface implemented; public Make workflow, HTTP ownership and foreground stdio launchers pass; full local gate passes 100 tests"
+      "Fixed cleanup/start lock scope and Windows venv redirector ownership; final local full gate passes 100 tests"
     ],
     "todo": []
   },
@@ -19,17 +19,17 @@
     "prerequisites": []
   },
   "runtime": {
-    "last_failure_fingerprint": "",
+    "last_failure_fingerprint": "windows-venv-redirector-pid",
     "next_decision": "continue",
     "no_progress_windows": 0,
-    "repeated_failure_count": 0
+    "repeated_failure_count": 1
   },
   "schema_version": "1.0",
   "session": {
     "created_at": "2026-10-03T21:45:38+00:00",
     "id": "SESSION-20261003-214538-B265",
     "project": "harness-layout",
-    "updated_at": "2026-10-03T21:57:44+00:00"
+    "updated_at": "2026-10-03T22:02:51+00:00"
   },
   "task": {
     "acceptance": [
@@ -41,10 +41,10 @@
   },
   "verification": {
     "passed": [
-      "PASS: python3 harness.py check, 100 tests without skips, strict OpenSpec, Wiki 10 docs and 374-file manifest; public Make lifecycle and real HTTP/stdio"
+      "PASS: full local harness check, 100 tests, real HTTP lifecycle and public stdio launcher; strict OpenSpec and Wiki"
     ],
     "pending": [
-      "Native Linux/Windows CI for the feature"
+      "Native CI on corrected feature head"
     ]
   },
   "working_set": [
@@ -54,11 +54,11 @@
     },
     {
       "path": "harness.py",
-      "sha256": "1cd5bbb0d7820e4ce4102e98adfc2360169911a7c7fc3438ff0d5750645704aa"
+      "sha256": "f4b24e797e57b8499a4f320507aa9dcd3cb099bcbd2fee12c92e874ce5ceaa66"
     },
     {
       "path": "scripts/project_mcp.py",
-      "sha256": "d8efb688a8692bafea347c4f98a829a84bd095ced9d5c642daff34b30b3ae5b5"
+      "sha256": "1de618719e55e28fed4817a25ec1bde1402853b9076504fdf577427c0e996dda"
     }
   ]
 }

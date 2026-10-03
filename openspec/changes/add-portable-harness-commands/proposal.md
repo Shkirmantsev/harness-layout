@@ -19,7 +19,7 @@ lifecycle commands. The donor's background stdio process has no client transport
 
 ### New Capabilities
 
-- `2026-10-03-harness-command-lifecycle`: portable commands and owned MCP lifecycle.
+- `2026-10-04-harness-command-lifecycle`: portable commands and owned MCP lifecycle.
 
 ### Modified Capabilities
 

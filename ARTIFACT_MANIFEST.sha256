@@ -211,7 +211,7 @@ a20036df587775fd02ecf49be662fde5662931875b7b648816ec0625130ee20a  ./docs/convent
 eea0a1baefae02997559058d7b1d5cc8acd9e90f7ad3ad37060d839ca75280f1  ./docs/migration/UPGRADE_TO_V4.md
 97a3986a56cb77f1a96329ba23c1ad80570c79c3486a095bd3c2ee01b826fbee  ./docs/superpowers/plans/2026-09-05-adaptive-skill-runtime.md
 cdea6ffc577b634cdec48d8f5e5c4021548542765aafee9d3bc711e2019a4fe1  ./evals/routing/cases.json
-1cd5bbb0d7820e4ce4102e98adfc2360169911a7c7fc3438ff0d5750645704aa  ./harness.py
+f4b24e797e57b8499a4f320507aa9dcd3cb099bcbd2fee12c92e874ce5ceaa66  ./harness.py
 03b55cad481b40c6f5bc4fdbf0c5b0306a66882b1cd145242a16f7d615f2719e  ./infra/compose.yaml
 4f63ef246ed1f9c809fe484de35b1e6dce936e423ca253c722709cb2cc84fd10  ./infra/crawl4ai-http-bridge/Dockerfile
 d995eafe4d90252de4ad561e76de5b87590fb586d2db2b284320693b6770f4b6  ./infra/crawl4ai-http-bridge/requirements.txt
@@ -229,9 +229,9 @@ eeccab0de13fdda203c936da0d7a3718b78086bd4f09c563cfa9cb112372ec87  ./infra/searxn
 e4d71c463c8e89e58f62392aae588686514c24c58068adbc91ec28112afb8dd2  ./openspec/README.md
 e3c5508a98252df94a7e2de96de9e5a5df2f3bbd5fecdabd43e21efc90face6b  ./openspec/changes/add-portable-harness-commands/.openspec.yaml
 7265d9dbc3fa62284a2a127b7b6aeb15aa1aef1010814087f90974f133bf76ff  ./openspec/changes/add-portable-harness-commands/context-impact.md
-bbad47164a0f81c8ba7aaa7ddf7e9113c18687bee01c1eb112cbf9ea89838a8d  ./openspec/changes/add-portable-harness-commands/design.md
-27d7de95eb10a3bafad30da5e8014b37f58578cda5f95487aafeffb398ea1270  ./openspec/changes/add-portable-harness-commands/proposal.md
-9dbb2035aebc845e1cdd3c5dc33d4cfa3e45da7464533bc3b97c6dbe22985209  ./openspec/changes/add-portable-harness-commands/specs/2026-10-03-harness-command-lifecycle/spec.md
+952bba591cd6e4bdb854a5de311fea24f6911f51dee080314fe055dfc9692e78  ./openspec/changes/add-portable-harness-commands/design.md
+2929e2a1c31b790d942e78e2e3a576aaac672751cac91e913fe324cf5e6d9457  ./openspec/changes/add-portable-harness-commands/proposal.md
+9dbb2035aebc845e1cdd3c5dc33d4cfa3e45da7464533bc3b97c6dbe22985209  ./openspec/changes/add-portable-harness-commands/specs/2026-10-04-harness-command-lifecycle/spec.md
 2676edb82804c69aa3294391af5d83295152f3546e5c009b64796ae0583b64b4  ./openspec/changes/add-portable-harness-commands/tasks.md
 480344c74d43a947b755b5c9cae3ba0a302e517f2a36f038156673e21457be44  ./openspec/changes/archive/2026-09-07-automatic-session-handoff/context-impact.md
 75cb41051dffef2cb273fa4f91a66e2a1ea001f920b1c9c3671b0490cca98b1f  ./openspec/changes/archive/2026-09-07-automatic-session-handoff/design.md
@@ -327,7 +327,7 @@ cdecb72e1f9bd4803acc073f5b9a5daa50b2f9aea756cd4c31b673948a6de3e4  ./scripts/conf
 e5ba9a524e71d4bcffccf7760390052e8d6d65bc8d589eb81be3d6be4d16d7a5  ./scripts/hermes_import.py
 53330c0a3411dc49e798e94234b42f2831a8015d82bf568e76aad793b904dd5e  ./scripts/lesson_candidate.py
 b8ed4553c4bfb3ccea1511810ffc3a0671336f6466a0a1b1c7f77b75275c83d5  ./scripts/openspec_layout.py
-d8efb688a8692bafea347c4f98a829a84bd095ced9d5c642daff34b30b3ae5b5  ./scripts/project_mcp.py
+1de618719e55e28fed4817a25ec1bde1402853b9076504fdf577427c0e996dda  ./scripts/project_mcp.py
 793aa683ee3eecd5cc448df8362acf5cc642031a650b169293161ddf5e7e7d86  ./scripts/prompt_manifest.py
 399e2abc28d1d89dc37502c9f46bb9c76902e37e30bf0e52bc008ba85188a1b6  ./scripts/render_hermes_remote_setup.py
 521ccafea594f6b0694a135cf2262bd1872756c0741d4e167563342f9c382c1a  ./scripts/repo_recon.py

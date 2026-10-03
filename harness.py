@@ -162,21 +162,23 @@ def cmd_mcp_stdio() -> None:
 
 def cmd_clean() -> None:
     from project_mcp import Lifecycle
-    lifecycle = Lifecycle()
-    if lifecycle.active(lifecycle.read()):
+
+    def remove_runtime() -> None:
+        for p in [ROOT / ".generated", ROOT / ".mcp.json", ROOT / "opencode.json", ROOT / ".codex/config.toml", ROOT / ".claude/settings.local.json"]:
+            if p.is_dir(): shutil.rmtree(p, ignore_errors=True)
+            elif p.exists(): p.unlink()
+        for pattern in [ROOT / ".claude/agents", ROOT / ".opencode/agents"]:
+            if pattern.exists():
+                for p in pattern.glob("generated-*.md"): p.unlink()
+        tool_dir = ROOT / '.opencode/tools'
+        if tool_dir.exists():
+            for p in list(tool_dir.glob('generated-hermes.*')) + [tool_dir / 'hermes.js']:
+                if p.exists(): p.unlink()
+        shutil.rmtree(ROOT / "tmp/local/project-context", ignore_errors=True)
+
+    # The same lock spans readiness checks and runtime deletion: start cannot race clean.
+    if Lifecycle().clean(runtime_cleanup=remove_runtime):
         raise SystemExit("Stop the background MCP with stop-mcp before cleaning its runtime")
-    lifecycle.clean()
-    for p in [ROOT / ".generated", ROOT / ".mcp.json", ROOT / "opencode.json", ROOT / ".codex/config.toml", ROOT / ".claude/settings.local.json"]:
-        if p.is_dir(): shutil.rmtree(p, ignore_errors=True)
-        elif p.exists(): p.unlink()
-    for pattern in [ROOT / ".claude/agents", ROOT / ".opencode/agents"]:
-        if pattern.exists():
-            for p in pattern.glob("generated-*.md"): p.unlink()
-    tool_dir=ROOT/'.opencode/tools'
-    if tool_dir.exists():
-        for p in list(tool_dir.glob('generated-hermes.*'))+[tool_dir/'hermes.js']:
-            if p.exists(): p.unlink()
-    shutil.rmtree(ROOT / "tmp/local/project-context", ignore_errors=True)
     print("Generated client/runtime/index state removed; source and .env preserved.")
 
 

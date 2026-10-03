@@ -6,7 +6,7 @@ Structured source: [handoffs/SESSION-20261003-214538-B265.json](handoffs/SESSION
 
 Task: `SESSION-20261003-214538-B265`
 Status: `verifying`
-Updated: `2026-10-03T21:57:44+00:00`
+Updated: `2026-10-03T22:02:51+00:00`
 Active OpenSpec change: `add-portable-harness-commands`
 
 ## Objective
@@ -19,7 +19,7 @@ Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands
 
 ## Completed
 
-- Complete donor harness command surface implemented; public Make workflow, HTTP ownership and foreground stdio launchers pass; full local gate passes 100 tests
+- Fixed cleanup/start lock scope and Windows venv redirector ownership; final local full gate passes 100 tests
 
 ## Remaining
 
@@ -31,7 +31,7 @@ Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands
 
 ## Decisions
 
-- Adapt donor detached stdio supervisor into localhost HTTP with readiness checks; no os.kill(pid,0) on Windows; Make core recipes no longer require Bash/awk
+- New capability acceptance prefix uses 2026-10-04 after client date rollover; proposal creation date remains 2026-10-03
 
 ## Relevant context
 
@@ -45,11 +45,11 @@ Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands
 
 ## Verification passed
 
-- PASS: python3 harness.py check, 100 tests without skips, strict OpenSpec, Wiki 10 docs and 374-file manifest; public Make lifecycle and real HTTP/stdio
+- PASS: full local harness check, 100 tests, real HTTP lifecycle and public stdio launcher; strict OpenSpec and Wiki
 
 ## Verification pending
 
-- Native Linux/Windows CI for the feature
+- Native CI on corrected feature head
 
 ## Next action
 

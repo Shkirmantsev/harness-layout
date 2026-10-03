@@ -33,3 +33,10 @@ stop/clean, native process probes and existing stdio handshake on Linux/Windows.
 No new third-party dependency is required. Revert transport to stdio and regenerate
 clients to roll back shared HTTP use; stop-mcp removes only the owned background
 process. Lifecycle clean preserves Wiki, .env, installed venv and unrelated files.
+
+
+Native Windows CI exposed venv redirector PIDs differing from the actual Python
+process. The supervisor runs through the base interpreter directly. The server
+uses the matching base interpreter from pyvenv.cfg with the venv site-packages
+and .pth files explicitly loaded, preserving pinned dependencies and a directly
+owned server handle. POSIX keeps the standard venv executable path.

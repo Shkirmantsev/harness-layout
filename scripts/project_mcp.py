@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+from collections import deque
+from typing import Callable
 import json
 import os
 from pathlib import Path
@@ -33,6 +35,25 @@ def settings(env: dict[str, str]) -> tuple[str, int]:
 
 def installed_python() -> Path:
     return ROOT / 'tmp/local/project-context/venv' / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+
+
+def server_command(python: Path, root: str, port: int) -> list[str]:
+    arguments = ['--root', root, '--transport', 'streamable-http', '--port', str(port)]
+    if os.name != 'nt':
+        return [str(python), '-m', 'project_context_mcp.server', *arguments]
+    # Windows venv python.exe is a redirector: its Popen PID/handle can belong
+    # to the launcher instead of the server. Run the matching base interpreter
+    # directly, loading this venv's packages and editable-install .pth files.
+    venv = python.parent.parent
+    config = {}
+    for line in (venv / 'pyvenv.cfg').read_text(encoding='utf-8').splitlines():
+        key, separator, value = line.partition('=')
+        if separator:
+            config[key.strip()] = value.strip()
+    base = Path(config.get('executable', str(Path(config['home']) / 'python.exe')))
+    code = ("import sys,site,runpy; p=sys.argv.pop(1); sys.path.insert(0,p); "
+            "site.addsitedir(p); runpy.run_module('project_context_mcp.server',run_name='__main__')")
+    return [str(base), '-c', code, str(venv / 'Lib/site-packages'), *arguments]
 
 
 def process_alive(pid: int) -> bool:
@@ -119,7 +140,8 @@ class Lifecycle:
                 options['creationflags'] = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
             else:
                 options['start_new_session'] = True
-            worker = subprocess.Popen([sys.executable, str(Path(__file__).resolve()), 'worker',
+            worker_python = getattr(sys, '_base_executable', sys.executable) if os.name == 'nt' else sys.executable
+            worker = subprocess.Popen([worker_python, str(Path(__file__).resolve()), 'worker',
                                        '--state-dir', str(self.directory.resolve())], **options)
             state['workerPid'] = worker.pid
             self.write(state)
@@ -170,18 +192,21 @@ class Lifecycle:
 
     def logs(self) -> int:
         if self.log_file.exists():
-            print('\n'.join(self.log_file.read_text(encoding='utf-8', errors='replace').splitlines()[-50:]))
+            with self.log_file.open(encoding='utf-8', errors='replace') as log:
+                print(''.join(deque(log, maxlen=50)), end='')
         else:
             print('No project-context MCP log yet')
         return 0
 
-    def clean(self) -> int:
+    def clean(self, runtime_cleanup: Callable[[], None] | None = None) -> int:
         with file_lock(self.lock_file):
             if self.active(self.read()):
                 print('Stop MCP before cleaning its state', file=sys.stderr)
                 return 1
             for path in (self.state_file, self.stop_file, self.log_file):
                 path.unlink(missing_ok=True)
+            if runtime_cleanup is not None:
+                runtime_cleanup()
             print('project-context MCP state and log cleaned')
             return 0
 
@@ -206,8 +231,7 @@ class Lifecycle:
             with self.log_file.open('ab', buffering=0) as log:
                 env = os.environ.copy()
                 env['PROJECT_CONTEXT_MCP_INSTANCE'] = state['instance']
-                child = subprocess.Popen([state['python'], '-m', 'project_context_mcp.server',
-                    '--root', state['root'], '--transport', 'streamable-http', '--port', str(state['port'])],
+                child = subprocess.Popen(server_command(Path(state['python']), state['root'], state['port']),
                     cwd=ROOT, env=env, stdin=subprocess.DEVNULL, stdout=log, stderr=log)
                 state['serverPid'] = child.pid
                 state['phase'] = 'ready'  # Parent still waits for matching HTTP health.
