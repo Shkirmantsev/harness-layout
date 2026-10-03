@@ -379,3 +379,10 @@ Copy `harness-layout` into your project directory, run `make init`,
 `make mcp-install`, `make client-config`, `make check`, fill in three Wiki
 files, and start tasks through `session_state.py start`, `skill-router`, and
 OpenSpec. Run `make check` before declaring any task complete.
+
+Portable setup and manual MCP lifecycle commands are listed in
+[the harness command guide](docs/HARNESS_COMMANDS.md). Use `make init-mcp`,
+`make wiki-init`, `make run-mcp`, `make mcp-status`, `make mcp-logs`,
+`make stop-mcp` and `make mcp-clean`, or the same commands through
+`python harness.py`. The default client-managed stdio mode is retained;
+manual/shared background operation uses an opt-in localhost HTTP endpoint.

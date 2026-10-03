@@ -1,0 +1,64 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [],
+  "decisions": [
+    "New capability acceptance prefix uses 2026-10-04 after client date rollover; proposal creation date remains 2026-10-03"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Fixed cleanup/start lock scope and Windows venv redirector ownership; final local full gate passes 100 tests"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "Publish feature-to-dev PR for native CI",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "windows-venv-redirector-pid",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 1
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T21:45:38+00:00",
+    "id": "SESSION-20261003-214538-B265",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T22:02:51+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "All donor harness Make aliases plus run/stop/status/logs/clean MCP and Wiki init are available through portable Python CLI; background MCP accepts real clients; existing stdio works; Linux/Windows focused and full checks pass; feature integrated into dev only"
+    ],
+    "goal": "Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands",
+    "openspec_change": "add-portable-harness-commands",
+    "status": "verifying"
+  },
+  "verification": {
+    "passed": [
+      "PASS: full local harness check, 100 tests, real HTTP lifecycle and public stdio launcher; strict OpenSpec and Wiki"
+    ],
+    "pending": [
+      "Native CI on corrected feature head"
+    ]
+  },
+  "working_set": [
+    {
+      "path": "Makefile",
+      "sha256": "3f0980c1a1812db49246712920136141ffa1d6b9048726d9f4311afe9341e8d6"
+    },
+    {
+      "path": "harness.py",
+      "sha256": "f4b24e797e57b8499a4f320507aa9dcd3cb099bcbd2fee12c92e874ce5ceaa66"
+    },
+    {
+      "path": "scripts/project_mcp.py",
+      "sha256": "1de618719e55e28fed4817a25ec1bde1402853b9076504fdf577427c0e996dda"
+    }
+  ]
+}

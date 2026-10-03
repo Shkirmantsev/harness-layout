@@ -107,3 +107,13 @@ to Context7 or install npm packages; service access is optional.
 
 Project-context MCP remains a client-launched stdio server. A detached process
 with stdout redirected to a log is not a connection endpoint for clients.
+
+
+## Project-context MCP transport
+
+`PROJECT_CONTEXT_MCP_TRANSPORT=stdio` keeps the client-managed default.
+Set it to `http` to connect all generated clients to the background MCP started
+by run-mcp. `PROJECT_CONTEXT_MCP_PORT` defaults to `18883` and accepts 1024–65535.
+The server binds only to 127.0.0.1. Regenerate client configs after changing
+transport/port; stop and restart the managed server after changing port/root.
+See [the command guide](HARNESS_COMMANDS.md) for complete workflows.

@@ -42,7 +42,7 @@ line endings or generator version metadata.
 | Engineering conventions | Normalized contents match; retain the current canonical files. |
 | Integration removal patches | Donor removed LiteLLM, Hermes, SearXNG/Crawl4AI and other supported adapters; retain this template's integrations and safety boundaries. |
 | User-global Codex skill synchronization | Conflicts with project isolation and canonical discovery; replaced by project-local mirrors. |
-| Detached stdio MCP supervisor | Redirects protocol output to a log and has no client connection transport; keep the client-managed process lifecycle. |
+| Detached stdio MCP supervisor | Initially excluded because protocol output is redirected to a log. On explicit follow-up request, adopt its command surface with a connectable localhost HTTP transport and supervisor-owned stop; retain default client-managed stdio. See [command lifecycle](harness-command-lifecycle.md). |
 | Dated current capability names | Initially deferred; explicitly adopted on user request on 2026-10-03. Original Git acceptance dates are retained and live links/deltas migrated. See the central [current state](../../../openspec/CURRENT.md). |
 | Generated OpenSpec 1.13 workflows | Additional workflows include store commands from a different generator version; external-tool ownership governs refresh. Do not copy them into the 1.12 integration. |
 | Implementation-transfer script | Tied to FIX2 audit files and a specific source commit, with whole-tree exports and commit replay. No generic harness import. |

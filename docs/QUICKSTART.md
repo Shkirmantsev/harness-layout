@@ -32,6 +32,14 @@ python harness.py client-config
 
 The virtual environment is deliberately installed under `tmp/local/project-context/venv/` and is ignored by Git.
 
+For one setup command, use `python harness.py init-mcp` or `make init-mcp`.
+
+By default your coding client starts MCP automatically over stdio. For manual
+background operation, select `PROJECT_CONTEXT_MCP_TRANSPORT=http` in .env,
+regenerate with `python harness.py client-config`, then use
+`python harness.py run-mcp` (or `make run-mcp`). See the
+[complete command guide](HARNESS_COMMANDS.md) for status, logs, stop and cleanup.
+
 ## 4. Validate
 
 ```bash
@@ -53,8 +61,7 @@ Update:
 Then:
 
 ```bash
-python harness.py index
-python harness.py wiki-validate
+python harness.py wiki-init
 ```
 
 Do not write a huge Wiki upfront. Add durable knowledge around active work.

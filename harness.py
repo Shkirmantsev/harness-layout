@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 MCP_ROOT = ROOT / "tools/mcp/project-context-mcp"
 sys.path.insert(0, str(MCP_ROOT))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 
 def run(cmd: list[str], *, check: bool = True) -> subprocess.CompletedProcess:
@@ -129,49 +130,119 @@ def cmd_init(args) -> None:
     print("Initialization complete. Edit .env only if you want optional integrations, then run: python harness.py check")
 
 
+def cmd_help() -> None:
+    import re
+    print("Harness commands (GNU Make optional; Python works on Linux and Windows):")
+    for line in (ROOT / "Makefile").read_text(encoding="utf-8").splitlines():
+        match = re.match(r"([a-zA-Z0-9_-]+):.*?## (.+)", line)
+        if match:
+            print(f"  make {match[1]:28} {match[2]}")
+    print("Core equivalent: python harness.py <command>; see --help for aliases.")
+
+
+def cmd_wiki_init() -> None:
+    cmd_wiki_validate()
+    cmd_index()
+    print("Wiki ready; existing Markdown preserved.")
+
+
+def cmd_mcp_stdio() -> None:
+    from project_mcp import installed_python
+    from common import parse_env, project_root, validate_project_root
+    python = installed_python()
+    if not python.is_file():
+        raise SystemExit("MCP is not installed; run python harness.py mcp-install")
+    root = project_root(parse_env())
+    validate_project_root(root)
+    # Stdout belongs exclusively to MCP; never use the logging run() wrapper here.
+    raise SystemExit(subprocess.run([str(python), "-m", "project_context_mcp.server",
+                                    "--root", str(root)], cwd=ROOT).returncode)
+
+
+
 def cmd_clean() -> None:
-    for p in [ROOT / ".generated", ROOT / ".mcp.json", ROOT / "opencode.json", ROOT / ".codex/config.toml", ROOT / ".claude/settings.local.json"]:
-        if p.is_dir(): shutil.rmtree(p, ignore_errors=True)
-        elif p.exists(): p.unlink()
-    for pattern in [ROOT / ".claude/agents", ROOT / ".opencode/agents"]:
-        if pattern.exists():
-            for p in pattern.glob("generated-*.md"): p.unlink()
-    tool_dir=ROOT/'.opencode/tools'
-    if tool_dir.exists():
-        for p in list(tool_dir.glob('generated-hermes.*'))+[tool_dir/'hermes.js']:
-            if p.exists(): p.unlink()
-    shutil.rmtree(ROOT / "tmp/local/project-context", ignore_errors=True)
+    from project_mcp import Lifecycle
+
+    def remove_runtime() -> None:
+        for p in [ROOT / ".generated", ROOT / ".mcp.json", ROOT / "opencode.json", ROOT / ".codex/config.toml", ROOT / ".claude/settings.local.json"]:
+            if p.is_dir(): shutil.rmtree(p, ignore_errors=True)
+            elif p.exists(): p.unlink()
+        for pattern in [ROOT / ".claude/agents", ROOT / ".opencode/agents"]:
+            if pattern.exists():
+                for p in pattern.glob("generated-*.md"): p.unlink()
+        tool_dir = ROOT / '.opencode/tools'
+        if tool_dir.exists():
+            for p in list(tool_dir.glob('generated-hermes.*')) + [tool_dir / 'hermes.js']:
+                if p.exists(): p.unlink()
+        shutil.rmtree(ROOT / "tmp/local/project-context", ignore_errors=True)
+
+    # The same lock spans readiness checks and runtime deletion: start cannot race clean.
+    if Lifecycle().clean(runtime_cleanup=remove_runtime):
+        raise SystemExit("Stop the background MCP with stop-mcp before cleaning its runtime")
     print("Generated client/runtime/index state removed; source and .env preserved.")
 
 
 def parser() -> argparse.ArgumentParser:
-    p=argparse.ArgumentParser(description="Cross-platform management CLI for harness-layout")
-    sub=p.add_subparsers(dest="command", required=True)
-    init=sub.add_parser("init", help="create .env, build Wiki index and generate client configs")
-    init.add_argument("--install-mcp", action="store_true", help="also create local venv and install project-context MCP dependencies")
-    sub.add_parser("check", help="validate config, Wiki, OpenSpec structure and run tests")
-    sub.add_parser("check-delegated", help="secret-free repository gate for CI and restricted workers")
-    sub.add_parser("test", help="run unit/static tests")
-    sub.add_parser("index", help="rebuild local Markdown Wiki SQLite FTS index")
-    sub.add_parser("wiki-validate", help="validate Wiki IDs and links")
-    sub.add_parser("openspec-check", help="validate local OpenSpec schema and use CLI if installed")
-    sub.add_parser("mcp-install", help="install project-context MCP into tmp/local virtualenv")
-    sub.add_parser("client-config", help="generate Claude/OpenCode/Codex client configs from .env")
-    sub.add_parser("manifest-generate", help="regenerate ARTIFACT_MANIFEST.sha256")
-    sub.add_parser("manifest-check", help="verify ARTIFACT_MANIFEST.sha256")
-    sub.add_parser("clean", help="remove generated local state without deleting .env")
+    p = argparse.ArgumentParser(description="Cross-platform management CLI for harness-layout")
+    sub = p.add_subparsers(dest="command", required=True)
+    init = sub.add_parser("init", aliases=["harness-init"], help="create .env, index Wiki and generate clients")
+    init.add_argument("--install-mcp", action="store_true", help="also install local MCP runtime")
+    sub.add_parser("init-mcp", aliases=["harness-init-mcp"], help="initialize core and install MCP")
+    descriptions = {
+        "help": "list Make workflows and portable equivalents",
+        "check": "validate configuration, Wiki, OpenSpec and core tests",
+        "check-delegated": "secret-free repository gate for CI",
+        "test": "run core tests",
+        "index": "rebuild disposable Markdown Wiki SQLite index",
+        "wiki-init": "validate existing Wiki and initialize its index",
+        "wiki-validate": "validate Wiki stable IDs and links",
+        "openspec-check": "validate current state, naming and OpenSpec artifacts",
+        "mcp-install": "install project-context MCP into local virtualenv",
+        "client-config": "generate Claude/OpenCode/Codex configs",
+        "manifest-generate": "regenerate source artifact manifest",
+        "manifest-check": "verify source artifact manifest",
+        "clean": "remove generated state after background MCP is stopped",
+        "run-mcp": "start connectable background MCP on localhost",
+        "stop-mcp": "stop only the harness-owned background MCP",
+        "mcp-status": "show background MCP readiness",
+        "mcp-logs": "show recent background MCP logs",
+        "mcp-clean": "remove stopped background MCP state and logs",
+        "mcp-stdio": "run MCP in foreground stdio mode for a client",
+    }
+    extra_aliases = {"index": ["wiki-index", "harness-wiki-index"],
+                     "wiki-init": ["init-wiki"], "run-mcp": ["mcp-run"], "stop-mcp": ["mcp-stop"]}
+    for command, description in descriptions.items():
+        aliases = extra_aliases.get(command, [])
+        if command not in {"help", "index", "wiki-init", "run-mcp", "stop-mcp", "mcp-status", "mcp-logs", "mcp-clean", "mcp-stdio"}:
+            aliases = [*aliases, "harness-" + command]
+        child = sub.add_parser(command, aliases=aliases, help=description)
+        child.set_defaults(command=command)
+    init.set_defaults(command="init")
     return p
 
 
 def main() -> None:
-    p=parser(); args=p.parse_args()
+    args = parser().parse_args()
+    if args.command in {"init-mcp", "harness-init-mcp"}:
+        args.install_mcp = True
+        cmd_init(args)
+        return
+    actions = {"run-mcp": "start", "stop-mcp": "stop", "mcp-status": "status",
+               "mcp-logs": "logs", "mcp-clean": "clean"}
+    if args.command in actions:
+        result = subprocess.run([sys.executable, str(ROOT / "scripts/project_mcp.py"), actions[args.command]], cwd=ROOT)
+        raise SystemExit(result.returncode)
     {
-      "init": lambda: cmd_init(args), "check": cmd_check, "test": cmd_test, "index": cmd_index,
-      "check-delegated": lambda: cmd_check(delegated=True),
-      "wiki-validate": cmd_wiki_validate, "openspec-check": cmd_openspec_check,
-      "mcp-install": cmd_mcp_install, "client-config": cmd_client_config, "clean": cmd_clean,
-      "manifest-generate": lambda: run([sys.executable, "scripts/artifact_manifest.py", "generate"]),
-      "manifest-check": lambda: run([sys.executable, "scripts/artifact_manifest.py", "verify"]),
+        "init": lambda: cmd_init(args), "help": cmd_help, "check": cmd_check,
+        "test": cmd_test, "index": cmd_index, "wiki-init": cmd_wiki_init,
+        "check-delegated": lambda: cmd_check(delegated=True),
+        "wiki-validate": cmd_wiki_validate, "openspec-check": cmd_openspec_check,
+        "mcp-install": cmd_mcp_install, "mcp-stdio": cmd_mcp_stdio,
+        "client-config": cmd_client_config, "clean": cmd_clean,
+        "manifest-generate": lambda: run([sys.executable, "scripts/artifact_manifest.py", "generate"]),
+        "manifest-check": lambda: run([sys.executable, "scripts/artifact_manifest.py", "verify"]),
     }[args.command]()
 
-if __name__ == "__main__": main()
+
+if __name__ == "__main__":
+    main()

@@ -54,7 +54,12 @@ def logical_mcp_catalog(env: dict[str, str]) -> dict[str, dict]:
         from common import project_root, validate_project_root
         root = project_root(env)
         validate_project_root(root)
-        out["project-context"] = {"type": "local", "command": context_command() + ["--root", str(root)]}
+        from project_mcp import settings
+        transport, port = settings(env)
+        out["project-context"] = (
+            {"type": "remote", "url": f"http://127.0.0.1:{port}/mcp"} if transport == "http"
+            else {"type": "local", "command": context_command() + ["--root", str(root)]}
+        )
     if bool_env(env, "CONTEXT7_MCP_ENABLED"):
         url = env.get("CONTEXT7_MCP_URL", "https://mcp.context7.com/mcp").strip() or "https://mcp.context7.com/mcp"
         from urllib.parse import urlsplit

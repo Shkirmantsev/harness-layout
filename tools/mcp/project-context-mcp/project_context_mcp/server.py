@@ -85,15 +85,32 @@ def kb_refresh() -> dict:
     return build_index(ROOT)
 
 
+@mcp.custom_route('/health', methods=['GET'])
+async def health(request):
+    from starlette.responses import JSONResponse
+    return JSONResponse({'instance': os.environ.get('PROJECT_CONTEXT_MCP_INSTANCE', ''), 'pid': os.getpid()})
+
+
 def main() -> None:
     import argparse
     import anyio
     global ROOT
     parser = argparse.ArgumentParser(description="Project knowledge MCP server")
     parser.add_argument("--root", default=str(ROOT), help="Absolute project repository path")
-    ROOT = Path(parser.parse_args().root).expanduser().resolve()
+    parser.add_argument('--transport', choices=['stdio', 'streamable-http'], default='stdio')
+    parser.add_argument('--port', type=int, default=18883)
+    args = parser.parse_args()
+    ROOT = Path(args.root).expanduser().resolve()
     if not ROOT.is_dir():
         parser.error("project root must be an existing directory")
+    if not 1024 <= args.port <= 65535:
+        parser.error('port must be between 1024 and 65535')
+    if args.transport == 'streamable-http':
+        mcp.settings.host = '127.0.0.1'
+        mcp.settings.port = args.port
+        mcp.settings.stateless_http = True
+        mcp.run(transport='streamable-http')
+        return
     # The asyncio backend can deadlock the SDK's zero-buffer stdio memory
     # streams in some supported environments. Trio uses the same MCP protocol
     # implementation without that cross-task-group scheduler failure.
