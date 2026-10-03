@@ -45,6 +45,11 @@ def main() -> int:
     if generation not in {"v1", "v2"}:
         errors.append("OPENCODE_CONFIG_GENERATION must be v1 (stable/default) or v2 (beta opt-in)")
     if bool_env(env, "PROJECT_CONTEXT_MCP_ENABLED", True):
+        from project_mcp import settings
+        try:
+            settings(env)
+        except ValueError as exc:
+            errors.append(str(exc))
         import os
         exe = ROOT / ("tmp/local/project-context/venv/Scripts/project-context-mcp.exe" if os.name == "nt" else "tmp/local/project-context/venv/bin/project-context-mcp")
         if not exe.exists():

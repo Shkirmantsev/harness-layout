@@ -1,0 +1,64 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [],
+  "decisions": [
+    "Adapt donor detached stdio supervisor into localhost HTTP with readiness checks; no os.kill(pid,0) on Windows; Make core recipes no longer require Bash/awk"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Complete donor harness command surface implemented; public Make workflow, HTTP ownership and foreground stdio launchers pass; full local gate passes 100 tests"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "Publish feature-to-dev PR for native CI",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T21:45:38+00:00",
+    "id": "SESSION-20261003-214538-B265",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T21:57:44+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "All donor harness Make aliases plus run/stop/status/logs/clean MCP and Wiki init are available through portable Python CLI; background MCP accepts real clients; existing stdio works; Linux/Windows focused and full checks pass; feature integrated into dev only"
+    ],
+    "goal": "Complete donor-inspired portable setup, Wiki and usable MCP lifecycle commands",
+    "openspec_change": "add-portable-harness-commands",
+    "status": "verifying"
+  },
+  "verification": {
+    "passed": [
+      "PASS: python3 harness.py check, 100 tests without skips, strict OpenSpec, Wiki 10 docs and 374-file manifest; public Make lifecycle and real HTTP/stdio"
+    ],
+    "pending": [
+      "Native Linux/Windows CI for the feature"
+    ]
+  },
+  "working_set": [
+    {
+      "path": "Makefile",
+      "sha256": "3f0980c1a1812db49246712920136141ffa1d6b9048726d9f4311afe9341e8d6"
+    },
+    {
+      "path": "harness.py",
+      "sha256": "1cd5bbb0d7820e4ce4102e98adfc2360169911a7c7fc3438ff0d5750645704aa"
+    },
+    {
+      "path": "scripts/project_mcp.py",
+      "sha256": "d8efb688a8692bafea347c4f98a829a84bd095ced9d5c642daff34b30b3ae5b5"
+    }
+  ]
+}
