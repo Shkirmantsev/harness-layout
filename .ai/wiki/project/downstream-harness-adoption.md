@@ -122,3 +122,11 @@ real calendar dates, naming and exact current-state coverage on Linux/Windows.
 Historical archives retain their original paths. Generated integration skills
 remain tool-owned; shared policy in AGENTS, OpenSpec config and the catalog skill
 supplies the project-specific naming and adoption rules.
+
+Follow-up evidence: feature `8f5583e` passed all seven native CI jobs, including
+full Windows 3.11/3.13 gates. The local full gate passed 88 tests. Development
+integration was published as merge `ba8e049`; this change and the prior completed
+adoption are archived with 2026-10-03 prefixes. Final strict validation passed
+seven current/active items, Wiki validation passed nine documents, and the
+363-file manifest passed. The earlier agent-created main PR was closed without
+merge so the user can create their own dev-to-main PR.

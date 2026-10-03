@@ -5,8 +5,8 @@
 Structured source: [handoffs/SESSION-20261003-111714-1778.json](handoffs/SESSION-20261003-111714-1778.json)
 
 Task: `SESSION-20261003-111714-1778`
-Status: `verifying`
-Updated: `2026-10-03T11:22:08+00:00`
+Status: `complete`
+Updated: `2026-10-03T11:27:11+00:00`
 Active OpenSpec change: `adopt-dated-openspec-state`
 
 ## Objective
@@ -19,13 +19,11 @@ Adopt donor dated OpenSpec naming and a central accepted current-state view
 
 ## Completed
 
-- Portable naming and central-state regression tests pass; full local harness gate passes
+- Imported dated accepted/archive identities and a checked central current-state inventory; migrated live links/deltas and shared guidance; focused and full gates passed; feature merged locally and published into dev; completed changes archived
 
 ## Remaining
 
-- Inspect and migrate spec identities and links
-- Add central current-state view and naming validation with regression tests
-- Verify, checkpoint, commit feature and integrate dev
+- none
 
 ## Blocked
 
@@ -33,7 +31,7 @@ Adopt donor dated OpenSpec naming and a central accepted current-state view
 
 ## Decisions
 
-- Central state links canonical accepted specs rather than duplicating normative bodies; historical archives are preserved
+- User creates and merges development-to-main PR; agent-created PR 2 closed unmerged and main refs unchanged
 
 ## Relevant context
 
@@ -47,15 +45,15 @@ Adopt donor dated OpenSpec naming and a central accepted current-state view
 
 ## Verification passed
 
-- PASS: 11 focused tests, strict OpenSpec 9 items, full harness including real MCP handshake and 363-file manifest
+- PASS: 88-test local full gate; all seven native Linux/Windows CI jobs on feature 8f5583e; final strict OpenSpec 7 items, Wiki 9 documents and manifest 363 files
 
 ## Verification pending
 
-- Native Linux/Windows CI for updated validator
+- none
 
 ## Next action
 
-Push feature and verify remote CI before local dev integration
+none
 
 ## Prerequisites
 
