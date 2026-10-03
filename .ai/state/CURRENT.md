@@ -5,8 +5,8 @@
 Structured source: [handoffs/SESSION-20261003-222437-E5C3.json](handoffs/SESSION-20261003-222437-E5C3.json)
 
 Task: `SESSION-20261003-222437-E5C3`
-Status: `verifying`
-Updated: `2026-10-03T22:26:13+00:00`
+Status: `complete`
+Updated: `2026-10-03T22:28:52+00:00`
 Active OpenSpec change: none
 
 ## Objective
@@ -19,13 +19,11 @@ Validate and fix missing MCP supervisor failure diagnostics
 
 ## Completed
 
-- Confirmed reviewed defect with failing regressions; fixed UTF-8 exception/traceback logging and preserved owned-child cleanup; focused and full local gates pass
+- Validated review with failing regressions; minimal traceback logging fix preserves cleanup; all seven native CI jobs passed on b531d69; feature merged locally and published to dev
 
 ## Remaining
 
-- Reproduce missing log diagnostics for supervisor errors
-- Add minimal logging fix and run focused/full checks
-- Publish feature, verify native CI and integrate into dev
+- none
 
 ## Blocked
 
@@ -33,7 +31,7 @@ Validate and fix missing MCP supervisor failure diagnostics
 
 ## Decisions
 
-- Fix restores existing accepted diagnostic-log requirement; no OpenSpec contract change
+- Restored existing accepted logging requirement; no OpenSpec contract change; main remains user-owned
 
 ## Relevant context
 
@@ -46,15 +44,15 @@ Validate and fix missing MCP supervisor failure diagnostics
 
 ## Verification passed
 
-- PASS: 9 focused tests and 102-test full harness gate including real HTTP/stdio MCP; strict OpenSpec, Wiki and 375-file manifest; git diff --check
+- PASS: 9 focused tests, 102-test local full gate and seven Linux/Windows CI jobs, including full Windows 3.11/3.13 real MCP lifecycle; manifest 375 files
 
 ## Verification pending
 
-- Native Linux/Windows feature CI and dev integration
+- none
 
 ## Next action
 
-Verify feature CI then integrate into dev
+none
 
 ## Prerequisites
 
