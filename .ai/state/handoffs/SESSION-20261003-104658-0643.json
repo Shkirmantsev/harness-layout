@@ -7,17 +7,22 @@
     "User explicitly authorizes remote feature to development to main integration; prior work remains uncommitted; existing development branch is dev"
   ],
   "decisions": [
-    "Use GitHub merge commits into dev then main; no direct push to either integration branch"
+    "Repeated branch-flow instruction does not explicitly authorize bypassing protected-main review rules; standard PR merge remains the intended path"
   ],
   "progress": {
-    "blocked": [],
-    "done": [
-      "Feature commit 0a4c801 passed all five remote CI jobs including Windows/Linux Python 3.11 and 3.13; local full gate passed 84 tests"
+    "blocked": [
+      "Remote PR 2 remains open with REVIEW_REQUIRED and no approving reviews; all ten reported CI checks pass"
     ],
-    "todo": []
+    "done": [
+      "Rechecked repeated branch-flow instruction; work remains on feature and PR 1 is merged into remote dev"
+    ],
+    "todo": [
+      "Merge dev PR into main after its remote checks pass",
+      "Synchronize local refs and verify final remote commits"
+    ]
   },
   "resume": {
-    "next_action": "Publish verified evidence then merge feature PR 1 after its checks",
+    "next_action": "Merge PR 2 after required review or explicit user authorization for an administrator override, then synchronize main",
     "prerequisites": []
   },
   "runtime": {
@@ -31,7 +36,7 @@
     "created_at": "2026-10-03T10:46:58+00:00",
     "id": "SESSION-20261003-104658-0643",
     "project": "harness-layout",
-    "updated_at": "2026-10-03T10:56:42+00:00"
+    "updated_at": "2026-10-03T11:02:54+00:00"
   },
   "task": {
     "acceptance": [
@@ -39,11 +44,11 @@
     ],
     "goal": "Integrate verified harness improvements through remote feature to dev to main pull requests",
     "openspec_change": "adopt-downstream-harness-improvements",
-    "status": "reviewing"
+    "status": "blocked"
   },
   "verification": {
     "passed": [
-      "PASS: remote feature CI, exact head 0a4c801, all 5 jobs successful"
+      "PASS: rechecked dev-to-main PR CI; every reported job is successful"
     ],
     "pending": []
   },

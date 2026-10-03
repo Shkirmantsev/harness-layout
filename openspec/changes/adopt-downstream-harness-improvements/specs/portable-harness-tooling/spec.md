@@ -109,3 +109,20 @@ the native filesystem root.
 - **WHEN** portable tooling imports the Hermes host setup module on Windows
 - **THEN** module loading does not require `pwd`
 - **AND** invoking setup reports that a POSIX ACL host is required.
+
+### Requirement: Linux and Windows core verification
+
+The portable harness core SHALL support Linux and Windows on Python 3.11 and
+3.13. CI SHALL run unit suites on both systems and full core verification on
+Linux and Windows with the declared MCP dependencies installed. Full Windows
+verification SHALL include the real stdio MCP initialize/request exchange,
+strict OpenSpec validation, Wiki validation, state verification and the artifact
+manifest. Optional host-specific adapters SHALL NOT be prerequisites for the
+portable core.
+
+#### Scenario: Windows validates the complete portable core
+
+- **GIVEN** Python, Node, OpenSpec and declared test/MCP dependencies are installed
+- **WHEN** CI runs the Windows full core gate on Python 3.11 or 3.13
+- **THEN** the gate passes including the real stdio MCP handshake
+- **AND** no Docker or POSIX host setup is required.

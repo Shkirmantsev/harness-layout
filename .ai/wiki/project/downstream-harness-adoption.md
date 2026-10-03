@@ -88,3 +88,18 @@ After the CI corrections, the local full gate passed 84 tests, seven strict
 OpenSpec items, nine Wiki documents and the 351-file manifest. Live Context7
 access remains untested. Changes are integrated through feature-to-dev and
 then dev-to-main pull requests with merge commits through the remote repository.
+
+
+## Supported platform gate
+
+Linux and Windows are required platforms for the portable harness core. The
+workflow also runs full Windows gates on Python 3.11/3.13 with installed MCP
+runtime dependencies, strict OpenSpec, state/Wiki checks and artifact integrity.
+These jobs exercise actual stdio initialization and requests. Docker/Compose
+checks remain in full Linux verification, and POSIX ACL setup is an optional
+host adapter. The user handles the final dev-to-main merge on GitHub.
+
+The generic donor line-ending policy is adopted in `.gitattributes`: text
+checkouts use LF on both systems, while Git detects binary files automatically.
+This preserves artifact-manifest byte hashes on Windows without importing
+business-specific file rules.

@@ -1,0 +1,53 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [
+    "User explicitly changed merge responsibility: local dev integration allowed today; dev to main belongs to user through GitHub"
+  ],
+  "decisions": [
+    "Linux and Windows are required core platforms; user owns main merge; local feature-to-dev merge allowed today"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Added full Windows CI gates on Python 3.11/3.13 including real MCP handshake, strict OpenSpec and manifest checks"
+    ],
+    "todo": [
+      "Add full Windows CI and requirements",
+      "Verify feature PR checks on both operating systems",
+      "Merge locally into dev, publish dev and finalize handoff"
+    ]
+  },
+  "resume": {
+    "next_action": "Verify feature locally and through remote full Windows CI",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T11:05:44+00:00",
+    "id": "SESSION-20261003-110544-59B1",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T11:06:35+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Linux and Windows full core gates pass including MCP runtime; implementation integrated into local and remote dev; PR 2 remains available for user-managed main merge; main is not modified"
+    ],
+    "goal": "Verify full Linux and Windows harness support and integrate into dev; user owns remote main merge",
+    "openspec_change": "adopt-downstream-harness-improvements",
+    "status": "verifying"
+  },
+  "verification": {
+    "passed": [],
+    "pending": []
+  },
+  "working_set": []
+}

@@ -125,3 +125,16 @@ GitHub CI installs this dependency on both Linux and Windows. The optional
 project-context MCP package has its own dependencies, installed by
 `python harness.py mcp-install`. POSIX ACL host setup remains a host-specific
 Hermes adapter and reports that requirement explicitly on Windows.
+
+
+The portable core is required to work on Linux and Windows. CI runs unit tests on
+both systems with Python 3.11 and 3.13, plus full Linux and Windows gates with
+installed project-context MCP and strict OpenSpec validation. Windows full gates
+include a real stdio MCP handshake; optional Docker/Compose and POSIX ACL setup
+remain separate host integrations. Use `python harness.py` commands in Windows
+PowerShell rather than requiring a POSIX shell or GNU Make.
+
+The generic donor line-ending policy is adopted in `.gitattributes`: text
+checkouts use LF on both systems, while Git detects binary files automatically.
+This preserves artifact-manifest byte hashes on Windows without importing
+business-specific file rules.

@@ -65,3 +65,17 @@ compare resolved temporary paths, execute the CLI fixture through Python and
 assert POSIX mode bits only on POSIX. Make the optional ACL module importable
 without `pwd`; guard actual host setup and stop ancestor traversal at the native
 filesystem root. These corrections preserve test behavior on both platforms.
+
+
+Require Linux and Windows portability for the harness core. Extend CI with full
+Windows jobs on Python 3.11 and 3.13 using the portable MCP installer, Node 22 and
+OpenSpec 1.12. Keep Docker/Compose verification in the Linux job; these optional
+integrations do not gate the Windows core. Windows full checks exercise the
+installed stdio server rather than relying only on rendered client configuration.
+For this integration the user permits a local feature-to-dev merge and retains
+responsibility for dev-to-main through GitHub; do not merge main automatically.
+
+The generic donor line-ending policy is adopted in `.gitattributes`: text
+checkouts use LF on both systems, while Git detects binary files automatically.
+This preserves artifact-manifest byte hashes on Windows without importing
+business-specific file rules.
