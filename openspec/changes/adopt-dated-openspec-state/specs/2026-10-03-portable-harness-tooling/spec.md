@@ -12,4 +12,3 @@ acceptance date and update live links and active delta paths.
 
 - **WHEN** the harness OpenSpec gate finds Markdown directly under `openspec/specs/`
 - **THEN** it fails and identifies the expected capability-directory layout.
-
