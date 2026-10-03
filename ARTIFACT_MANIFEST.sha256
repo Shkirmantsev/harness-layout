@@ -162,7 +162,7 @@ ba651415acbf993e00e173e3eb99cb6d74e4463d426db37579fc21d0dcb56c0d  ./.ai/wiki/int
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/modules/.gitkeep
 21fc91ebc9ef3eba94ee53458e41c8af7d8b008dcdba33db7a57911a85275cc9  ./.ai/wiki/modules/java-maven-jar-analysis.md
 4115d73e1a5a41c669ab6a7214562ff6f6de82769143c585d501cb23f38bd2f7  ./.ai/wiki/project/downstream-harness-adoption.md
-d97582b0086f3720527e9cd07ff419d6387b9e0ff596c5783f385c364348319b  ./.ai/wiki/project/harness-command-lifecycle.md
+09a2028eea23a3be197213a5a2376f9d3f64a56887a9089fb6fb934ab6751039  ./.ai/wiki/project/harness-command-lifecycle.md
 2f9d2a38c1f3109c6479273408d25d2d6df3c09c0aa2f2b153d80d7b4a0ac304  ./.ai/wiki/project/project-map.md
 421ee84d31860c88ff79b9c9e91c4135d31712f203c92332a5c9270f9345a3f3  ./.ai/wiki/project/task-handoff.md
 80e8a91e904a6a05fb88154916ce072dc69c34569f20bd4a080a518f61409aa3  ./.env.example
@@ -328,7 +328,7 @@ cdecb72e1f9bd4803acc073f5b9a5daa50b2f9aea756cd4c31b673948a6de3e4  ./scripts/conf
 e5ba9a524e71d4bcffccf7760390052e8d6d65bc8d589eb81be3d6be4d16d7a5  ./scripts/hermes_import.py
 53330c0a3411dc49e798e94234b42f2831a8015d82bf568e76aad793b904dd5e  ./scripts/lesson_candidate.py
 b8ed4553c4bfb3ccea1511810ffc3a0671336f6466a0a1b1c7f77b75275c83d5  ./scripts/openspec_layout.py
-1de618719e55e28fed4817a25ec1bde1402853b9076504fdf577427c0e996dda  ./scripts/project_mcp.py
+8648630c9a0588fc773633bf70d190959b23f21a26a2120469e5037b995cd3fc  ./scripts/project_mcp.py
 793aa683ee3eecd5cc448df8362acf5cc642031a650b169293161ddf5e7e7d86  ./scripts/prompt_manifest.py
 399e2abc28d1d89dc37502c9f46bb9c76902e37e30bf0e52bc008ba85188a1b6  ./scripts/render_hermes_remote_setup.py
 521ccafea594f6b0694a135cf2262bd1872756c0741d4e167563342f9c382c1a  ./scripts/repo_recon.py
@@ -344,7 +344,7 @@ e4f59b387df5a5fa7fd1982792e303d5f4409e7bb3a205f3bdccf08c806ef7c1  ./templates/op
 62efb6c48a61da4034ab1db5751e460e59e3e4c973ed781212da9bc311ac6876  ./tests/test_context_runtime.py
 8d7260984ca8e84e104267f14f7a484c8cd80802ac089ea7733e6c035d3bb056  ./tests/test_documentation_navigation.py
 23d290be1e3070b5f635885bc46261fee0435e5cd948b56e5c0267e04901aea9  ./tests/test_downstream_harness.py
-202df31cd719e737fc0e1483e857a1cb57d072c823f8b51f626e7648c3697854  ./tests/test_harness_commands.py
+8ae0e2fc531459d605c3368165983730d007b5561f8d49f336994c02a0326622  ./tests/test_harness_commands.py
 e4c5c6c3599d006208297c0e4073f4695081781f55bd8f066c94562cf89c9cdf  ./tests/test_harness_init.py
 257429cd5c6315dc2efc59b1d9e3e7d186437df8bd6a722f1c8e437550445bac  ./tests/test_host_setup.py
 60d5db56ac9bdccdaedba7b0484e798ca01d4dd4bd28189c85af6574aeaf2b00  ./tests/test_learning_runtime.py

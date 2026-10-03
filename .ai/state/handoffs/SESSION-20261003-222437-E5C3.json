@@ -1,0 +1,66 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [
+    "Existing accepted harness-command-lifecycle requirement already mandates diagnostic logs; no new behavior contract or OpenSpec change needed"
+  ],
+  "decisions": [
+    "Fix restores existing accepted diagnostic-log requirement; no OpenSpec contract change"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Confirmed reviewed defect with failing regressions; fixed UTF-8 exception/traceback logging and preserved owned-child cleanup; focused and full local gates pass"
+    ],
+    "todo": [
+      "Reproduce missing log diagnostics for supervisor errors",
+      "Add minimal logging fix and run focused/full checks",
+      "Publish feature, verify native CI and integrate into dev"
+    ]
+  },
+  "resume": {
+    "next_action": "Verify feature CI then integrate into dev",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T22:24:37+00:00",
+    "id": "SESSION-20261003-222437-E5C3",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T22:26:13+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Supervisor exceptions and traceback appear in lifecycle log before failure state, cleanup retained; regression and full harness checks pass; fix integrated into dev only"
+    ],
+    "goal": "Validate and fix missing MCP supervisor failure diagnostics",
+    "openspec_change": "",
+    "status": "verifying"
+  },
+  "verification": {
+    "passed": [
+      "PASS: 9 focused tests and 102-test full harness gate including real HTTP/stdio MCP; strict OpenSpec, Wiki and 375-file manifest; git diff --check"
+    ],
+    "pending": [
+      "Native Linux/Windows feature CI and dev integration"
+    ]
+  },
+  "working_set": [
+    {
+      "path": "scripts/project_mcp.py",
+      "sha256": "8648630c9a0588fc773633bf70d190959b23f21a26a2120469e5037b995cd3fc"
+    },
+    {
+      "path": "tests/test_harness_commands.py",
+      "sha256": "8ae0e2fc531459d605c3368165983730d007b5561f8d49f336994c02a0326622"
+    }
+  ]
+}

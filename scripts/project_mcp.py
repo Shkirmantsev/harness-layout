@@ -13,6 +13,7 @@ import subprocess
 import sys
 import time
 import threading
+import traceback
 from urllib.request import ProxyHandler, build_opener
 from uuid import uuid4
 
@@ -252,10 +253,14 @@ class Lifecycle:
                         child.wait(timeout=5)
                 state['phase'] = 'stopped' if stopping else 'failed'
         except Exception:
-            if child is not None and child.poll() is None:
-                child.kill()
-                child.wait(timeout=5)
-            state['phase'] = 'failed'
+            try:
+                with self.log_file.open('a', encoding='utf-8') as log:
+                    traceback.print_exc(file=log)
+            finally:
+                state['phase'] = 'failed'
+                if child is not None and child.poll() is None:
+                    child.kill()
+                    child.wait(timeout=5)
         finally:
             self.write(state)
         return 0 if state['phase'] == 'stopped' else 1
