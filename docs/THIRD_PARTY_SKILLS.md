@@ -3,7 +3,7 @@
 Canonical harness copies live in `.agents/skills/`. The four named harness core
 skills remain the only skills owned by `scripts/sync_skills.py`; Codex may also
 discover integration-owned OpenSpec workflows at the same level.
-`make skills-sync-local` copies the harness core to `.claude/skills` while
+`make skills-sync-local` copies the harness core to `.claude/skills` and `.opencode/skills` while
 preserving those integration-owned files. Optional routed third-party skills
 live under `.agents/skills/catalog/` and are read by exact path only after the
 core router selects them.
@@ -40,3 +40,15 @@ The three user-provided research reports were treated as reference material, not
 - promote lessons only when evidence is durable, keep repository facts in project policy, and never let self-improvement expand permissions.
 
 Existing `project-safety`, `verification`, `web-research-routing`, and `hermes-delegation` remain authoritative where an upstream skill overlaps them.
+
+## Downstream adaptation (2026-10-03)
+
+The project-local `ponytail` skill was adapted from the MIT-marked catalog copy
+in `RpaCMCMachineTCPGateway` (donor HEAD `269fc50`, inspected working tree).
+Upstream author/revision is not recorded in that donor copy; no independent
+upstream provenance is asserted. The adaptation keeps reuse/YAGNI and root-cause
+checks, removes persistent persona and restrictive response formatting, and
+preserves harness verification and explicit user requirements. Its complete
+local procedure is in `.agents/skills/catalog/ponytail/SKILL.md`.
+Generated OpenSpec 1.13 skills are not vendored into the installed 1.12 workflow;
+refresh client-owned skills using the chosen OpenSpec CLI version.

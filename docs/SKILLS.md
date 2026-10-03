@@ -19,14 +19,15 @@ printf '%s' "$TASK_TEXT" | python3 scripts/skill_router.py --profile balanced
 ```
 
 The result is a stable activation plan. Read only each
-`required_skills[].path`; do not scan or preload the catalog. Explicit skill
+`required_skills[].path`; do not preload the catalog. Explicit skill
 names are supported, including `grill me`, which resolves to the combined
 canonical `grilling` workflow. The router applies deterministic rules before
 metadata scoring, bounds the selection to 3–7 skills, and uses a four-skill,
 eight-step contract for `local-small` models.
 
 `make skills-sync-local` copies only the four named harness core skills to
-`.claude/skills` and removes stale project-managed catalog copies. It preserves
+`.claude/skills` and `.opencode/skills` and removes stale project-managed
+catalog copies from both. It preserves
 unrelated personal skills and integration-owned skills. Codex discovers the
 core and OpenSpec workflows directly from `.agents/skills`; OpenSpec owns its
 client-specific copies and commands under `.agents/`, `.claude/`, and
@@ -63,3 +64,21 @@ When updating a vendored skill, preserve project-specific safety and client-rout
 Provider-neutral budgets, model classes, cache ordering, metrics, and
 self-improvement constraints live in `.harness/runtime.json`. Skills cannot
 grant themselves tools or expand the project boundary.
+
+## Routing fallback and simplicity
+
+When literal matching has low confidence, `catalog_index` exposes only unloaded
+skill names/descriptions. Select by task meaning within the returned activation
+cap and dependency contract. Ask about consequential ambiguity only after this
+semantic pass; missing keywords alone do not require a user interruption.
+Confident plans return an empty index. If `python3` is absent, use `python`;
+missing both is an environment defect, with metadata-only manual selection as
+the fallback described in the core router skill.
+
+`ponytail` is an optional coding skill for explicit YAGNI/lazy-mode requests.
+It prioritizes reuse and the smallest complete implementation while preserving
+requirements, safety and verification. It is task-scoped and catalog-only.
+
+Local sync never writes to a global Codex skill directory. Run
+`python3 scripts/sync_skills.py local` after core updates and
+`python3 scripts/sync_skills.py check` to validate both mirrors.

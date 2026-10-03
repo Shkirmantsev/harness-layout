@@ -31,4 +31,5 @@ These explain prior decisions and upgrades; use current configuration and source
 - [Migration from bridge architecture](../MIGRATION_FROM_BRIDGE.md).
 - [Recommendation matrix](REPORT_RECOMMENDATION_MATRIX.md).
 - [Adaptive skill runtime plan](superpowers/plans/2026-09-05-adaptive-skill-runtime.md).
+- [Downstream harness adoption](../.ai/wiki/project/downstream-harness-adoption.md): import provenance and compatibility decisions.
 - [Third-party skills](THIRD_PARTY_SKILLS.md) and [licenses](THIRD_PARTY_LICENSES.md).

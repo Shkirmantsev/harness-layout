@@ -8,7 +8,7 @@ sourceRefs:
   - AGENTS.md
   - scripts/session_state.py
   - schemas/session-state.schema.json
-  - openspec/specs/session-handoff.md
+  - openspec/specs/session-handoff/spec.md
 maintenance:
   mode: hybrid
 ---

@@ -17,6 +17,7 @@ Root `.env` is the normal local configuration file. It is created from `.env.exa
 | `HERMES_ENABLED` | false | Optional external Hermes delegation/verification; no local Hermes container. |
 | `WEB_SEARCH_ENABLED` | false | Optional SearXNG discovery/search. |
 | `CRAWL4AI_ENABLED` | false | Optional Crawl4AI render/extract service. |
+| `CONTEXT7_MCP_ENABLED` | false | Optional hosted library documentation MCP; no local container. |
 | `PLAYWRIGHT_ENABLED` | false | Optional interactive browser MCP. |
 | `LITELLM_EXPOSE_ON_TAILSCALE` | false | Optional Tailscale exposure for LiteLLM. |
 
@@ -88,3 +89,21 @@ Hermes credentials remain in untracked `.env`/generated local material.
 ## Optional local models
 
 Four generic model slots are retained from v3, but all are disabled by default. Enable only slots actually used by a project.
+
+## Optional Context7 documentation MCP
+
+Set `CONTEXT7_MCP_ENABLED=true` in local `.env` and regenerate with
+`python harness.py client-config`. `CONTEXT7_MCP_URL` defaults to
+`https://mcp.context7.com/mcp`; `CONTEXT7_MCP_API_KEY` is optional and blank by
+default. Only HTTPS URLs without embedded credentials are accepted. The
+[Context7 server documentation](https://github.com/upstash/context7) describes
+its HTTP endpoint and bearer authentication.
+
+The generator preserves authentication for Claude Code, OpenCode V1/V2 and
+Codex using their existing HTTP support. Generated JSON/TOML stays untracked,
+is published atomically, and has mode `0600` on POSIX. Windows access follows
+local filesystem permissions. Generation and core verification do not connect
+to Context7 or install npm packages; service access is optional.
+
+Project-context MCP remains a client-launched stdio server. A detached process
+with stdout redirected to a log is not a connection endpoint for clients.

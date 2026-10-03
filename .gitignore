@@ -36,3 +36,12 @@ graphify-out/
 .superpowers/sdd/
 .worktrees/
 worktrees/
+
+# Skill synchronization locks and staged publications
+.claude/skills/.harness-*
+.opencode/skills/.harness-*
+# OpenCode core mirrors are generated from canonical .agents/skills.
+.opencode/skills/project-safety/
+.opencode/skills/session-checkpoint/
+.opencode/skills/skill-router/
+.opencode/skills/verification/

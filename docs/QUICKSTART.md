@@ -110,3 +110,18 @@ make plan
 make up
 make verify
 ```
+
+
+## Full test dependencies
+
+Install the pinned harness configuration/test dependency before running the full
+gate or repository unit tests:
+
+```bash
+python -m pip install -r requirements-dev.txt
+```
+
+GitHub CI installs this dependency on both Linux and Windows. The optional
+project-context MCP package has its own dependencies, installed by
+`python harness.py mcp-install`. POSIX ACL host setup remains a host-specific
+Hermes adapter and reports that requirement explicitly on Windows.

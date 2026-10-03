@@ -1,7 +1,7 @@
 {
   "budgets": {
     "steps_max": 12,
-    "steps_used": 9
+    "steps_used": 11
   },
   "context": [
     "Source branch dev; target branch main; use an explicit --no-ff merge and keep dev."
@@ -13,20 +13,18 @@
   "progress": {
     "blocked": [],
     "done": [
-      "Full canonical harness check passed on dev after all remediation commits."
+      "Merged dev into main with explicit non-fast-forward merge commit 9e24ef0 and preserved the full dev commit history.",
+      "Full canonical harness check passed on merged main."
     ],
-    "todo": [
-      "Merge dev into main with an explicit merge commit.",
-      "Run full harness verification on merged main."
-    ]
+    "todo": []
   },
   "resume": {
-    "next_action": "Commit the dev verification checkpoint, switch to main, and merge dev with --no-ff.",
+    "next_action": "",
     "prerequisites": []
   },
   "runtime": {
     "last_failure_fingerprint": "",
-    "next_decision": "continue",
+    "next_decision": "stop",
     "no_progress_windows": 0,
     "repeated_failure_count": 0
   },
@@ -35,7 +33,7 @@
     "created_at": "2026-09-09T08:20:00+00:00",
     "id": "REMEDIATION-COMMIT-AND-MERGE",
     "project": "harness-layout",
-    "updated_at": "2026-09-09T08:31:32+00:00"
+    "updated_at": "2026-09-09T08:33:30+00:00"
   },
   "task": {
     "acceptance": [
@@ -46,11 +44,12 @@
     ],
     "goal": "Partition the completed remediation into coherent commits on dev and merge dev into main with an explicit merge commit while preserving unrelated user files",
     "openspec_change": "",
-    "status": "verifying"
+    "status": "complete"
   },
   "verification": {
     "passed": [
-      "python3 harness.py check: PASS on dev outside sandbox; 69 root tests, 5 project-context tests, strict OpenSpec validation, and 331-file manifest verification passed."
+      "Merge commit 9e24ef0 has parents 95c1c72 and 4979241.",
+      "python3 harness.py check: PASS on merged main; 69 root tests, 5 project-context tests, strict OpenSpec validation, and 331-file manifest verification passed."
     ],
     "pending": []
   },

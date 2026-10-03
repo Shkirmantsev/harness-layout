@@ -13,7 +13,10 @@ The schema names templates and their prerequisites:
 | context-impact | [context-impact.md](schemas/production-sdd/templates/context-impact.md) | proposal, specs, design |
 | tasks | [tasks.md](schemas/production-sdd/templates/tasks.md) | specs, design, context-impact |
 
-Create a bounded change under `changes/<id>/` using these artifacts. Implementation
+Create a bounded change under `changes/<id>/` using these artifacts. Use a
+semantic lowercase kebab-case identifier, such as `adopt-downstream-harness-improvements`,
+without a date. Keep current capability IDs stable and place specs at
+`specs/<capability>/spec.md`; loose Markdown specs fail the harness gate. Implementation
 follows tasks, with verification and affected Wiki updates before adoption/archive.
 See the [OpenSpec skill](../.agents/skills/catalog/openspec-change/SKILL.md).
 
@@ -23,7 +26,12 @@ The Wiki explains current implementation without promoting proposals into facts.
 
 ## Current capabilities
 
-- [Session handoff](specs/session-handoff.md): durable active-task state and
+- [Portable harness tooling](specs/portable-harness-tooling/spec.md): platform-aware
+  writes, routing fallback and opt-in documentation MCP.
+- [Skill integration](specs/skill-integration/spec.md): core and integration ownership.
+- [Project initialization](specs/project-initialization/spec.md): portable setup.
+
+- [Session handoff](specs/session-handoff/spec.md): durable active-task state and
   empty-dialog resume behavior.
 
 Completed change evidence is retained under `changes/archive/`; for example,

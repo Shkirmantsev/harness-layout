@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, pwd, shlex, shutil, subprocess
+import argparse, os, shlex, shutil, subprocess
 from pathlib import Path
 from common import parse_env, project_root, validate_project_root, bool_env
 
@@ -14,7 +14,7 @@ def sudo(*args, check=True):
 def parent_chain(root: Path):
     out = []
     p = root.parent
-    while str(p) not in {"/", "/home"}:
+    while p != p.parent and p != Path("/home"):
         out.append(p)
         p = p.parent
     return reversed(out)
@@ -31,6 +31,9 @@ def deny_paths(root: Path, raw: str):
     return sorted(found)
 
 def main():
+    if os.name == "nt":
+        raise SystemExit("Hermes host ACL setup requires a POSIX host with ACL tools")
+    import pwd
     ap = argparse.ArgumentParser()
     ap.add_argument("--revoke", action="store_true")
     ap.add_argument("--yes-enable-tailscale-ssh", action="store_true")
