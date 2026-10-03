@@ -34,3 +34,10 @@ The corrected local full gate passed 84 tests and the 351-file manifest.
 Native Windows CI is PASS; native Windows execution on the local Linux host and
 live Context7 access remain NOT RUN. Integration uses feature -> dev -> main
 pull requests with merge commits through GitHub.
+
+
+- [x] Add full Windows CI on Python 3.11/3.13 including installed MCP and strict OpenSpec.
+- [ ] Verify every Linux/Windows full gate and integrate the feature locally into dev.
+- [ ] Publish dev and leave dev-to-main PR #2 for the user to merge on GitHub.
+
+- [x] Preserve cross-platform manifest bytes with the generic LF text checkout policy.
