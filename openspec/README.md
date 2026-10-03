@@ -27,8 +27,10 @@ Use lowercase kebab-case; underscores are invalid.
 - Archived changes: `changes/archive/YYYY-MM-DD-original-change-name/`, dated
   when archived. Never stack a second date prefix.
 
-Delta capability folders must match the dated accepted identity. For a new
-capability, use the intended acceptance date and reconcile it when adopting.
+Delta capability folders for existing capabilities must match the dated accepted
+identity; the harness gate rejects undated names and different dates for those
+capabilities. New capabilities may retain a semantic proposed name until adoption;
+assign their first acceptance date when adopting (or reconcile an intended date).
 Historical archives retain their original paths as evidence. During this migration,
 existing accepted capabilities use their original Git acceptance dates, including
 the session-handoff spec's original loose-file history.

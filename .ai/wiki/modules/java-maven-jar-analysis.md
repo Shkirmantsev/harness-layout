@@ -20,8 +20,12 @@ underlying analyzer works; the analyzer itself is a future, opt-in addition.
 ## Ownership
 
 - Catalog path: `.agents/skills/catalog/java-maven-jar-analysis/SKILL.md`
-- Adopted in: `openspec/changes/java-maven-jar-skill-adoption/`
+- Proposed adoption: `openspec/changes/java-maven-jar-skill-adoption/`
 - Contract: [Java/JAR analyzer MCP hooks](../interfaces/java-jar-analyzer.md)
+
+The skill and router implementation are present, but its normative specification
+remains in the active change. It is not yet an accepted capability in
+[the current-state inventory](../../../openspec/CURRENT.md).
 
 The skill lives in the on-demand catalog because Java/Maven analysis is
 language-specific and the harness core intentionally stays language-neutral

@@ -30,6 +30,38 @@ class OpenSpecLayoutTests(unittest.TestCase):
                 self.assertFalse(dated_name(invalid))
         self.assertTrue(dated_name('2024-02-29-state'))
 
+    def test_existing_capability_delta_requires_accepted_identity(self):
+        for name in ['session-handoff', '2026-10-03-session-handoff']:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as raw:
+                root = Path(raw)
+                self.fixture(root)
+                delta = root / 'changes/add-state-view/specs' / name / 'spec.md'
+                delta.parent.mkdir(parents=True)
+                delta.write_text('# Delta\n', encoding='utf-8')
+                errors = validate_layout(root)
+                self.assertTrue(any(name in error and '2026-09-07-session-handoff' in error
+                                    for error in errors), errors)
+
+    def test_matching_delta_and_new_capability_are_allowed(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            self.fixture(root)
+            for name in ['2026-09-07-session-handoff', 'new-capability',
+                         '2026-10-03-other-capability']:
+                delta = root / 'changes/add-state-view/specs' / name / 'spec.md'
+                delta.parent.mkdir(parents=True)
+                delta.write_text('# Delta\n', encoding='utf-8')
+            self.assertEqual(validate_layout(root), [])
+
+    def test_invalid_delta_directories_are_rejected(self):
+        for name in ['session_handoff', '2026-02-30-session-handoff',
+                     '2026-10-03-2026-09-07-session-handoff']:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as raw:
+                root = Path(raw)
+                self.fixture(root)
+                (root / 'changes/add-state-view/specs' / name).mkdir(parents=True)
+                self.assertTrue(any(name in error for error in validate_layout(root)))
+
     def test_missing_duplicate_and_stale_inventory_entries(self):
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

@@ -113,6 +113,6 @@ cost for Java tooling.
 ## Evidence
 
 - Source: `tools/mcp/project-context-mcp/project_context_mcp/server.py`
-- Adoption change: `openspec/changes/java-maven-jar-skill-adoption/`
+- Proposed adoption change: `openspec/changes/java-maven-jar-skill-adoption/`
 - Routing row: `docs/REPORT_RECOMMENDATION_MATRIX.md` (*Domain skills*)
 - Catalog skill: `.agents/skills/catalog/java-maven-jar-analysis/SKILL.md`
