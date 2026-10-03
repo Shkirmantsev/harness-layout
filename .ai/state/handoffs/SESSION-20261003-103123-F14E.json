@@ -1,0 +1,81 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [
+    "/home/dmytro/workspace/CMC_interface/RpaCMCMachineTCPGateway is read-only donor project"
+  ],
+  "decisions": [
+    "Retained optional integrations, canonical Codex discovery and capability identities; excluded business artifacts, global writes, detached stdio supervisor, audit-specific transfer script and newer tool-generated workflows",
+    "Native Windows execution and live Context7 service requests were not run; portability branches and client configurations are covered by regression tests"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Compared donor harness infrastructure and documented adoption/exclusion decisions",
+      "Imported and adapted portability fixes, semantic routing fallback, Ponytail skill, project-local client sync and optional Context7 configuration",
+      "Normalized session-handoff specification and updated current specs, Wiki, documentation and artifact manifest",
+      "Reviewed changes and passed final full gate: 82 tests, 7 OpenSpec items, 9 Wiki documents, 350 manifest artifacts"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T10:31:23+00:00",
+    "id": "SESSION-20261003-103123-F14E",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T10:46:22+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Relevant source harness improvements assessed and adapted; no business artifacts imported; focused checks and harness check pass; specifications and Wiki reflect changes"
+    ],
+    "goal": "Import reusable harness improvements from RpaCMCMachineTCPGateway without business logic",
+    "openspec_change": "adopt-downstream-harness-improvements",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "PASS: final full harness check using installed Node 22/OpenSpec 1.12 and authorized local socket permissions; 82 tests, zero skips",
+      "PASS: both core skill mirrors, Wiki index rebuild and git diff --check"
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": ".ai/wiki/project/downstream-harness-adoption.md",
+      "sha256": "d0f76f769df543ac8a7007f546d6ab9c5178ffd24830d30eb9205531543a5d65"
+    },
+    {
+      "path": "openspec/specs/portable-harness-tooling/spec.md",
+      "sha256": "b52ae40fe88f427d26afc3c1f5e38c47f4d372f23919fc74aee324e9333f09b4"
+    },
+    {
+      "path": "scripts/configure_clients.py",
+      "sha256": "9668b904f563255d580daaaf2b15193d564918e700ccfd14909597f762ff8c93"
+    },
+    {
+      "path": "scripts/skill_router.py",
+      "sha256": "9eb32f7594922eceee7b0ee9a7fd6e7e951c142e938837a85de5b34d56ca8adf"
+    },
+    {
+      "path": "scripts/sync_skills.py",
+      "sha256": "1a913cb162beb6d6c63f648620f0c2081b6dd53512712f5c8eb50bb1060bf9bc"
+    },
+    {
+      "path": "tests/test_downstream_harness.py",
+      "sha256": "def9a4d4dde97760413c08a03b8d405dd8bcd607e53e6deecf562bb09d98342d"
+    }
+  ]
+}

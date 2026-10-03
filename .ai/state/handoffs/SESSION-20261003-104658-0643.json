@@ -1,0 +1,56 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [
+    "User explicitly authorizes remote feature to development to main integration; prior work remains uncommitted; existing development branch is dev"
+  ],
+  "decisions": [
+    "Use existing dev as development; preserve earlier unpublished harness commits and merge commits; publish only feature branch then use GitHub merge commits for feature to dev to main"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Feature branch full harness check passed: 82 tests, 7 OpenSpec items, 9 Wiki documents and 350 manifest artifacts"
+    ],
+    "todo": [
+      "Create feature branch and inspect remote branch state",
+      "Commit verified harness changes and push feature",
+      "Merge feature PR into dev then dev PR into main through remote",
+      "Verify final remote and local branch state"
+    ]
+  },
+  "resume": {
+    "next_action": "Commit and push feature; wait for GitHub CI before dev merge",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T10:46:58+00:00",
+    "id": "SESSION-20261003-104658-0643",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T10:49:21+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Changes committed only on feature; feature merged remotely into dev then dev merged remotely into main; checks verified and local branches synchronized without losing existing history"
+    ],
+    "goal": "Integrate verified harness improvements through remote feature to dev to main pull requests",
+    "openspec_change": "adopt-downstream-harness-improvements",
+    "status": "reviewing"
+  },
+  "verification": {
+    "passed": [
+      "PASS: full feature-branch harness check and diff inspection"
+    ],
+    "pending": []
+  },
+  "working_set": []
+}

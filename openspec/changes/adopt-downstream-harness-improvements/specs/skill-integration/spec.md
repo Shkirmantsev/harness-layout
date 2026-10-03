@@ -1,24 +1,4 @@
-# skill-integration Specification
-
-## Purpose
-
-Define how harness-owned core skills coexist safely with workflow skills that
-external coding-tool integrations generate in the same discovery directories.
-
-## Requirements
-
-### Requirement: tool-owned skills coexist with harness core skills
-
-The harness MUST distinguish its fixed directly discoverable core skills from
-skills generated and owned by an integrated coding tool, even when both occupy
-the top level of `.agents/skills/`.
-
-#### Scenario: OpenSpec initializes Codex skills
-
-Given the four harness core skills are installed
-When OpenSpec initializes its Codex integration under `.agents/skills/`
-Then all OpenSpec workflow skills remain directly discoverable
-And the harness still identifies exactly its four named skills as harness core.
+## MODIFIED Requirements
 
 ### Requirement: local skill sync preserves integration-owned outputs
 

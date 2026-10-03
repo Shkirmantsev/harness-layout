@@ -49,3 +49,5 @@ and removal. Catalog skills remain on-demand and are not copied as core.
 
 `tests.test_skill_runtime.SkillRouterTests` verifies both fixed core selection
 and preservation of OpenSpec-owned Claude skills during local synchronization.
+`tests.test_downstream_harness` additionally verifies both Claude/OpenCode
+mirrors preserve integration and personal skills and detect mirror drift.

@@ -87,13 +87,13 @@ ps: status ## Alias for status.
 logs: ## Show recent logs for ALL harness containers; ARGS='-f' follows.
 	@$(STACK) logs $(ARGS)
 
-skills-sync-local: ## Sync directly discoverable routed core skills into .claude/skills.
+skills-sync-local: ## Sync directly discoverable routed core skills into Claude and OpenCode project directories.
 	@$(PYTHON) scripts/sync_skills.py local
 
 skills-sync-remote: ## Rsync routed core skills to optional remote Hermes profile.
 	@$(PYTHON) scripts/sync_skills.py remote
 
-skills-check: ## Verify Claude skill exposure and catalog isolation.
+skills-check: ## Verify Claude/OpenCode skill exposure and catalog isolation.
 	@$(PYTHON) scripts/sync_skills.py check
 
 hermes-host-setup: ## Optional: configure unprivileged main-PC Hermes access.

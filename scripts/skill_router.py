@@ -110,6 +110,7 @@ SIGNALS: tuple[tuple[str, tuple[str, ...], int, str], ...] = (
     ("karpathy-guidelines", ("implement", "write code", "change code", "fix", "refactor", "review code"), 54, "coding task benefits from surgical assumptions and success criteria"),
     ("solution-retrospective", ("retrospective", "self improvement", "learn from this", "durable lesson"), 91, "durable learning was requested"),
     ("web-research-routing", ("web research", "search the web", "research online", "browse the internet"), 88, "public web research requested"),
+    ("ponytail", ("ponytail", "yagni", "be lazy", "lazy mode"), 92, "minimal implementation posture requested"),
     ("defuddle", ("read this webpage", "extract this page", "clean this webpage"), 78, "known web page needs compact extraction"),
 )
 
@@ -326,6 +327,11 @@ def build_plan(task: str, profile_name: str) -> dict:
         "not_activated": [
             {"name": name, "reason": "activation cap reached"} for name in omitted[:3]
         ],
+        "catalog_index": ([
+            {"name": name, "description": skill.description}
+            for name, skill in sorted(skills.items())
+            if name not in selected and skill.path.is_relative_to(SKILLS_ROOT / "catalog")
+        ] if ambiguity else []),
         "needs_clarification": ambiguity,
         "confidence": confidence,
         "preflight": (

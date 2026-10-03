@@ -55,6 +55,17 @@ def logical_mcp_catalog(env: dict[str, str]) -> dict[str, dict]:
         root = project_root(env)
         validate_project_root(root)
         out["project-context"] = {"type": "local", "command": context_command() + ["--root", str(root)]}
+    if bool_env(env, "CONTEXT7_MCP_ENABLED"):
+        url = env.get("CONTEXT7_MCP_URL", "https://mcp.context7.com/mcp").strip() or "https://mcp.context7.com/mcp"
+        from urllib.parse import urlsplit
+        parsed = urlsplit(url)
+        if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
+            raise ValueError("CONTEXT7_MCP_URL must be an HTTPS URL without embedded credentials")
+        spec = {"type": "remote", "url": url}
+        api_key = env.get("CONTEXT7_MCP_API_KEY", "").strip()
+        if api_key:
+            spec["headers"] = {"Authorization": f"Bearer {api_key}"}
+        out["context7"] = spec
     if bool_env(env, "WEB_SEARCH_ENABLED"):
         out["searxng"] = {"type": "remote", "url": f"http://127.0.0.1:{env.get('SEARXNG_MCP_PORT','18880')}/mcp"}
     if bool_env(env, "CRAWL4AI_ENABLED"):
@@ -78,7 +89,9 @@ def configure_claude(env: dict[str, str], mcp: dict[str, dict]) -> None:
             claude_mcp[name] = {"type": "stdio", "command": spec["command"][0], "args": spec["command"][1:]}
         else:
             claude_mcp[name] = {"type": "http", "url": spec["url"]}
-    write_json(ROOT / ".mcp.json", {"mcpServers": claude_mcp})
+            if spec.get("headers"):
+                claude_mcp[name]["headers"] = spec["headers"]
+    write_json(ROOT / ".mcp.json", {"mcpServers": claude_mcp}, mode=0o600)
 
     agents = ROOT / ".claude/agents"
     agents.mkdir(parents=True, exist_ok=True)
@@ -156,6 +169,8 @@ def render_opencode_v1(env: dict[str, str], mcp: dict[str, dict]) -> dict:
             config["mcp"][name] = {"type": "local", "command": spec["command"], "enabled": True}
         else:
             config["mcp"][name] = {"type": "remote", "url": spec["url"], "enabled": True}
+            if spec.get("headers"):
+                config["mcp"][name]["headers"] = spec["headers"]
     if bool_env(env, "LITELLM_ENABLED"):
         config["provider"] = {
             "harness": {
@@ -184,6 +199,8 @@ def render_opencode_v2(env: dict[str, str], mcp: dict[str, dict]) -> dict:
             config["mcp"]["servers"][name] = {"type": "local", "command": spec["command"], "disabled": False}
         else:
             config["mcp"]["servers"][name] = {"type": "remote", "url": spec["url"], "disabled": False}
+            if spec.get("headers"):
+                config["mcp"]["servers"][name]["headers"] = spec["headers"]
     if bool_env(env, "LITELLM_ENABLED"):
         config["providers"] = {
             "harness": {
@@ -235,7 +252,7 @@ def configure_opencode(env: dict[str, str], mcp: dict[str, dict]) -> str:
     elif runtime_path.exists():
         runtime_path.unlink()
 
-    write_json(ROOT / "opencode.json", config)
+    write_json(ROOT / "opencode.json", config, mode=0o600)
     write_json(
         ROOT / ".opencode/package.json",
         {
@@ -257,11 +274,15 @@ def configure_codex(env: dict[str, str], mcp: dict[str, dict]) -> None:
                 args = ", ".join(json.dumps(a) for a in spec["command"][1:])
                 lines.append(f"args = [{args}]")
         else:
-            lines.append(f'url = "{spec["url"]}"')
+            lines.append(f'url = {json.dumps(spec["url"])}')
+            if spec.get("headers"):
+                lines.append(f"[mcp_servers.{key}.http_headers]")
+                for header, value in spec["headers"].items():
+                    lines.append(f"{json.dumps(header)} = {json.dumps(value)}")
         lines.append("")
     path = ROOT / ".codex/config.toml"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(lines), encoding="utf-8")
+    atomic_write_text(path, "\n".join(lines), mode=0o600)
 
 
 def write_secrets(env: dict[str, str]) -> None:

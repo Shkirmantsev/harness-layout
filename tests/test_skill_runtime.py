@@ -161,6 +161,7 @@ class SkillRouterTests(unittest.TestCase):
                 mock.patch.object(sync_skills, "SOURCE", source),
                 mock.patch.object(sync_skills, "CATALOG", catalog),
                 mock.patch.object(sync_skills, "CLAUDE", claude),
+                mock.patch.object(sync_skills, "OPENCODE", fixture / ".opencode" / "skills"),
             ):
                 sync_skills.local()
 

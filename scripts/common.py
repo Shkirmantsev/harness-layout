@@ -19,7 +19,7 @@ def update_env(updates: dict[str, str], path: Path = ENV) -> None:
     for key, value in updates.items():
         pat = re.compile(rf"(?m)^{re.escape(key)}=.*$")
         repl = f"{key}={value}"
-        text = pat.sub(repl, text) if pat.search(text) else text.rstrip() + f"\n{repl}\n"
+        text = pat.sub(lambda _m, r=repl: r, text) if pat.search(text) else text.rstrip() + f"\n{repl}\n"
     atomic_write_text(path, text, mode=0o600)
 
 
