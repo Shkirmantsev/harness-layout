@@ -1,0 +1,56 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [
+    "User explicitly authorizes remote feature to development to main integration; prior work remains uncommitted; existing development branch is dev"
+  ],
+  "decisions": [
+    "Repeated branch-flow instruction does not explicitly authorize bypassing protected-main review rules; standard PR merge remains the intended path"
+  ],
+  "progress": {
+    "blocked": [
+      "Remote PR 2 remains open with REVIEW_REQUIRED and no approving reviews; all ten reported CI checks pass"
+    ],
+    "done": [
+      "Rechecked repeated branch-flow instruction; work remains on feature and PR 1 is merged into remote dev"
+    ],
+    "todo": [
+      "Merge dev PR into main after its remote checks pass",
+      "Synchronize local refs and verify final remote commits"
+    ]
+  },
+  "resume": {
+    "next_action": "Merge PR 2 after required review or explicit user authorization for an administrator override, then synchronize main",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "remote-ci-dependency-and-windows-assumptions",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 1
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T10:46:58+00:00",
+    "id": "SESSION-20261003-104658-0643",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T11:02:54+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Changes committed only on feature; feature merged remotely into dev then dev merged remotely into main; checks verified and local branches synchronized without losing existing history"
+    ],
+    "goal": "Integrate verified harness improvements through remote feature to dev to main pull requests",
+    "openspec_change": "adopt-downstream-harness-improvements",
+    "status": "blocked"
+  },
+  "verification": {
+    "passed": [
+      "PASS: rechecked dev-to-main PR CI; every reported job is successful"
+    ],
+    "pending": []
+  },
+  "working_set": []
+}

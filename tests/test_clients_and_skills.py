@@ -27,20 +27,20 @@ class ClientTests(unittest.TestCase):
             with patch.object(gen, 'ROOT', root):
                 catalog = gen.logical_mcp_catalog({'PROJECT_ROOT': d})
                 command = catalog['project-context']['command']
-                self.assertEqual(['--root', d], command[-2:])
+                self.assertEqual(['--root', str(root.resolve())], command[-2:])
                 command[0] = '/tmp/a "quoted" path/server'
                 gen.configure_claude({}, catalog)
-                claude = json.loads((root / '.mcp.json').read_text())
-                self.assertEqual(['--root', d], claude['mcpServers']['project-context']['args'])
+                claude = json.loads((root / '.mcp.json').read_text(encoding="utf-8"))
+                self.assertEqual(['--root', str(root.resolve())], claude['mcpServers']['project-context']['args'])
                 gen.configure_codex({}, catalog)
-                codex = tomllib.loads((root / '.codex/config.toml').read_text())
+                codex = tomllib.loads((root / '.codex/config.toml').read_text(encoding="utf-8"))
                 self.assertEqual(command[0], codex['mcp_servers']['project_context']['command'])
-                self.assertEqual(['--root', d], codex['mcp_servers']['project_context']['args'])
+                self.assertEqual(['--root', str(root.resolve())], codex['mcp_servers']['project_context']['args'])
                 for render in (gen.render_opencode_v1, gen.render_opencode_v2):
                     self.assertIn('--root', json.dumps(render({}, catalog)))
 
     def test_generator_preserves_client_specific_hermes_transports(self):
-        text = (ROOT / 'scripts/configure_clients.py').read_text()
+        text = (ROOT / 'scripts/configure_clients.py').read_text(encoding="utf-8")
         self.assertIn('HERMES_REMOTE_SIDECAR_PORT', text)
         self.assertIn('tool_dir / "hermes.js"', text)
         self.assertIn('opencode-hermes-runtime.json', text)
@@ -82,7 +82,7 @@ class ClientTests(unittest.TestCase):
         self.assertNotIn('provider', v2)
 
     def test_shared_skills_have_native_contract(self):
-        text = '\n'.join(p.read_text() for p in (ROOT / '.agents/skills').rglob('SKILL.md'))
+        text = '\n'.join(p.read_text(encoding="utf-8") for p in (ROOT / '.agents/skills').rglob('SKILL.md'))
         self.assertIn("OpenCode delegates through project-local `hermes_*` custom tools", text)
         self.assertIn('Claude Code delegates through the dedicated remote Hermes MCP sidecar', text)
         self.assertNotIn('make hermes-bind', text)

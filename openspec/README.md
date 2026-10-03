@@ -17,14 +17,32 @@ Create a bounded change under `changes/<id>/` using these artifacts. Implementat
 follows tasks, with verification and affected Wiki updates before adoption/archive.
 See the [OpenSpec skill](../.agents/skills/catalog/openspec-change/SKILL.md).
 
-`specs/` contains adopted requirements; `changes/` contains proposed deltas.
-Empty directories indicate no requirements or active changes have been authored.
-The Wiki explains current implementation without promoting proposals into facts.
+## Directory naming
 
-## Current capabilities
+Use lowercase kebab-case; underscores are invalid.
 
-- [Session handoff](specs/session-handoff.md): durable active-task state and
-  empty-dialog resume behavior.
+- Accepted specs: `specs/YYYY-MM-DD-domain-capability/spec.md`. Use the Git date
+  when the capability first became an accepted spec; retain that date on updates.
+- Active changes: semantic `verb-domain-purpose` without a date prefix.
+- Archived changes: `changes/archive/YYYY-MM-DD-original-change-name/`, dated
+  when archived. Never stack a second date prefix.
+
+Delta capability folders for existing capabilities must match the dated accepted
+identity; the harness gate rejects undated names and different dates for those
+capabilities. New capabilities may retain a semantic proposed name until adoption;
+assign their first acceptance date when adopting (or reconcile an intended date).
+Historical archives retain their original paths as evidence. During this migration,
+existing accepted capabilities use their original Git acceptance dates, including
+the session-handoff spec's original loose-file history.
+
+## Central current state (“actual is”)
+
+[CURRENT.md](CURRENT.md) is the single navigation entry for the complete accepted
+requirements under `specs/`. Each capability appears exactly once. It links to
+canonical requirements rather than duplicating them. Proposed deltas in `changes/`
+are excluded; the Wiki explains observed implementation and reports mismatches.
+Update current specs and CURRENT together when a verified change is adopted,
+renamed or retired. The harness gate checks naming, coverage and stale links.
 
 Completed change evidence is retained under `changes/archive/`; for example,
 [automatic session handoff](changes/archive/2026-09-07-automatic-session-handoff/proposal.md).

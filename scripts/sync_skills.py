@@ -16,6 +16,7 @@ from file_lock import file_lock
 SOURCE = ROOT / ".agents" / "skills"
 CATALOG = SOURCE / "catalog"
 CLAUDE = ROOT / ".claude" / "skills"
+OPENCODE = ROOT / ".opencode" / "skills"
 CORE_SKILL_NAMES = (
     "project-safety",
     "session-checkpoint",
@@ -51,22 +52,22 @@ def digest(root: Path) -> dict[str, str]:
     }
 
 
-def local() -> None:
-    CLAUDE.mkdir(parents=True, exist_ok=True)
+def sync_to(destination: Path) -> None:
+    destination.mkdir(parents=True, exist_ok=True)
     exposed = exposed_skills()
     managed_names = {path.name for path in exposed} | catalog_names() | {"catalog"}
-    with tempfile.TemporaryDirectory(prefix=".harness-skill-stage-", dir=CLAUDE) as raw:
+    with tempfile.TemporaryDirectory(prefix=".harness-skill-stage-", dir=destination) as raw:
         staging = Path(raw)
         for source in exposed:
             shutil.copytree(source, staging / source.name)
 
-        with file_lock(CLAUDE / ".harness-sync.lock"):
+        with file_lock(destination / ".harness-sync.lock"):
             # Publish complete staged trees while serializing writers. Preserve
             # client-owned skills (including OpenSpec-generated skills).
             for source in exposed:
-                target = CLAUDE / source.name
+                target = destination / source.name
                 incoming = staging / source.name
-                backup = CLAUDE / f".{source.name}.harness-backup-{os.getpid()}"
+                backup = destination / f".{source.name}.harness-backup-{os.getpid()}"
                 if backup.exists():
                     shutil.rmtree(backup)
                 if target.exists():
@@ -80,18 +81,21 @@ def local() -> None:
                 shutil.rmtree(backup, ignore_errors=True)
 
             # Remove only stale names owned by this project. Personal/unrelated
-            # Claude skills are intentionally left untouched.
-            for target in CLAUDE.iterdir():
+            # Client skills are intentionally left untouched.
+            for target in destination.iterdir():
                 if (
                     target.is_dir()
                     and target.name in managed_names
                     and target.name not in CORE_SKILL_NAMES
                 ):
                     shutil.rmtree(target)
-    print(
-        f"Synced {len(exposed)} core skills to Claude; "
-        "optional catalog stays on demand."
-    )
+
+
+def local() -> None:
+    for destination in (CLAUDE, OPENCODE):
+        sync_to(destination)
+    print(f"Synced {len(exposed_skills())} core skills to Claude and OpenCode; "
+          "Codex uses canonical .agents/skills; optional catalog stays on demand.")
 
 
 def remote() -> None:
@@ -126,27 +130,30 @@ def remote() -> None:
     print("Remote core skills synced to", destination)
 
 
-def check() -> None:
+def check_target(destination: Path) -> None:
     exposed = exposed_skills()
     for source in exposed:
-        target = CLAUDE / source.name
+        target = destination / source.name
         if not target.is_dir() or digest(source) != digest(target):
             raise SystemExit(
-                f"Claude core skill differs from canonical source: {source.name}"
+                f"Client core skill differs from canonical source in {destination}: {source.name}"
             )
 
     leaked = sorted(
-        name for name in catalog_names() | {"catalog"} if (CLAUDE / name).exists()
+        name for name in catalog_names() | {"catalog"} if (destination / name).exists()
     )
     if leaked:
         raise SystemExit(
-            "Optional catalog skills are directly exposed in Claude: "
+            f"Optional catalog skills are directly exposed in {destination}: "
             + ", ".join(leaked)
         )
-    print(
-        f"Local skills: PASS ({len(exposed)} core, "
-        f"{len(catalog_names())} on demand)"
-    )
+
+
+def check() -> None:
+    for destination in (CLAUDE, OPENCODE):
+        check_target(destination)
+    print(f"Local skills: PASS ({len(exposed_skills())} core, "
+          f"{len(catalog_names())} on demand; Claude and OpenCode mirrors)")
 
 
 def main() -> None:

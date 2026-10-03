@@ -17,6 +17,9 @@ sys.path.insert(0, str(MCP_ROOT))
 
 def run(cmd: list[str], *, check: bool = True) -> subprocess.CompletedProcess:
     print("+", " ".join(cmd))
+    resolved = shutil.which(cmd[0])
+    if resolved:
+        cmd = [resolved, *cmd[1:]]
     return subprocess.run(cmd, cwd=ROOT, check=check)
 
 
@@ -52,6 +55,12 @@ def cmd_wiki_validate() -> None:
 
 
 def cmd_openspec_check() -> None:
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from openspec_layout import validate_layout
+    layout_errors = validate_layout(ROOT / "openspec")
+    if layout_errors:
+        print({"openspecLayoutErrors": layout_errors})
+        raise SystemExit(1)
     import re
     path = ROOT / "openspec/schemas/production-sdd/schema.yaml"
     text = path.read_text(encoding="utf-8")

@@ -94,6 +94,20 @@ class SkillRouterTests(unittest.TestCase):
         names = [item["name"] for item in plan["required_skills"]]
         self.assertNotIn("graphify", names)
 
+    def test_maven_analysis_routes_without_capturing_gradle_only_work(self):
+        maven = self.route(
+            "Which transitive dependencies does com.example.Widget pull in this Maven project?"
+        )
+        gradle = self.route("Resolve the Gradle dependency graph for this Java service")
+        self.assertIn(
+            "java-maven-jar-analysis",
+            [item["name"] for item in maven["required_skills"]],
+        )
+        self.assertNotIn(
+            "java-maven-jar-analysis",
+            [item["name"] for item in gradle["required_skills"]],
+        )
+
     def test_hermes_delegation_keeps_transitive_context_dependencies_under_cap(self):
         plan = self.route(
             "Delegate to Hermes with a bounded context pack", profile="local-small"
@@ -147,6 +161,7 @@ class SkillRouterTests(unittest.TestCase):
                 mock.patch.object(sync_skills, "SOURCE", source),
                 mock.patch.object(sync_skills, "CATALOG", catalog),
                 mock.patch.object(sync_skills, "CLAUDE", claude),
+                mock.patch.object(sync_skills, "OPENCODE", fixture / ".opencode" / "skills"),
             ):
                 sync_skills.local()
 

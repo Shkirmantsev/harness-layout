@@ -1,0 +1,66 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [
+    "User explicitly changed merge responsibility: local dev integration allowed today; dev to main belongs to user through GitHub"
+  ],
+  "decisions": [
+    "User explicitly owns dev-to-main through GitHub; this agent task is complete at development integration and review handoff"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Required Linux/Windows support captured in current requirements and full Windows CI gates with pinned test/MCP tooling and LF checkout policy",
+      "All seven feature CI jobs passed; real MCP handshake and 84-test full gates passed on Windows Python 3.11 and 3.13 without skips",
+      "Merged the feature locally into dev as 88358ee and published dev; main remains for user-managed GitHub PR 2"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T11:05:44+00:00",
+    "id": "SESSION-20261003-110544-59B1",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T11:13:47+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Linux and Windows full core gates pass including MCP runtime; implementation integrated into local and remote dev; PR 2 remains available for user-managed main merge; main is not modified"
+    ],
+    "goal": "Verify full Linux and Windows harness support and integrate into dev; user owns remote main merge",
+    "openspec_change": "adopt-downstream-harness-improvements",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "PASS: native full Windows 3.11/3.13 and Linux gates, strict OpenSpec 7 items, Wiki 9 documents, 352-file manifest and both skill mirrors"
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": ".gitattributes",
+      "sha256": "cd60e3a9811804e13d1212f1da1aa187839d155543acbcd2a8ac8bb52bb0b0c2"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "sha256": "bfb4d82a8b180a0a15a897bab68253ac6fdf8e00882e86d6dbe9a35fc3164da3"
+    },
+    {
+      "path": "openspec/specs/portable-harness-tooling/spec.md",
+      "sha256": "3cd5596c9f42a6bb7bda3b2ab5c51c3ec1ba8e1d0539bf782a7fa8e023126cdb"
+    }
+  ]
+}

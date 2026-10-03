@@ -9,6 +9,7 @@
 - [Configuration](CONFIGURATION.md): supported settings and client generation.
 - [OpenCode compatibility](OPENCODE_COMPATIBILITY.md): selecting a configuration generation.
 - [Engineering conventions](conventions/README.md): task-specific design, implementation, testing, and review defaults.
+- [Accepted project state (“actual is”)](../openspec/CURRENT.md): all current capability requirements.
 - [OpenSpec workflow](../openspec/README.md): artifact dependencies and adoption.
 - [Skills](SKILLS.md): routing and reusable procedures.
 - [Security](SECURITY.md): credentials and project boundaries.
@@ -31,4 +32,5 @@ These explain prior decisions and upgrades; use current configuration and source
 - [Migration from bridge architecture](../MIGRATION_FROM_BRIDGE.md).
 - [Recommendation matrix](REPORT_RECOMMENDATION_MATRIX.md).
 - [Adaptive skill runtime plan](superpowers/plans/2026-09-05-adaptive-skill-runtime.md).
+- [Downstream harness adoption](../.ai/wiki/project/downstream-harness-adoption.md): import provenance and compatibility decisions.
 - [Third-party skills](THIRD_PARTY_SKILLS.md) and [licenses](THIRD_PARTY_LICENSES.md).

@@ -43,11 +43,14 @@ def atomic_write(path: Path, payload: dict) -> None:
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temporary, path)
-        descriptor = os.open(path.parent, os.O_RDONLY)
-        try:
-            os.fsync(descriptor)
-        finally:
-            os.close(descriptor)
+        if os.name != "nt":
+            # Directory fsync is a POSIX-only durability step; Windows rejects
+            # opening a directory handle this way.
+            descriptor = os.open(path.parent, os.O_RDONLY)
+            try:
+                os.fsync(descriptor)
+            finally:
+                os.close(descriptor)
     finally:
         temporary.unlink(missing_ok=True)
 

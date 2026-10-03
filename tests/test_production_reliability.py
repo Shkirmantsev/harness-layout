@@ -28,7 +28,8 @@ class ProductionReliabilityTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             path = pathlib.Path(raw) / "secret"
             common.atomic_write_text(path, "sensitive\n", mode=0o600)
-            self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
+            if os.name != "nt":
+                self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
             self.assertEqual(path.read_text(), "sensitive\n")
             self.assertEqual(list(path.parent.glob(".secret.*")), [])
 

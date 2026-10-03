@@ -3,6 +3,12 @@ schema: production-sdd
 context: |
   This project uses a Markdown-first LLM Wiki under .ai/wiki/ and OpenSpec for
   normative behavioral change. Current agreed behavior belongs in openspec/specs/.
+  openspec/CURRENT.md is the central index of all accepted specs, not proposals.
+  Accepted capability folders use YYYY-MM-DD-domain-capability (first Git acceptance).
+  Active change IDs are semantic verb-domain-purpose without dates; archive IDs
+  use YYYY-MM-DD-original-change-name (archive date). Use lowercase kebab-case.
+  Preserve accepted dated IDs and match delta folders to them; update CURRENT
+  whenever adopting, renaming or retiring a capability.
   Proposed/future behavior belongs in openspec/changes/.
   Source code/configuration is observed implementation, not automatically a business requirement.
   Detailed project context must be retrieved on demand; do not preload the Wiki.
