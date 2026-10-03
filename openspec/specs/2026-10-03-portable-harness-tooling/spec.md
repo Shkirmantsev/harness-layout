@@ -87,10 +87,11 @@ before invoking subprocesses while preserving arguments and check behavior.
 
 ### Requirement: current specifications participate in strict validation
 
-Current specifications SHALL live at `openspec/specs/<capability>/spec.md`.
+Current specifications SHALL live at `openspec/specs/YYYY-MM-DD-domain-capability/spec.md`.
 The harness SHALL reject loose Markdown specifications rather than silently
-allowing the CLI to omit them. Capability identifiers SHALL remain stable during
-format-only migration.
+allowing the CLI to omit them. Accepted dated capability identifiers SHALL remain stable on subsequent
+updates. Migration from undated identifiers SHALL preserve the original Git
+acceptance date and update live links and active delta paths.
 
 #### Scenario: a loose current specification exists
 

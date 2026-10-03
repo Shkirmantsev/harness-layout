@@ -55,9 +55,11 @@ def cmd_wiki_validate() -> None:
 
 
 def cmd_openspec_check() -> None:
-    loose_specs = sorted(path.name for path in (ROOT / "openspec/specs").glob("*.md"))
-    if loose_specs:
-        print({"looseSpecs": loose_specs, "expectedLayout": "openspec/specs/<capability>/spec.md"})
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from openspec_layout import validate_layout
+    layout_errors = validate_layout(ROOT / "openspec")
+    if layout_errors:
+        print({"openspecLayoutErrors": layout_errors})
         raise SystemExit(1)
     import re
     path = ROOT / "openspec/schemas/production-sdd/schema.yaml"

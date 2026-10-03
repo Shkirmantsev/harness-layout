@@ -13,26 +13,34 @@ The schema names templates and their prerequisites:
 | context-impact | [context-impact.md](schemas/production-sdd/templates/context-impact.md) | proposal, specs, design |
 | tasks | [tasks.md](schemas/production-sdd/templates/tasks.md) | specs, design, context-impact |
 
-Create a bounded change under `changes/<id>/` using these artifacts. Use a
-semantic lowercase kebab-case identifier, such as `adopt-downstream-harness-improvements`,
-without a date. Keep current capability IDs stable and place specs at
-`specs/<capability>/spec.md`; loose Markdown specs fail the harness gate. Implementation
+Create a bounded change under `changes/<id>/` using these artifacts. Implementation
 follows tasks, with verification and affected Wiki updates before adoption/archive.
 See the [OpenSpec skill](../.agents/skills/catalog/openspec-change/SKILL.md).
 
-`specs/` contains adopted requirements; `changes/` contains proposed deltas.
-Empty directories indicate no requirements or active changes have been authored.
-The Wiki explains current implementation without promoting proposals into facts.
+## Directory naming
 
-## Current capabilities
+Use lowercase kebab-case; underscores are invalid.
 
-- [Portable harness tooling](specs/portable-harness-tooling/spec.md): platform-aware
-  writes, routing fallback and opt-in documentation MCP.
-- [Skill integration](specs/skill-integration/spec.md): core and integration ownership.
-- [Project initialization](specs/project-initialization/spec.md): portable setup.
+- Accepted specs: `specs/YYYY-MM-DD-domain-capability/spec.md`. Use the Git date
+  when the capability first became an accepted spec; retain that date on updates.
+- Active changes: semantic `verb-domain-purpose` without a date prefix.
+- Archived changes: `changes/archive/YYYY-MM-DD-original-change-name/`, dated
+  when archived. Never stack a second date prefix.
 
-- [Session handoff](specs/session-handoff/spec.md): durable active-task state and
-  empty-dialog resume behavior.
+Delta capability folders must match the dated accepted identity. For a new
+capability, use the intended acceptance date and reconcile it when adopting.
+Historical archives retain their original paths as evidence. During this migration,
+existing accepted capabilities use their original Git acceptance dates, including
+the session-handoff spec's original loose-file history.
+
+## Central current state (“actual is”)
+
+[CURRENT.md](CURRENT.md) is the single navigation entry for the complete accepted
+requirements under `specs/`. Each capability appears exactly once. It links to
+canonical requirements rather than duplicating them. Proposed deltas in `changes/`
+are excluded; the Wiki explains observed implementation and reports mismatches.
+Update current specs and CURRENT together when a verified change is adopted,
+renamed or retired. The harness gate checks naming, coverage and stale links.
 
 Completed change evidence is retained under `changes/archive/`; for example,
 [automatic session handoff](changes/archive/2026-09-07-automatic-session-handoff/proposal.md).

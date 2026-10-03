@@ -43,7 +43,7 @@ line endings or generator version metadata.
 | Integration removal patches | Donor removed LiteLLM, Hermes, SearXNG/Crawl4AI and other supported adapters; retain this template's integrations and safety boundaries. |
 | User-global Codex skill synchronization | Conflicts with project isolation and canonical discovery; replaced by project-local mirrors. |
 | Detached stdio MCP supervisor | Redirects protocol output to a log and has no client connection transport; keep the client-managed process lifecycle. |
-| Dated current capability names | Would rename stable capabilities and links without behavioral benefit. Adopt standard spec directories while retaining undated IDs. |
+| Dated current capability names | Initially deferred; explicitly adopted on user request on 2026-10-03. Original Git acceptance dates are retained and live links/deltas migrated. See the central [current state](../../../openspec/CURRENT.md). |
 | Generated OpenSpec 1.13 workflows | Additional workflows include store commands from a different generator version; external-tool ownership governs refresh. Do not copy them into the 1.12 integration. |
 | Implementation-transfer script | Tied to FIX2 audit files and a specific source commit, with whole-tree exports and commit replay. No generic harness import. |
 | Gateway Wiki, OpenSpec specs, build/runtime scripts and contracts | Business-specific material is outside the requested scope; no imports. |
@@ -59,7 +59,7 @@ passing local configuration tests does not establish either.
 
 See [configuration](../../../docs/CONFIGURATION.md),
 [skills](../../../docs/SKILLS.md), and
-[current portable tooling requirements](../../../openspec/specs/portable-harness-tooling/spec.md).
+[current portable tooling requirements](../../../openspec/specs/2026-10-03-portable-harness-tooling/spec.md).
 
 
 Recorded evidence on 2026-10-03: the full harness gate passed 82 tests with no
@@ -110,3 +110,15 @@ jobs passed, including actual Windows MCP exchanges on Python 3.11 and 3.13,
 84 tests without skips and the 352-file manifest. Local dev integration preserved
 history with merge commit `88358ee` and was published. The agent leaves main to
 the user through GitHub PR #2; main was not changed by this integration step.
+
+
+## OpenSpec current-state follow-up
+
+On explicit user request, accepted spec folders now use the donor's dated naming.
+Active change IDs remain undated; archive IDs carry archive dates. The central
+`openspec/CURRENT.md` lists every accepted capability without copying requirements
+or mixing proposals with current behavior. `scripts/openspec_layout.py` verifies
+real calendar dates, naming and exact current-state coverage on Linux/Windows.
+Historical archives retain their original paths. Generated integration skills
+remain tool-owned; shared policy in AGENTS, OpenSpec config and the catalog skill
+supplies the project-specific naming and adoption rules.

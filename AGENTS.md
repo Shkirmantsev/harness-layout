@@ -13,6 +13,17 @@ This repository is a reusable, vendor-neutral development harness. Keep this fil
 
 When these disagree, report the mismatch explicitly. Never silently rewrite one source to hide disagreement.
 
+## OpenSpec current state and naming
+
+- Start current-requirement retrieval at `openspec/CURRENT.md`; it lists every
+  accepted capability exactly once and excludes proposed changes.
+- Current specs use `openspec/specs/YYYY-MM-DD-domain-capability/spec.md`, dated
+  by first Git acceptance. Preserve that identity on subsequent updates.
+- Active changes use semantic `verb-domain-purpose` names without dates.
+- Archives use `YYYY-MM-DD-original-change-name`, dated at archive; no double dates.
+- Use lowercase kebab-case, no underscores. Delta paths match accepted identities.
+- Update CURRENT with adoption/retirement; retain old archives as historical evidence.
+
 ## Task continuity
 
 - At session intake, read `.ai/state/CURRENT.md`. If it names a non-complete task,
