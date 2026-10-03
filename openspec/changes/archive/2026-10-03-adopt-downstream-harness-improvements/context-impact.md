@@ -4,11 +4,11 @@
 
 - `project.downstream-harness-adoption`: import provenance, current behavior and
   rejected adaptations in `.ai/wiki/project/downstream-harness-adoption.md`.
-- `openspec/specs/portable-harness-tooling/spec.md`: accepted behavior after verification.
+- `openspec/specs/2026-10-03-portable-harness-tooling/spec.md`: accepted behavior after verification.
 
 ## Update
 
-- `openspec/specs/skill-integration/spec.md`: OpenCode core mirror alongside Claude.
+- `openspec/specs/2026-09-07-skill-integration/spec.md`: OpenCode core mirror alongside Claude.
 - `.ai/wiki/INDEX.md`: narrow navigation link to the adoption node.
 - `docs/SKILLS.md`, `docs/CONFIGURATION.md`, `docs/THIRD_PARTY_SKILLS.md`,
   `docs/README.md`, `openspec/README.md`: routing fallback, ownership, optional

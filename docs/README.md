@@ -9,6 +9,7 @@
 - [Configuration](CONFIGURATION.md): supported settings and client generation.
 - [OpenCode compatibility](OPENCODE_COMPATIBILITY.md): selecting a configuration generation.
 - [Engineering conventions](conventions/README.md): task-specific design, implementation, testing, and review defaults.
+- [Accepted project state (“actual is”)](../openspec/CURRENT.md): all current capability requirements.
 - [OpenSpec workflow](../openspec/README.md): artifact dependencies and adoption.
 - [Skills](SKILLS.md): routing and reusable procedures.
 - [Security](SECURITY.md): credentials and project boundaries.

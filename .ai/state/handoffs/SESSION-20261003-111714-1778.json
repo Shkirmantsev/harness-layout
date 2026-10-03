@@ -1,0 +1,68 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [],
+  "decisions": [
+    "Central state links canonical accepted specs rather than duplicating normative bodies; historical archives are preserved"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Portable naming and central-state regression tests pass; full local harness gate passes"
+    ],
+    "todo": [
+      "Inspect and migrate spec identities and links",
+      "Add central current-state view and naming validation with regression tests",
+      "Verify, checkpoint, commit feature and integrate dev"
+    ]
+  },
+  "resume": {
+    "next_action": "Push feature and verify remote CI before local dev integration",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-03T11:17:14+00:00",
+    "id": "SESSION-20261003-111714-1778",
+    "project": "harness-layout",
+    "updated_at": "2026-10-03T11:22:08+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Accepted specs use original Git acceptance dates; archive names are dated; central CURRENT lists every accepted spec; checks enforce conventions; Linux/Windows compatible; integrate into dev and leave main PR to user"
+    ],
+    "goal": "Adopt donor dated OpenSpec naming and a central accepted current-state view",
+    "openspec_change": "adopt-dated-openspec-state",
+    "status": "verifying"
+  },
+  "verification": {
+    "passed": [
+      "PASS: 11 focused tests, strict OpenSpec 9 items, full harness including real MCP handshake and 363-file manifest"
+    ],
+    "pending": [
+      "Native Linux/Windows CI for updated validator"
+    ]
+  },
+  "working_set": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "0c84cb00315c491d5a19f0fe9c65c510b10d4b3ce487843af810532548a49562"
+    },
+    {
+      "path": "openspec/CURRENT.md",
+      "sha256": "3ab294152bc6821721e1a4a1e2c80f5da4bfa17cecd6be1b12b24dc014cf68cd"
+    },
+    {
+      "path": "scripts/openspec_layout.py",
+      "sha256": "eab0ce7c9a5c8a77f4409123e0a1bbdc193670737f8daa9ff3a6b6e6ba3ce00e"
+    }
+  ]
+}

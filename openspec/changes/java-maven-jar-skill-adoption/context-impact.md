@@ -38,8 +38,8 @@
 
 ### Update
 
-- None. The harness's current specs (`openspec/specs/project-initialization`,
-  `openspec/specs/session-handoff.md`, `openspec/specs/skill-integration`) do
+- None. The harness's current specs (`openspec/specs/2026-09-07-project-initialization`,
+  `openspec/specs/2026-09-07-session-handoff.md`, `openspec/specs/2026-09-07-skill-integration`) do
   not mention Java/Maven and need no edit.
 
 ## ADRs

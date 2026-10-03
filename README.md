@@ -236,7 +236,9 @@ For a non-trivial behavioral change:
 proposal -> specs -> design -> context-impact -> tasks -> implementation -> tests -> Wiki update -> verify/archive
 ```
 
-Current agreed behavior belongs in `openspec/specs/`. Proposed future behavior
+Start at [the central accepted project state](openspec/CURRENT.md). Current agreed
+behavior belongs in dated `openspec/specs/YYYY-MM-DD-domain-capability/spec.md`
+folders. Proposed future behavior
 stays in `openspec/changes/<id>/` until the workflow adopts or archives it.
 
 ## Skills
