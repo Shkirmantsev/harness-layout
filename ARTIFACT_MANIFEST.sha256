@@ -161,7 +161,7 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/int
 919cdb003f198b4fe61daad09c6b18ec40d3d92e4521ebabdef749ec28f475a1  ./.ai/wiki/interfaces/java-jar-analyzer.md
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.ai/wiki/modules/.gitkeep
 87b04301241bfd99f56fb8909f0b801d35ebb622753aa5001e0217f80b9248a6  ./.ai/wiki/modules/java-maven-jar-analysis.md
-40dd5371dbaca1cb6e24bcb8bfde55aaf42ef9eec3900a3d78040801c3c54257  ./.ai/wiki/project/downstream-harness-adoption.md
+dbc8c2f0bedfb43ffb14585487ec5e2a33d3452c86a20c937139f491207e0529  ./.ai/wiki/project/downstream-harness-adoption.md
 2f9d2a38c1f3109c6479273408d25d2d6df3c09c0aa2f2b153d80d7b4a0ac304  ./.ai/wiki/project/project-map.md
 18b7d41371a3af5ca3434aafc22fa9ac919ce301d091939a0f89d11d3f7b4dd8  ./.ai/wiki/project/task-handoff.md
 133764ee92a135c94675c713286cb13ff4c5b656c9ca7bee75a6dabf33df6e35  ./.env.example
@@ -229,7 +229,7 @@ d33919bb12600d6104c937f416d88a9e74b52fb8cee9c7824ff6f14c6c70ec0f  ./openspec/cha
 46ade6dbeb045111ee7dd6a4d8f48544b875769f7a196e3cf7487657eb341c18  ./openspec/changes/adopt-downstream-harness-improvements/proposal.md
 ef8e32b19006e4781aeefcac5d6edb9ee13e7f263e0a62540f03e345aa44723b  ./openspec/changes/adopt-downstream-harness-improvements/specs/portable-harness-tooling/spec.md
 733b9494d1b8e58c265f4d315448646f9853a04ea6764bfb73b0b3d26c552810  ./openspec/changes/adopt-downstream-harness-improvements/specs/skill-integration/spec.md
-b01860d689fd3563aa631a4f7684eacfbac8ffa17ce67ed9de4f163438099d81  ./openspec/changes/adopt-downstream-harness-improvements/tasks.md
+b22cd6ae7aa1ceeac5c71525d5acea62fa9cf1ec9e3545a30bd00e282b2d4c43  ./openspec/changes/adopt-downstream-harness-improvements/tasks.md
 480344c74d43a947b755b5c9cae3ba0a302e517f2a36f038156673e21457be44  ./openspec/changes/archive/2026-09-07-automatic-session-handoff/context-impact.md
 75cb41051dffef2cb273fa4f91a66e2a1ea001f920b1c9c3671b0490cca98b1f  ./openspec/changes/archive/2026-09-07-automatic-session-handoff/design.md
 621780768f29a9f1d839a21b13a3da410b1b3a2cc397e8e2713dc574653872fa  ./openspec/changes/archive/2026-09-07-automatic-session-handoff/proposal.md

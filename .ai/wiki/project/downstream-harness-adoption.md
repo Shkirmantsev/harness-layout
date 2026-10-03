@@ -80,3 +80,11 @@ Windows assertions compare resolved paths and native permission semantics; the
 CLI test fixture runs through Python. Optional Hermes ACL setup imports POSIX
 account support only on its supported host and ancestor traversal terminates at
 native roots. These fixes were made on the feature branch before merging.
+
+
+Remote evidence: feature commit `0a4c801` passed all five GitHub CI jobs: Linux
+and Windows unit suites on Python 3.11/3.13 and the full Linux harness gate.
+After the CI corrections, the local full gate passed 84 tests, seven strict
+OpenSpec items, nine Wiki documents and the 351-file manifest. Live Context7
+access remains untested. Changes are integrated through feature-to-dev and
+then dev-to-main pull requests with merge commits through the remote repository.

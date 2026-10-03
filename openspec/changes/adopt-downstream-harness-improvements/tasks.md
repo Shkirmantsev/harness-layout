@@ -25,4 +25,12 @@ completed implementation change remains active as review evidence.
 
 - [x] Correct remote CI dependency installation and demonstrated Windows path,
   encoding, launcher, permissions and optional-host-adapter assumptions.
-- [ ] Pass the full remote Linux/Windows Python 3.11/3.13 matrix before merging.
+- [x] Pass the full remote Linux/Windows Python 3.11/3.13 matrix before merging.
+
+
+Remote verification: feature commit `0a4c801` passed all five GitHub CI jobs
+(Linux and Windows unit suites on Python 3.11/3.13 plus the full Linux gate).
+The corrected local full gate passed 84 tests and the 351-file manifest.
+Native Windows CI is PASS; native Windows execution on the local Linux host and
+live Context7 access remain NOT RUN. Integration uses feature -> dev -> main
+pull requests with merge commits through GitHub.
