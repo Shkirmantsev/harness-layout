@@ -7,12 +7,12 @@
     "User explicitly authorizes remote feature to development to main integration; prior work remains uncommitted; existing development branch is dev"
   ],
   "decisions": [
-    "Use existing dev as development; preserve earlier unpublished harness commits and merge commits; publish only feature branch then use GitHub merge commits for feature to dev to main"
+    "No merge while CI fails; corrections remain on feature branch and preserve supported optional adapters"
   ],
   "progress": {
     "blocked": [],
     "done": [
-      "Feature branch full harness check passed: 82 tests, 7 OpenSpec items, 9 Wiki documents and 350 manifest artifacts"
+      "Fixed remote CI prerequisites and Windows portability regressions; full local gate passes 84 tests and updated 351-file manifest"
     ],
     "todo": [
       "Create feature branch and inspect remote branch state",
@@ -22,21 +22,21 @@
     ]
   },
   "resume": {
-    "next_action": "Commit and push feature; wait for GitHub CI before dev merge",
+    "next_action": "Push verified CI fixes to feature PR 1; await all remote checks",
     "prerequisites": []
   },
   "runtime": {
-    "last_failure_fingerprint": "",
+    "last_failure_fingerprint": "remote-ci-dependency-and-windows-assumptions",
     "next_decision": "continue",
     "no_progress_windows": 0,
-    "repeated_failure_count": 0
+    "repeated_failure_count": 1
   },
   "schema_version": "1.0",
   "session": {
     "created_at": "2026-10-03T10:46:58+00:00",
     "id": "SESSION-20261003-104658-0643",
     "project": "harness-layout",
-    "updated_at": "2026-10-03T10:49:21+00:00"
+    "updated_at": "2026-10-03T10:53:59+00:00"
   },
   "task": {
     "acceptance": [
@@ -48,7 +48,7 @@
   },
   "verification": {
     "passed": [
-      "PASS: full feature-branch harness check and diff inspection"
+      "PASS: corrected full harness gate and portability regression tests"
     ],
     "pending": []
   },

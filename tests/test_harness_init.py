@@ -31,7 +31,7 @@ class HarnessInitTests(unittest.TestCase):
 
             def run_without_project_side_effects(command, *, check=True):
                 if command[0] == "openspec":
-                    return subprocess.run(command, check=check)
+                    return subprocess.run([sys.executable, str(executable), *command[1:]], check=check)
                 return subprocess.CompletedProcess(command, 0)
 
             environment = {
@@ -41,6 +41,7 @@ class HarnessInitTests(unittest.TestCase):
             args = types.SimpleNamespace(install_mcp=False)
             with (
                 mock.patch.dict(os.environ, environment),
+                mock.patch.object(harness.shutil, "which", return_value=str(executable)),
                 mock.patch.object(harness, "ensure_env"),
                 mock.patch.object(harness, "cmd_index"),
                 mock.patch.object(harness, "cmd_client_config"),

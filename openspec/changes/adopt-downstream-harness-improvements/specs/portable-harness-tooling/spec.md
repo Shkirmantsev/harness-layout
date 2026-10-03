@@ -22,7 +22,7 @@ parent directory on POSIX and SHALL avoid POSIX directory handles on Windows.
 ### Requirement: literal environment replacements
 
 Environment updates SHALL preserve replacement values literally, including
-backslashes, while retaining unrelated variables.
+backslashes and Unicode text, using UTF-8 while retaining unrelated variables.
 
 #### Scenario: Windows path replaces an existing value
 
@@ -96,3 +96,16 @@ format-only migration.
 
 - **WHEN** the harness OpenSpec gate finds Markdown directly under `openspec/specs/`
 - **THEN** it fails and identifies the expected capability-directory layout.
+
+### Requirement: optional host adapters do not prevent portable imports
+
+The optional Hermes ACL setup module SHALL load without POSIX-only imports on
+Windows. Invoking its host setup there SHALL report the POSIX host requirement
+before attempting account or ACL changes. Ancestor traversal SHALL terminate at
+the native filesystem root.
+
+#### Scenario: Windows loads the optional host adapter
+
+- **WHEN** portable tooling imports the Hermes host setup module on Windows
+- **THEN** module loading does not require `pwd`
+- **AND** invoking setup reports that a POSIX ACL host is required.

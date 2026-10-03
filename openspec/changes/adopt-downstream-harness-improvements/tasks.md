@@ -21,3 +21,8 @@ rerun with local process permissions passed without modifying MCP source.
 Native Windows execution and live Context7 requests were NOT RUN.
 The verified behavior has been synchronized into current specifications; this
 completed implementation change remains active as review evidence.
+
+
+- [x] Correct remote CI dependency installation and demonstrated Windows path,
+  encoding, launcher, permissions and optional-host-adapter assumptions.
+- [ ] Pass the full remote Linux/Windows Python 3.11/3.13 matrix before merging.

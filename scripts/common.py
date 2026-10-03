@@ -8,14 +8,14 @@ ENV = ROOT / ".env"
 def parse_env(path: Path = ENV) -> dict[str, str]:
     data: dict[str, str] = {}
     if not path.exists(): return data
-    for raw in path.read_text().splitlines():
+    for raw in path.read_text(encoding="utf-8").splitlines():
         line = raw.strip()
         if not line or line.startswith("#") or "=" not in line: continue
         k, v = line.split("=", 1); data[k.strip()] = v.strip()
     return data
 
 def update_env(updates: dict[str, str], path: Path = ENV) -> None:
-    text = path.read_text() if path.exists() else ""
+    text = path.read_text(encoding="utf-8") if path.exists() else ""
     for key, value in updates.items():
         pat = re.compile(rf"(?m)^{re.escape(key)}=.*$")
         repl = f"{key}={value}"

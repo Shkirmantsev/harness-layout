@@ -68,3 +68,15 @@ documents, both core skill mirrors passed, and the 350-file manifest passed.
 The installed OpenSpec 1.12 used Node 22 on PATH. The MCP handshake needed an
 authorized run with local socket permissions after the sandbox denied Trio's
 socket option; MCP implementation was unchanged.
+
+
+## Remote integration corrections
+
+The first feature PR run exposed missing PyYAML setup and Windows-specific test
+assumptions in the previously unexercised remote matrix. `requirements-dev.txt`
+now pins that test/configuration dependency and both CI jobs install it. Harness
+environment reads and affected source-document tests explicitly use UTF-8.
+Windows assertions compare resolved paths and native permission semantics; the
+CLI test fixture runs through Python. Optional Hermes ACL setup imports POSIX
+account support only on its supported host and ancestor traversal terminates at
+native roots. These fixes were made on the feature branch before merging.

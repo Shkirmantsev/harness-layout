@@ -56,3 +56,12 @@ The existing loose `session-handoff.md` is silently omitted by OpenSpec 1.12.
 Adopt the donor's valid headings/scenario formatting at `session-handoff/spec.md`,
 keeping the undated capability ID. Fail the gate on any loose current Markdown
 spec to prevent recurrence. Archived historical references retain their context.
+
+
+Remote CI exposed missing test dependency installation and Windows-specific test
+assumptions hidden by the prepared local environment. Declare pinned PyYAML in
+`requirements-dev.txt` and install it in both CI jobs. Read UTF-8 sources explicitly,
+compare resolved temporary paths, execute the CLI fixture through Python and
+assert POSIX mode bits only on POSIX. Make the optional ACL module importable
+without `pwd`; guard actual host setup and stop ancestor traversal at the native
+filesystem root. These corrections preserve test behavior on both platforms.

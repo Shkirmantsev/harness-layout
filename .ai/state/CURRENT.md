@@ -6,7 +6,7 @@ Structured source: [handoffs/SESSION-20261003-104658-0643.json](handoffs/SESSION
 
 Task: `SESSION-20261003-104658-0643`
 Status: `reviewing`
-Updated: `2026-10-03T10:49:21+00:00`
+Updated: `2026-10-03T10:53:59+00:00`
 Active OpenSpec change: `adopt-downstream-harness-improvements`
 
 ## Objective
@@ -19,7 +19,7 @@ Integrate verified harness improvements through remote feature to dev to main pu
 
 ## Completed
 
-- Feature branch full harness check passed: 82 tests, 7 OpenSpec items, 9 Wiki documents and 350 manifest artifacts
+- Fixed remote CI prerequisites and Windows portability regressions; full local gate passes 84 tests and updated 351-file manifest
 
 ## Remaining
 
@@ -34,7 +34,7 @@ Integrate verified harness improvements through remote feature to dev to main pu
 
 ## Decisions
 
-- Use existing dev as development; preserve earlier unpublished harness commits and merge commits; publish only feature branch then use GitHub merge commits for feature to dev to main
+- No merge while CI fails; corrections remain on feature branch and preserve supported optional adapters
 
 ## Relevant context
 
@@ -46,7 +46,7 @@ Integrate verified harness improvements through remote feature to dev to main pu
 
 ## Verification passed
 
-- PASS: full feature-branch harness check and diff inspection
+- PASS: corrected full harness gate and portability regression tests
 
 ## Verification pending
 
@@ -54,7 +54,7 @@ Integrate verified harness improvements through remote feature to dev to main pu
 
 ## Next action
 
-Commit and push feature; wait for GitHub CI before dev merge
+Push verified CI fixes to feature PR 1; await all remote checks
 
 ## Prerequisites
 

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def local_links(path):
-    text = re.sub(r'```.*?```', '', path.read_text(), flags=re.S)
+    text = re.sub(r'```.*?```', '', path.read_text(encoding="utf-8"), flags=re.S)
     for href in re.findall(r'\[[^\]]*\]\(([^)]+)\)', text):
         if re.match(r'[a-zA-Z][a-zA-Z0-9+.-]*:', href) or href.startswith('#'):
             continue

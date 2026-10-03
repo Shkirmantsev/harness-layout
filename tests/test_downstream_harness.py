@@ -26,7 +26,7 @@ class DownstreamHarnessTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             path = Path(raw) / "fixture.env"
             path.write_text("TEST_PATH=old\nUNCHANGED=yes\n")
-            value = r"C:\new\tools\1"
+            value = r"C:\new\工具\1"
             common.update_env({"TEST_PATH": value}, path)
             self.assertEqual(common.parse_env(path), {"TEST_PATH": value, "UNCHANGED": "yes"})
 
