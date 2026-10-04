@@ -5,7 +5,7 @@ import json
 import os
 from pathlib import Path
 
-from common import ROOT, atomic_write_text, bool_env, parse_env, slug
+from common import ROOT, atomic_write_text, bool_env, parse_env, slug, project_root
 
 GEN = ROOT / ".generated"
 
@@ -52,7 +52,7 @@ def logical_mcp_catalog(env: dict[str, str]) -> dict[str, dict]:
     out: dict[str, dict] = {}
     if bool_env(env, "PROJECT_CONTEXT_MCP_ENABLED", True):
         from common import project_root, validate_project_root
-        root = project_root(env)
+        root = project_root(env, harness_root=ROOT)
         validate_project_root(root)
         from project_mcp import settings
         transport, port = settings(env)
@@ -116,7 +116,7 @@ def configure_claude(env: dict[str, str], mcp: dict[str, dict]) -> None:
             )
 
     if bool_env(env, "HERMES_ENABLED"):
-        project_root = str(Path(env["PROJECT_ROOT"]).expanduser().resolve())
+        selected_root = str(project_root(env, harness_root=ROOT))
         token = env["HERMES_SIDECAR_TOKEN"]
         sidecar = hermes_base(env, sidecar=True)
         text = f'''---
@@ -139,7 +139,7 @@ tools:
   - mcp__hermes-native__hermes_approve
   - mcp__hermes-native__hermes_cancel
 ---
-You are a dispatcher. The working repository is `{project_root}`. Call `hermes_run` once with a complete bounded task and preserve returned run/session IDs. Hermes accesses repository files with its own configured backend; do not proxy project files through MCP. Never launch Claude Code, OpenCode, or Codex recursively.
+You are a dispatcher. The working repository is `{selected_root}`. Call `hermes_run` once with a complete bounded task and preserve returned run/session IDs. Hermes accesses repository files with its own configured backend; do not proxy project files through MCP. Never launch Claude Code, OpenCode, or Codex recursively.
 '''
         path = agents / "generated-hermes-worker.md"
         atomic_write_text(path, text, mode=0o600)
@@ -236,10 +236,10 @@ def configure_opencode(env: dict[str, str], mcp: dict[str, dict]) -> str:
 
     runtime_path = GEN / "opencode-hermes-runtime.json"
     if bool_env(env, "HERMES_ENABLED"):
-        project_root = str(Path(env["PROJECT_ROOT"]).expanduser().resolve())
+        selected_root = str(project_root(env, harness_root=ROOT))
         write_json(
             runtime_path,
-            {"apiBase": hermes_base(env), "projectRoot": project_root},
+            {"apiBase": hermes_base(env), "projectRoot": selected_root},
             mode=0o600,
         )
         template = ROOT / "templates/opencode/hermes.js"
@@ -299,6 +299,7 @@ def write_secrets(env: dict[str, str]) -> None:
 
 def main() -> None:
     env = parse_env()
+    project_root(env, harness_root=ROOT)
     GEN.mkdir(exist_ok=True)
     mcp = logical_mcp_catalog(env)
     write_secrets(env)

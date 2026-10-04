@@ -16,7 +16,7 @@ maintenance:
 # Downstream harness adoption
 
 Reviewed on 2026-10-03 against the working tree of
-`/home/dmytro/workspace/CMC_interface/RpaCMCMachineTCPGateway`, whose HEAD was
+a private downstream repository (not part of this template), whose HEAD was
 `269fc50`. The donor was read-only. Compare normalized text before importing:
 several apparent differences in conventions and generated skills were only
 line endings or generator version metadata.
@@ -130,3 +130,14 @@ adoption are archived with 2026-10-03 prefixes. Final strict validation passed
 seven current/active items, Wiki validation passed nine documents, and the
 363-file manifest passed. The earlier agent-created main PR was closed without
 merge so the user can create their own dev-to-main PR.
+
+## Public-template privacy repair
+
+Private provenance identifiers and personal workspace paths were removed from
+current template text and one historical archive on explicit user request.
+A completed historical import checkpoint was retired through the state CLI.
+Provenance is explanatory history and never authorizes another repository's
+access. Configured roots now identify only this harness repository; copied
+external roots fail before setup/client configuration. Existing copies must
+receive the update and regenerate their local configs/index. Git history has
+not been rewritten. See the safe-copying section of docs/QUICKSTART.md.

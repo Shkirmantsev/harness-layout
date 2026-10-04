@@ -6,7 +6,7 @@ from mcp.server.fastmcp import FastMCP
 
 from .core import build_index, code_symbol as find_symbol, get_document, search, validate
 
-ROOT = Path(os.environ.get("PROJECT_ROOT", ".")).expanduser().resolve()
+ROOT = Path.cwd().resolve()  # Only explicit --root selects a different repository.
 mcp = FastMCP(
     "project-context",
     instructions="Search first; retrieve selected Markdown only. OpenSpec proposed changes are not current behavior until adopted.",
