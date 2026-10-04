@@ -142,3 +142,14 @@ access. Configured roots now identify only this harness repository; copied
 external roots fail before setup/client configuration. Existing copies must
 receive the update and regenerate their local configs/index. Git history has
 not been rewritten. See the safe-copying section of docs/QUICKSTART.md.
+
+
+## OpenCode automatic discovery verification
+
+On 2026-10-04, feature commit `5087897` passed all seven Linux/Windows CI jobs
+and the local gate passed 112 tests. OpenCode 1.18.34 resolved generated startup
+instructions and discovered both enabled local workers. The native plugin SDK
+imported and executed `harness_route`; regression coverage checks Unicode task
+round-trips and prevents shell evaluation of task text. Model-driven delegation,
+live Hermes requests and V2 runtime execution were not run. Configuration is
+integrated into dev; the user handles dev-to-main.

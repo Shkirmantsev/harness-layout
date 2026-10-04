@@ -4,7 +4,7 @@
     "steps_used": 0
   },
   "context": [
-    "NOT RUN: paid model-driven delegation, live Hermes and V2 runtime; optional integrations not enabled implicitly"
+    "NOT RUN: paid model-driven delegation, live Hermes and V2 runtime. Main PR remains user-owned; other project copy not accessed."
   ],
   "decisions": [
     "V2 ambient instructions are currently unsupported; use root AGENTS intake pointer and native Markdown worker permissions without V1 custom router tool"
@@ -12,17 +12,17 @@
   "progress": {
     "blocked": [],
     "done": [
-      "Final Unicode-safe adapter revision passes full 112-test gate and focused routing proof"
+      "Automatic OpenCode routing and configured team discovery shipped through feature PR 12 to dev; accepted requirement and archive recorded; current clients regenerated"
     ],
     "todo": []
   },
   "resume": {
-    "next_action": "Require seven CI jobs for final revision then adopt/archive and merge dev",
+    "next_action": "",
     "prerequisites": []
   },
   "runtime": {
     "last_failure_fingerprint": "",
-    "next_decision": "continue",
+    "next_decision": "stop",
     "no_progress_windows": 0,
     "repeated_failure_count": 0
   },
@@ -31,19 +31,19 @@
     "created_at": "2026-10-04T11:12:09+00:00",
     "id": "SESSION-20261004-111209-3D25",
     "project": "harness-layout",
-    "updated_at": "2026-10-04T11:22:34+00:00"
+    "updated_at": "2026-10-04T11:26:49+00:00"
   },
   "task": {
     "acceptance": [
       "Startup instructions, routing custom tool and enabled local-worker definitions discovered without user mentions; Hermes remains native opt-in; V1/V2 configs remain separate; Linux/Windows regression gates pass; merge dev only"
     ],
     "goal": "Make OpenCode discover and use harness routing and configured agent team automatically",
-    "openspec_change": "enable-opencode-team-routing",
-    "status": "reviewing"
+    "openspec_change": "",
+    "status": "complete"
   },
   "verification": {
     "passed": [
-      "PASS: 112 full tests, strict specs, Wiki, manifest; Windows Python preference and Unicode task round-trip verified"
+      "PASS: final accepted-state harness gate 112 tests, eight strict OpenSpec items, 10 Wiki docs, 390-file manifest; all seven Linux/Windows feature CI jobs; native OpenCode startup and workers discovered; native plugin SDK router executed"
     ],
     "pending": []
   },
