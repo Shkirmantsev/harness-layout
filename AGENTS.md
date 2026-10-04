@@ -69,6 +69,11 @@ For non-trivial behavioral or architectural changes:
 
 Canonical shared skills live in `.agents/skills/`. Use `skill-router` for non-trivial tasks and load only routed optional skills from `.agents/skills/catalog/`.
 
+OpenCode: at task intake read `.generated/opencode-routing.md` for the configured
+team and native routing/delegation tools. If absent, run `python harness.py client-config`.
+Use available workers automatically for independent bounded tasks; the parent
+owns checkpoints and reconciles worker results. Respect planning mode and permissions.
+
 ## Safety
 
 - Never print or commit `.env`, API keys, tokens, private SSH keys, generated credential files, or secrets.
