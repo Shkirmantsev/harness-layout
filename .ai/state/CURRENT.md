@@ -5,9 +5,9 @@
 Structured source: [handoffs/SESSION-20261004-105316-4B4D.json](handoffs/SESSION-20261004-105316-4B4D.json)
 
 Task: `SESSION-20261004-105316-4B4D`
-Status: `verifying`
-Updated: `2026-10-04T10:58:18+00:00`
-Active OpenSpec change: `enforce-project-boundary`
+Status: `complete`
+Updated: `2026-10-04T11:11:21+00:00`
+Active OpenSpec change: none
 
 ## Objective
 
@@ -19,13 +19,11 @@ Remove private provenance and prevent copied harness roots from selecting anothe
 
 ## Completed
 
-- Sanitized private provenance and retired completed private handoff through CLI; guarded copied roots before foreign path inspection/setup/client generation; current configs, Wiki index and skill mirrors refreshed
+- Boundary requirement adopted and dated change archived; security implementation merged into dev
 
 ## Remaining
 
-- Sanitize provenance and historical private checkpoint through state CLI
-- Enforce current harness root and add security regressions
-- Verify full local/native gates and integrate into dev
+- none
 
 ## Blocked
 
@@ -37,7 +35,7 @@ Remove private provenance and prevent copied harness roots from selecting anothe
 
 ## Relevant context
 
-- none
+- `Other copy location requested asynchronously; no foreign project accessed or edited. Existing Git history is not rewritten; main merge is user-owned.`
 
 ## Working set
 
@@ -48,11 +46,11 @@ Remove private provenance and prevent copied harness roots from selecting anothe
 
 ## Verification passed
 
-- PASS: 107-test full local harness gate, security regressions, strict OpenSpec, Wiki and 382-file manifest; no private source references in current template text
+- PASS: 107 local tests and all seven Linux/Windows CI jobs
 
 ## Verification pending
 
-- Native Linux/Windows CI before dev integration
+- none
 
 ## Next action
 

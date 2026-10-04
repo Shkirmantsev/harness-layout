@@ -264,12 +264,12 @@ e3c5508a98252df94a7e2de96de9e5a5df2f3bbd5fecdabd43e21efc90face6b  ./openspec/cha
 2929e2a1c31b790d942e78e2e3a576aaac672751cac91e913fe324cf5e6d9457  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/proposal.md
 9dbb2035aebc845e1cdd3c5dc33d4cfa3e45da7464533bc3b97c6dbe22985209  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/specs/2026-10-04-harness-command-lifecycle/spec.md
 d9f53803a9504432ea1e78f0f5a77b151f8eb7e0f3fb62706142cb2366b01726  ./openspec/changes/archive/2026-10-04-add-portable-harness-commands/tasks.md
-13fa8324db5320b5bcc566ba433b594d84e137e9fcf0584c7a7f712dc4ca8ac3  ./openspec/changes/enforce-project-boundary/.openspec.yaml
-52ac1f768034db6f52d4622496f2dcd4151e36b929baf16ef965ca6cee142a0a  ./openspec/changes/enforce-project-boundary/context-impact.md
-f560da715fc2f39c8a56eae28d766250f1a83e3f9df6b6c052aee1b00191b576  ./openspec/changes/enforce-project-boundary/design.md
-a1b284cca85dcad376083adf2de3c2d84651aa064f714ef6bb30b3b4ca0eb084  ./openspec/changes/enforce-project-boundary/proposal.md
-05ae0d7e0e771863274b8ee33edf3d0b25faa94fd03ad42dbaf3d79dce8c2e34  ./openspec/changes/enforce-project-boundary/specs/2026-09-07-project-initialization/spec.md
-f3f076293b5b5184bf6172f4094845474b15f75e047a737b18dafbb986347120  ./openspec/changes/enforce-project-boundary/tasks.md
+13fa8324db5320b5bcc566ba433b594d84e137e9fcf0584c7a7f712dc4ca8ac3  ./openspec/changes/archive/2026-10-04-enforce-project-boundary/.openspec.yaml
+52ac1f768034db6f52d4622496f2dcd4151e36b929baf16ef965ca6cee142a0a  ./openspec/changes/archive/2026-10-04-enforce-project-boundary/context-impact.md
+f560da715fc2f39c8a56eae28d766250f1a83e3f9df6b6c052aee1b00191b576  ./openspec/changes/archive/2026-10-04-enforce-project-boundary/design.md
+a1b284cca85dcad376083adf2de3c2d84651aa064f714ef6bb30b3b4ca0eb084  ./openspec/changes/archive/2026-10-04-enforce-project-boundary/proposal.md
+05ae0d7e0e771863274b8ee33edf3d0b25faa94fd03ad42dbaf3d79dce8c2e34  ./openspec/changes/archive/2026-10-04-enforce-project-boundary/specs/2026-09-07-project-initialization/spec.md
+a03bb6178470975b39d5bba5745601ccfcf75f47df91966345747a06ce41e594  ./openspec/changes/archive/2026-10-04-enforce-project-boundary/tasks.md
 bb6d9cd701d028c866ea6619d11cdf83b8fded439f57c86c97603721c95cc513  ./openspec/changes/java-maven-jar-skill-adoption/context-impact.md
 bc293df271d254ecc6287da8c9006dc381b20d15f39cd477a7bf5c20c1c3537f  ./openspec/changes/java-maven-jar-skill-adoption/design.md
 030bade97e3482e7798244a6814bea062956437636fe146d4ecbd4073bbb9c15  ./openspec/changes/java-maven-jar-skill-adoption/proposal.md
@@ -291,7 +291,7 @@ acad86b92b4224de406f73747628960e74cf4c52a420acf4a9dd3ce61d765a0c  ./openspec/cha
 147aeea7d63f6a2af16f71ed12c306440324a9dc2f2449d04347bcf5dd2ae083  ./openspec/schemas/production-sdd/templates/proposal.md
 67901be8e7b359fb2c2fcba1fc40a58badde7256e01601e560ce74aee08247f7  ./openspec/schemas/production-sdd/templates/spec.md
 7b240766725b22e0b6976dace6550819f90748c8d400e4777c3cfa7e9b350d4a  ./openspec/schemas/production-sdd/templates/tasks.md
-68a26fad988f93ef93dc20d6123c44d189e6cf723781dd99c04fe3249baf8194  ./openspec/specs/2026-09-07-project-initialization/spec.md
+de8300b62b33ef389b775670124c26a66b939452c60bab9b4b1605a2ebfe57d7  ./openspec/specs/2026-09-07-project-initialization/spec.md
 8f92594ff78dedc7fe696c6ec8d99d7f460cbe622cc903c671c0ca5f8197cd5f  ./openspec/specs/2026-09-07-session-handoff/spec.md
 c03bb5b7e15350dd16c76beba0069029d7f90daf206e4dbc57c82e4078e3e764  ./openspec/specs/2026-09-07-skill-integration/spec.md
 e65e29f3a358e4a04711f66e1e93266bf81009354b5948b99b439cf2722dd7af  ./openspec/specs/2026-10-03-openspec-governance/spec.md
