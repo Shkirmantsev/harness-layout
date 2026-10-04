@@ -1,0 +1,68 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [
+    "Other copy location requested asynchronously; no foreign project accessed or edited. Existing Git history is not rewritten; main merge is user-owned."
+  ],
+  "decisions": [
+    "Current project lexical alias and canonical root are accepted, supporting Windows short-name paths without resolving arbitrary foreign paths"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Boundary requirement adopted and dated change archived; security implementation merged into dev"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "stop",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-04T10:53:16+00:00",
+    "id": "SESSION-20261004-105316-4B4D",
+    "project": "harness-layout",
+    "updated_at": "2026-10-04T11:11:21+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "No private project references in current tracked files; copied external PROJECT_ROOT fails before setup/config/client access; current-root and Windows/Linux workflows pass; feature integrated into dev only"
+    ],
+    "goal": "Remove private provenance and prevent copied harness roots from selecting another project",
+    "openspec_change": "",
+    "status": "complete"
+  },
+  "verification": {
+    "passed": [
+      "PASS: 107 local tests and all seven Linux/Windows CI jobs"
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": "scripts/common.py",
+      "sha256": "4d8b311254f18a0a53c4ade1acb3e6f232cb3f8da7e2c4e22bfd424cf4a780a3"
+    },
+    {
+      "path": "scripts/configure_clients.py",
+      "sha256": "f2be7192ba1a68710c7ab1d3d4c629ba69c825a7f051d549b0f429a80c820a7a"
+    },
+    {
+      "path": "scripts/session_state.py",
+      "sha256": "d44b54ca484a4b294e18964b64568d2676a9610bd069cf158c5a78af4f1340f9"
+    },
+    {
+      "path": "tests/test_project_boundary.py",
+      "sha256": "6ba6204ffaf7675cadece616a9d71e271bde2d6bd7fc1ab0213f8046149c2b0a"
+    }
+  ]
+}

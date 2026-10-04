@@ -2,7 +2,7 @@
 from __future__ import annotations
 import os
 from pathlib import Path
-from common import ROOT, ENV, atomic_write_text, parse_env, update_env, random_token, tailscale_identity
+from common import ROOT, ENV, atomic_write_text, parse_env, update_env, random_token, tailscale_identity, project_root
 
 EXAMPLE = ROOT / ".env.example"
 GENERATED_KEYS = ("LITELLM_MASTER_KEY", "SEARXNG_SECRET", "CRAWL4AI_API_TOKEN")
@@ -21,6 +21,7 @@ def sync_missing() -> None:
         print(f"Added {len(updates)} missing variables to .env")
 
 def main() -> int:
+    project_root(parse_env())  # Reject a copied external root before any setup writes.
     sync_missing(); env = parse_env()
     updates: dict[str,str] = {}
     if env.get("PROJECT_ROOT", "auto") in {"auto", ".", "CHANGE_ME_ABSOLUTE_PROJECT_ROOT"}:

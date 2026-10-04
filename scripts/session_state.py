@@ -556,6 +556,20 @@ def list_sessions() -> dict:
     return {"schema_version": SCHEMA_VERSION, "sessions": items}
 
 
+def forget(identifier: str) -> dict:
+    """Remove completed historical state without changing the active task pointer."""
+    with locked():
+        identifier = session_id(identifier)
+        if identifier == current_session_id():
+            raise StateError("current_session_protected", "cannot forget the current task")
+        payload = read(identifier)
+        if payload["task"]["status"] != "complete":
+            raise StateError("unfinished_session_protected", "cannot forget an unfinished task")
+        state_path(identifier).unlink(missing_ok=True)
+        legacy_state_path(identifier).unlink(missing_ok=True)
+    return {"forgotten": identifier}
+
+
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(description=__doc__)
     commands = root.add_subparsers(dest="command", required=True)
@@ -613,6 +627,8 @@ def parser() -> argparse.ArgumentParser:
         command.add_argument("--id")
     commands.add_parser("verify")
     commands.add_parser("list")
+    removal = commands.add_parser("forget", help="remove a completed historical checkpoint, preserving current task")
+    removal.add_argument("--id", required=True)
     return root
 
 
@@ -631,6 +647,9 @@ def main() -> int:
         elif args.command == "resume":
             payload, drifted = resume(args.id)
             status = 3 if drifted else 0
+        elif args.command == "forget":
+            payload = forget(args.id)
+            status = 0
         elif args.command == "verify":
             payload = verify_current()
             status = 0

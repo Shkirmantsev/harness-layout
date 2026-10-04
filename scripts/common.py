@@ -75,11 +75,20 @@ def slug(value: str) -> str:
     value = re.sub(r"[^a-zA-Z0-9._-]+", "-", value.strip()).strip("-")
     return value or "default"
 
-def project_root(env: dict[str,str]) -> Path:
-    raw = env.get("PROJECT_ROOT", ".").strip() or "."
-    p = Path(raw).expanduser()
-    if not p.is_absolute(): p = (ROOT / p)
-    return p.resolve()
+def project_root(env: dict[str, str], *, harness_root: Path | None = None) -> Path:
+    selected = harness_root or ROOT
+    boundary = selected.resolve()
+    allowed = {boundary, Path(os.path.abspath(selected))}
+    raw = env.get("PROJECT_ROOT", "auto").strip() or "auto"
+    if raw in {"auto", ".", "CHANGE_ME_ABSOLUTE_PROJECT_ROOT"}:
+        return boundary
+    candidate = Path(raw).expanduser()
+    if not candidate.is_absolute():
+        candidate = boundary / candidate
+    # Reject lexically before following symlinks or inspecting a foreign directory.
+    if Path(os.path.abspath(candidate)) not in allowed:
+        raise RuntimeError("PROJECT_ROOT must match this harness repository; set PROJECT_ROOT=auto and regenerate local client configs")
+    return boundary
 
 def validate_project_root(path: Path) -> None:
     forbidden = {Path("/"), Path("/home"), Path("/root"), Path("/etc"), Path("/usr"), Path("/var"), Path("/srv"), Path("/opt")}

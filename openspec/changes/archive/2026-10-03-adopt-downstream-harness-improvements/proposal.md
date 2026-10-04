@@ -2,7 +2,7 @@
 
 ## Why
 
-A downstream repository, RpaCMCMachineTCPGateway, evolved the reusable harness.
+A downstream repository, a private downstream repository, evolved the reusable harness.
 Port useful changes back without introducing its business code, build contracts,
 application schemas, deployment configuration, or domain documentation.
 

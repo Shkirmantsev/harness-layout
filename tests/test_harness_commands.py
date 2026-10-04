@@ -49,6 +49,9 @@ class HarnessCommandsTests(unittest.TestCase):
         expected = 'http://127.0.0.1:18883/mcp'
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
+            template = root / 'templates/opencode/harness.js'
+            template.parent.mkdir(parents=True)
+            template.write_text((ROOT / 'templates/opencode/harness.js').read_text(encoding='utf-8'), encoding='utf-8')
             with mock.patch.object(configure_clients, 'ROOT', root), mock.patch.object(configure_clients, 'GEN', root / '.generated'):
                 configure_clients.configure_claude(env, catalog)
                 configure_clients.configure_codex(env, catalog)

@@ -1,5 +1,18 @@
 # Troubleshooting
 
+## OpenCode only routes or delegates after a manual reminder
+
+Run `python harness.py client-config` and restart OpenCode from this repository.
+Confirm `.generated/opencode-routing.md` exists. In V1, `opencode debug config`
+must show it in `instructions`, and `opencode agent list` must include enabled
+`generated-<alias>-worker` subagents. Avoid publishing raw debug configuration:
+it can include resolved credentials from optional providers.
+
+Local workers require both LiteLLM and their `LOCAL_MODEL_n_ENABLED` flags.
+Hermes requires its own opt-in setting and native remote service. The main agent
+chooses bounded independent work; planning restrictions and approvals still
+apply. See [generation-specific behavior](OPENCODE_COMPATIBILITY.md).
+
 ## Hermes answers but cannot read the repository
 
 1. Run `make hermes-host-setup` on the main PC.

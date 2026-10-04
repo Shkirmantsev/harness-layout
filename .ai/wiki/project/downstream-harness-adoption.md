@@ -16,7 +16,7 @@ maintenance:
 # Downstream harness adoption
 
 Reviewed on 2026-10-03 against the working tree of
-`/home/dmytro/workspace/CMC_interface/RpaCMCMachineTCPGateway`, whose HEAD was
+a private downstream repository (not part of this template), whose HEAD was
 `269fc50`. The donor was read-only. Compare normalized text before importing:
 several apparent differences in conventions and generated skills were only
 line endings or generator version metadata.
@@ -30,6 +30,7 @@ line endings or generator version metadata.
 | Skill routing | Uncertain plans expose sorted unloaded metadata for semantic selection within the existing cap; confident plans keep an empty index. Existing language, web and Hermes routes are retained. |
 | Ponytail | Compact catalog-only simplicity procedure; no persistent persona, forced tiny output or weakened acceptance criteria. |
 | Client skill sync | Four core skills mirror into project-local Claude/OpenCode directories. Codex uses `.agents/skills/`; no global writes. Integration/personal skills and remote Hermes sync remain available. |
+| OpenCode startup team | Generated routing roster and V1 `harness_route` tool advertise routing at intake. Enabled LiteLLM local models become described leaf subagents; the parent chooses independent bounded work and reconciles results. Hermes remains a native opt-in worker. V2 uses its native permission fields and the root AGENTS roster pointer. See [compatibility](../../../docs/OPENCODE_COMPATIBILITY.md). |
 | Context7 | Disabled by default. Existing HTTP transport in all clients preserves optional bearer authentication in atomically written private configs. No npm requirement or auto-enabling of Claude approvals. |
 | Executable launch | Resolve platform wrappers through command lookup before subprocess execution. |
 | OpenSpec coverage | Normalize the previously loose session-handoff spec into `session-handoff/spec.md`, preserving behavior and capability identity. The gate rejects loose current specs so the CLI cannot silently omit them. |
@@ -130,3 +131,25 @@ adoption are archived with 2026-10-03 prefixes. Final strict validation passed
 seven current/active items, Wiki validation passed nine documents, and the
 363-file manifest passed. The earlier agent-created main PR was closed without
 merge so the user can create their own dev-to-main PR.
+
+## Public-template privacy repair
+
+Private provenance identifiers and personal workspace paths were removed from
+current template text and one historical archive on explicit user request.
+A completed historical import checkpoint was retired through the state CLI.
+Provenance is explanatory history and never authorizes another repository's
+access. Configured roots now identify only this harness repository; copied
+external roots fail before setup/client configuration. Existing copies must
+receive the update and regenerate their local configs/index. Git history has
+not been rewritten. See the safe-copying section of docs/QUICKSTART.md.
+
+
+## OpenCode automatic discovery verification
+
+On 2026-10-04, feature commit `5087897` passed all seven Linux/Windows CI jobs
+and the local gate passed 112 tests. OpenCode 1.18.34 resolved generated startup
+instructions and discovered both enabled local workers. The native plugin SDK
+imported and executed `harness_route`; regression coverage checks Unicode task
+round-trips and prevents shell evaluation of task text. Model-driven delegation,
+live Hermes requests and V2 runtime execution were not run. Configuration is
+integrated into dev; the user handles dev-to-main.

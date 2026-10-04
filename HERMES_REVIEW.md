@@ -2,7 +2,7 @@
 
 **Audit date:** 2026-09-08
 
-**Target:** `/home/dmytro/workspace/personal_projects/harness-layout/harness-layout`
+**Target:** the current harness repository
 
 **Provenance:** delegated Hermes audit on `hermes-tailscale-worker` using its default profile/MoA (observed model: MiniMax-M3), followed by local Codex evidence review. Live worker observations supplied by the user are labeled as such.
 
