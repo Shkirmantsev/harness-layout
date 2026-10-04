@@ -9,6 +9,7 @@ opencode.json
 .opencode/agents/generated-*.md
 .opencode/tools/generated-hermes.*
 .opencode/tools/hermes.js
+.opencode/tools/harness.js
 
 # Local harness runtime / generated context
 .harness/inbox/

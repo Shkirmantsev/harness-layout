@@ -62,6 +62,7 @@ class ProductionReliabilityTests(unittest.TestCase):
             ):
                 (project / "templates/opencode").mkdir(parents=True)
                 (project / "templates/opencode/hermes.js").write_text("export {}\n")
+                (project / "templates/opencode/harness.js").write_text("export {}\n")
                 generator.write_secrets(env)
                 generator.configure_opencode(env, {})
             package = project / ".opencode/package.json"

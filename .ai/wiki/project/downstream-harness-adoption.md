@@ -30,6 +30,7 @@ line endings or generator version metadata.
 | Skill routing | Uncertain plans expose sorted unloaded metadata for semantic selection within the existing cap; confident plans keep an empty index. Existing language, web and Hermes routes are retained. |
 | Ponytail | Compact catalog-only simplicity procedure; no persistent persona, forced tiny output or weakened acceptance criteria. |
 | Client skill sync | Four core skills mirror into project-local Claude/OpenCode directories. Codex uses `.agents/skills/`; no global writes. Integration/personal skills and remote Hermes sync remain available. |
+| OpenCode startup team | Generated routing roster and V1 `harness_route` tool advertise routing at intake. Enabled LiteLLM local models become described leaf subagents; the parent chooses independent bounded work and reconciles results. Hermes remains a native opt-in worker. V2 uses its native permission fields and the root AGENTS roster pointer. See [compatibility](../../../docs/OPENCODE_COMPATIBILITY.md). |
 | Context7 | Disabled by default. Existing HTTP transport in all clients preserves optional bearer authentication in atomically written private configs. No npm requirement or auto-enabling of Claude approvals. |
 | Executable launch | Resolve platform wrappers through command lookup before subprocess execution. |
 | OpenSpec coverage | Normalize the previously loose session-handoff spec into `session-handoff/spec.md`, preserving behavior and capability identity. The gate rejects loose current specs so the CLI cannot silently omit them. |

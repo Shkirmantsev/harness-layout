@@ -18,6 +18,40 @@ LOCAL_WORKER_INSTRUCTIONS = (
 )
 
 
+def opencode_workers(env: dict[str, str]) -> list[tuple[str, str]]:
+    if not bool_env(env, "LITELLM_ENABLED"):
+        return []
+    return [
+        (f"generated-{slug(alias)}-worker", alias)
+        for i in range(1, 5)
+        if bool_env(env, f"LOCAL_MODEL_{i}_ENABLED")
+        for alias in [env.get(f"LOCAL_MODEL_{i}_ALIAS", f"local-{i}")]
+    ]
+
+
+def opencode_routing(env: dict[str, str], generation: str) -> str:
+    route = ("Call `harness_route` with the compact task and balanced profile"
+             if generation == "v1" else
+             "Run `python scripts/skill_router.py --profile balanced --task <compact-task>` (python3 on Linux)")
+    lines = [
+        "# OpenCode harness routing and team",
+        "Follow AGENTS.md; stay inside the active repository. This is generated capability metadata, not permission to access another project.",
+        f"Before non-trivial work, {route}. Read only selected skill paths; apply the returned execution contract. Use local-small for small/local models. Never include secrets in task text.",
+        "For independent bounded work, choose an available worker automatically without waiting for a user mention. Keep simple or dependent tasks local. Respect the current agent's planning/read-only restrictions and .harness/runtime.json limits.",
+        "Supply objective, acceptance criteria, constraints, scoped file ownership and bounded context. The parent owns session checkpoints. Workers return findings, changed paths, verification and risks; the parent reconciles results and verifies them.",
+        "Use native task (V1) or subagent (V2) to start/continue local workers and retain returned child/task/session IDs for follow-up. Exchange findings through the parent; do not invent peer messaging tools or start duplicate workers.",
+        "Available native workers: explore for read-only repository discovery; general for independent multi-step work.",
+    ]
+    for name, alias in opencode_workers(env):
+        lines.append(f"- {name}: harness/{alias}; narrow mechanical edits, search, formatting, summaries or focused checks. Route its task with local-small.")
+    if bool_env(env, "HERMES_ENABLED"):
+        lines.append("Native remote Hermes is enabled: load .agents/skills/catalog/hermes-delegation/SKILL.md before using hermes_delegate; use hermes_status/wait/result/steer/cancel with its run_id. Never represent Hermes as a model-backed subagent. hermes_approve requires explicit user authorization for the exact approval pause.")
+    else:
+        lines.append("Native remote Hermes is disabled; no Hermes worker is available.")
+    lines.append("Never recursively launch coding orchestrators. If tools/providers are unavailable, report the limitation and use available native workers or work locally.")
+    return "\n\n".join(lines) + "\n"
+
+
 def write_json(path: Path, obj: dict, *, mode: int | None = None) -> None:
     atomic_write_text(path, json.dumps(obj, indent=2) + "\n", mode=mode)
 
@@ -164,7 +198,9 @@ def configure_claude_gateway(env: dict[str, str]) -> None:
 def render_opencode_v1(env: dict[str, str], mcp: dict[str, dict]) -> dict:
     config: dict = {
         "$schema": "https://opencode.ai/config.json",
+        "instructions": [".generated/opencode-routing.md"],
         "permission": {
+            "harness_route": "allow",
             "read": {".env": "deny", ".env.*": "deny", "**/.env": "deny", "**/.env.*": "deny", ".env.example": "allow"},
         },
         "mcp": {},
@@ -233,6 +269,30 @@ def configure_opencode(env: dict[str, str], mcp: dict[str, dict]) -> str:
     agent_dir.mkdir(parents=True, exist_ok=True)
     for p in agent_dir.glob("generated-hermes*.md"):
         p.unlink()
+    for p in agent_dir.glob("generated-*-worker.md"):
+        p.unlink()
+
+    GEN.mkdir(parents=True, exist_ok=True)
+    atomic_write_text(GEN / "opencode-routing.md", opencode_routing(env, generation))
+    router_tool = tool_dir / "harness.js"
+    if generation == "v1":
+        atomic_write_text(router_tool, (ROOT / "templates/opencode/harness.js").read_text(encoding="utf-8"))
+    elif router_tool.exists():
+        router_tool.unlink()
+    for name, alias in opencode_workers(env):
+        leaf_permissions = ({"task": "deny", "hermes_*": "deny"} if generation == "v1" else [
+            {"action": "subagent", "resource": "*", "effect": "deny"},
+            {"action": "hermes_*", "resource": "*", "effect": "deny"},
+        ])
+        header = {
+            "description": f"Use automatically for independent narrow mechanical work, search, formatting, summaries and focused checks using {alias}.",
+            "mode": "subagent", "model": f"harness/{alias}",
+            "permission" if generation == "v1" else "permissions": leaf_permissions,
+        }
+        # JSON is YAML-compatible and safely quotes model aliases/descriptions.
+        text = "---\n" + json.dumps(header, indent=2) + "\n---\n" + LOCAL_WORKER_INSTRUCTIONS
+        text += "Stay within the supplied file scope. Do not launch agents/orchestrators, invoke Hermes, or write the parent's .ai/state checkpoints. Return your result to the parent for reconciliation.\n"
+        atomic_write_text(agent_dir / f"{name}.md", text)
 
     runtime_path = GEN / "opencode-hermes-runtime.json"
     if bool_env(env, "HERMES_ENABLED"):

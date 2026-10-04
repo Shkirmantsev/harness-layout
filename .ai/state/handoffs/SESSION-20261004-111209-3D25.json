@@ -1,0 +1,76 @@
+{
+  "budgets": {
+    "steps_max": 18,
+    "steps_used": 0
+  },
+  "context": [
+    "NOT RUN: paid model-driven delegation, live Hermes and V2 runtime; optional integrations not enabled implicitly"
+  ],
+  "decisions": [
+    "V2 ambient instructions are currently unsupported; use root AGENTS intake pointer and native Markdown worker permissions without V1 custom router tool"
+  ],
+  "progress": {
+    "blocked": [],
+    "done": [
+      "Implemented startup routing and enabled leaf-worker discovery; complete local gate passed 112 tests and native OpenCode discovery/tool execution"
+    ],
+    "todo": []
+  },
+  "resume": {
+    "next_action": "Publish feature PR, require all seven native CI jobs, adopt/archive and merge dev only",
+    "prerequisites": []
+  },
+  "runtime": {
+    "last_failure_fingerprint": "",
+    "next_decision": "continue",
+    "no_progress_windows": 0,
+    "repeated_failure_count": 0
+  },
+  "schema_version": "1.0",
+  "session": {
+    "created_at": "2026-10-04T11:12:09+00:00",
+    "id": "SESSION-20261004-111209-3D25",
+    "project": "harness-layout",
+    "updated_at": "2026-10-04T11:21:03+00:00"
+  },
+  "task": {
+    "acceptance": [
+      "Startup instructions, routing custom tool and enabled local-worker definitions discovered without user mentions; Hermes remains native opt-in; V1/V2 configs remain separate; Linux/Windows regression gates pass; merge dev only"
+    ],
+    "goal": "Make OpenCode discover and use harness routing and configured agent team automatically",
+    "openspec_change": "enable-opencode-team-routing",
+    "status": "reviewing"
+  },
+  "verification": {
+    "passed": [
+      "PASS: full harness 112 tests, strict OpenSpec 9 items, Wiki 10 docs, 390-file manifest; native OpenCode discovery and plugin router execution"
+    ],
+    "pending": []
+  },
+  "working_set": [
+    {
+      "path": "scripts/configure_clients.py",
+      "sha256": "ebb5d0e1ee3a7c73e89ecc7d7142f9488930bf5a8a774d302d66e0c96f0df100"
+    },
+    {
+      "path": "templates/opencode/harness.js",
+      "sha256": "d9cf53ae1470a0e3b51506d2ae88cfa4c5237c42f508644711aa2fbc808aa94f"
+    },
+    {
+      "path": "tests/test_downstream_harness.py",
+      "sha256": "d5511771b4bc56959ab9e76e2343bb550093343973170872cc4443080a9f0fe3"
+    },
+    {
+      "path": "tests/test_harness_commands.py",
+      "sha256": "34a6807f3fa760fcf668990ca46c337f1993789aa934f7c665b443b828c42476"
+    },
+    {
+      "path": "tests/test_opencode_routing.py",
+      "sha256": "f97c9852797478adcae483dca2cacfe5478be562b64604572b6829019ebb1bb5"
+    },
+    {
+      "path": "tests/test_production_reliability.py",
+      "sha256": "a64569f2fac4de63cc1163e50715d765b804b399a2e6835cd27e019181bd2cc8"
+    }
+  ]
+}
