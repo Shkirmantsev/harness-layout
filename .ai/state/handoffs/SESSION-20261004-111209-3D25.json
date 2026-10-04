@@ -12,12 +12,12 @@
   "progress": {
     "blocked": [],
     "done": [
-      "Implemented startup routing and enabled leaf-worker discovery; complete local gate passed 112 tests and native OpenCode discovery/tool execution"
+      "Final Unicode-safe adapter revision passes full 112-test gate and focused routing proof"
     ],
     "todo": []
   },
   "resume": {
-    "next_action": "Publish feature PR, require all seven native CI jobs, adopt/archive and merge dev only",
+    "next_action": "Require seven CI jobs for final revision then adopt/archive and merge dev",
     "prerequisites": []
   },
   "runtime": {
@@ -31,7 +31,7 @@
     "created_at": "2026-10-04T11:12:09+00:00",
     "id": "SESSION-20261004-111209-3D25",
     "project": "harness-layout",
-    "updated_at": "2026-10-04T11:21:03+00:00"
+    "updated_at": "2026-10-04T11:22:34+00:00"
   },
   "task": {
     "acceptance": [
@@ -43,7 +43,7 @@
   },
   "verification": {
     "passed": [
-      "PASS: full harness 112 tests, strict OpenSpec 9 items, Wiki 10 docs, 390-file manifest; native OpenCode discovery and plugin router execution"
+      "PASS: 112 full tests, strict specs, Wiki, manifest; Windows Python preference and Unicode task round-trip verified"
     ],
     "pending": []
   },
@@ -54,23 +54,11 @@
     },
     {
       "path": "templates/opencode/harness.js",
-      "sha256": "d9cf53ae1470a0e3b51506d2ae88cfa4c5237c42f508644711aa2fbc808aa94f"
-    },
-    {
-      "path": "tests/test_downstream_harness.py",
-      "sha256": "d5511771b4bc56959ab9e76e2343bb550093343973170872cc4443080a9f0fe3"
-    },
-    {
-      "path": "tests/test_harness_commands.py",
-      "sha256": "34a6807f3fa760fcf668990ca46c337f1993789aa934f7c665b443b828c42476"
+      "sha256": "d29d26499c18fd6ae52ad256fe876c2d8e445cb367cea2d86092223b636f80eb"
     },
     {
       "path": "tests/test_opencode_routing.py",
-      "sha256": "f97c9852797478adcae483dca2cacfe5478be562b64604572b6829019ebb1bb5"
-    },
-    {
-      "path": "tests/test_production_reliability.py",
-      "sha256": "a64569f2fac4de63cc1163e50715d765b804b399a2e6835cd27e019181bd2cc8"
+      "sha256": "3ee026651e7540ebca71021b2a629d5d73a5aa244cd6df011b4de847e0e486a8"
     }
   ]
 }

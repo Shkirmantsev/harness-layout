@@ -6,7 +6,7 @@ Structured source: [handoffs/SESSION-20261004-111209-3D25.json](handoffs/SESSION
 
 Task: `SESSION-20261004-111209-3D25`
 Status: `reviewing`
-Updated: `2026-10-04T11:21:03+00:00`
+Updated: `2026-10-04T11:22:34+00:00`
 Active OpenSpec change: `enable-opencode-team-routing`
 
 ## Objective
@@ -19,7 +19,7 @@ Make OpenCode discover and use harness routing and configured agent team automat
 
 ## Completed
 
-- Implemented startup routing and enabled leaf-worker discovery; complete local gate passed 112 tests and native OpenCode discovery/tool execution
+- Final Unicode-safe adapter revision passes full 112-test gate and focused routing proof
 
 ## Remaining
 
@@ -41,14 +41,11 @@ Make OpenCode discover and use harness routing and configured agent team automat
 
 - `scripts/configure_clients.py`
 - `templates/opencode/harness.js`
-- `tests/test_downstream_harness.py`
-- `tests/test_harness_commands.py`
 - `tests/test_opencode_routing.py`
-- `tests/test_production_reliability.py`
 
 ## Verification passed
 
-- PASS: full harness 112 tests, strict OpenSpec 9 items, Wiki 10 docs, 390-file manifest; native OpenCode discovery and plugin router execution
+- PASS: 112 full tests, strict specs, Wiki, manifest; Windows Python preference and Unicode task round-trip verified
 
 ## Verification pending
 
@@ -56,7 +53,7 @@ Make OpenCode discover and use harness routing and configured agent team automat
 
 ## Next action
 
-Publish feature PR, require all seven native CI jobs, adopt/archive and merge dev only
+Require seven CI jobs for final revision then adopt/archive and merge dev
 
 ## Prerequisites
 

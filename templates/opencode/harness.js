@@ -6,6 +6,7 @@ function runRouter(executable, root, task, profile) {
   return new Promise((resolve, reject) => {
     const child = spawn(executable, [path.join(root, "scripts", "skill_router.py"), "--profile", profile], {
       cwd: root, shell: false, windowsHide: true, stdio: ["pipe", "pipe", "pipe"],
+      env: { ...process.env, PYTHONUTF8: "1" },
     })
     let output = "", errors = ""
     const timer = setTimeout(() => { child.kill(); reject(new Error("Harness skill routing timed out")) }, 30_000)
@@ -35,7 +36,8 @@ export const route = tool({
     const task = String(args.task || "").trim()
     if (!task) throw new Error("task is required")
     const root = context.worktree || context.directory || process.cwd()
-    for (const executable of ["python3", "python"]) {
+    const interpreters = process.platform === "win32" ? ["python", "python3"] : ["python3", "python"]
+    for (const executable of interpreters) {
       try { return await runRouter(executable, root, task, args.profile || "balanced") }
       catch (error) { if (error.code !== "ENOENT") throw error }
     }

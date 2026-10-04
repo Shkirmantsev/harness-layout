@@ -98,3 +98,14 @@ class OpenCodeRoutingTests(unittest.TestCase):
             plan = json.loads(result.stdout)
             self.assertIn("surgical-patch", [skill["name"] for skill in plan["required_skills"]])
             self.assertFalse(marker.exists())
+
+            # Python's Windows stdin/codepage must not corrupt a Unicode task.
+            scripts = pathlib.Path(directory) / "scripts"
+            scripts.mkdir()
+            (scripts / "skill_router.py").write_text("import json, sys\nprint(json.dumps({'task': sys.stdin.read()}, ensure_ascii=False))\n", encoding="utf-8")
+            unicode_task = "fix regression 工具 東京"
+            runner.write_text('import { route } from "./routing.mjs";\n' +
+                              f'console.log(await route.execute({{task: {json.dumps(unicode_task)}}}, {{directory: {json.dumps(directory)}}}));\n', encoding="utf-8")
+            result = subprocess.run([shutil.which("node"), str(runner)], capture_output=True, text=True, encoding="utf-8", timeout=40)
+            self.assertEqual(0, result.returncode, result.stderr)
+            self.assertEqual(unicode_task, json.loads(result.stdout)["task"])
