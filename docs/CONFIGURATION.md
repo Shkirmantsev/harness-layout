@@ -117,3 +117,12 @@ by run-mcp. `PROJECT_CONTEXT_MCP_PORT` defaults to `18883` and accepts 1024–65
 The server binds only to 127.0.0.1. Regenerate client configs after changing
 transport/port; stop and restart the managed server after changing port/root.
 See [the command guide](HARNESS_COMMANDS.md) for complete workflows.
+
+## Current-project boundary
+
+`PROJECT_ROOT=auto` resolves to the repository containing this harness. Explicit
+roots must identify that same directory. Copied roots selecting another project
+are rejected before setup or client generation, even if MCP is disabled. Use
+a separate harness instance in the selected project rather than pointing this
+instance at a different repository. Do not reuse another project's generated
+client configuration or runtime cache. See [safe copying](QUICKSTART.md).

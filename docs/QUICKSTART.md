@@ -145,3 +145,23 @@ The generic donor line-ending policy is adopted in `.gitattributes`: text
 checkouts use LF on both systems, while Git detects binary files automatically.
 This preserves artifact-manifest byte hashes on Windows without importing
 business-specific file rules.
+
+## Copying the harness safely
+
+Copy tracked template files only. Do not transfer another project's `.env`,
+generated client configs, `.generated/`, `tmp/local/`, installed venv or task
+handoff state as setup inputs. In the destination, initialize from `.env.example`
+and keep `PROJECT_ROOT=auto`, then run:
+
+```sh
+python harness.py init-mcp
+python harness.py wiki-init
+python harness.py client-config
+```
+
+A stale external PROJECT_ROOT fails before setup/client configuration. Historical
+provenance and archived task paths do not grant access to another repository.
+For an existing copy, apply the security update, set PROJECT_ROOT=auto and
+regenerate its client configs/index; reload the coding client to drop cached
+configuration. Git history from an older template may still contain old text;
+this repair does not rewrite history.

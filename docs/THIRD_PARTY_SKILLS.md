@@ -44,7 +44,7 @@ Existing `project-safety`, `verification`, `web-research-routing`, and `hermes-d
 ## Downstream adaptation (2026-10-03)
 
 The project-local `ponytail` skill was adapted from the MIT-marked catalog copy
-in `RpaCMCMachineTCPGateway` (donor HEAD `269fc50`, inspected working tree).
+in `a private downstream repository` (donor HEAD `269fc50`, inspected working tree).
 Upstream author/revision is not recorded in that donor copy; no independent
 upstream provenance is asserted. The adaptation keeps reuse/YAGNI and root-cause
 checks, removes persistent persona and restrictive response formatting, and

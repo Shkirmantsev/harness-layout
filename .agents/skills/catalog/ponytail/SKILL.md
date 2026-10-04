@@ -6,7 +6,7 @@ license: MIT
 
 # Ponytail
 
-Adapted from the downstream RpaCMCMachineTCPGateway catalog skill.
+Adapted from the downstream a private downstream repository catalog skill.
 
 1. Understand the requested outcome and trace affected callers before editing.
 2. Reuse existing repository behavior, then the standard library, then native
